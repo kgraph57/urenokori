@@ -3,9 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- 端末が暗い表示（ダークモード）でも、いつも明るい包み紙の色で出す -->
+<meta name="color-scheme" content="light">
 <title>売れ残りの記録</title>
 <style>
   :root {
+    color-scheme: light;    /* 入力欄や画面の地色も明るいまま */
     --kami: #efe6d3;        /* 包み紙（生成り） */
     --waku: #f9f4e8;        /* 枠の中 */
     --sumi: #2b2522;        /* 墨 */
@@ -18,18 +21,7 @@
     --ame-usu: #dfe8ef;
     --mezasu: #7a2e1f;      /* 目安の数（弁柄色） */
   }
-  @media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) {
-      --kami: #2a2521; --waku: #36302a; --sumi: #f0e7d5; --usuzumi: #bfb3a0;
-      --sen: #5a4f41; --sen-koi: #8a7b63; --osu: #433b33; --osu-kage: #231f1b;
-      --ame: #9fc0dc; --ame-usu: #2f3d4a; --mezasu: #f0a58a;
-    }
-  }
-  :root[data-theme="dark"] {
-    --kami: #2a2521; --waku: #36302a; --sumi: #f0e7d5; --usuzumi: #bfb3a0;
-    --sen: #5a4f41; --sen-koi: #8a7b63; --osu: #433b33; --osu-kage: #231f1b;
-    --ame: #9fc0dc; --ame-usu: #2f3d4a; --mezasu: #f0a58a;
-  }
+  /* 暗い表示（ダークモード）用の色は使わない。父と相談して、いつも同じ明るい色にした */
 
   * { box-sizing: border-box; }
   html, body { margin: 0; }
