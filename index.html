@@ -125,7 +125,8 @@
     display: flex; align-items: center; gap: 6px; margin-left: auto;
     font-size: 16px; color: var(--usuzumi); white-space: nowrap;
   }
-  .gyo .tsukutta input {
+  /* 父の決まりの数の欄も、同じ見た目にする */
+  .gyo .tsukutta input, .kimari input {
     font: inherit; font-size: 24px; color: var(--sumi);
     width: 68px; height: 48px; padding: 0 4px;
     text-align: center; font-variant-numeric: tabular-nums;
@@ -133,8 +134,11 @@
     -moz-appearance: textfield; appearance: textfield;
   }
   .gyo .tsukutta input::-webkit-outer-spin-button,
-  .gyo .tsukutta input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
-  .gyo .tsukutta input:focus-visible { outline: 3px solid var(--ame); outline-offset: 2px; }
+  .gyo .tsukutta input::-webkit-inner-spin-button,
+  .kimari input::-webkit-outer-spin-button,
+  .kimari input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+  .gyo .tsukutta input:focus-visible,
+  .kimari input:focus-visible { outline: 3px solid var(--ame); outline-offset: 2px; }
   .na small {
     display: inline-block; font-size: 15px; color: var(--usuzumi);
     border: 1px solid var(--sen); border-radius: 6px; padding: 0 5px; margin-left: 6px;
@@ -175,6 +179,32 @@
     font-size: 20px; text-align: center; letter-spacing: .04em;
   }
   .kotowari span { display: inline-block; }  /* 文の途中で折れないように */
+
+  /* 父の決まりの枠。パソコン幅では 3 列の下に横いっぱい、スマホ幅では目安の下 */
+  .kimari { grid-column: 1 / -1; }
+  .kimari .setsumei { margin: 0 0 12px; font-size: 18px; color: var(--usuzumi); }
+  .kimari .setsumei span { display: inline-block; }
+  .kimari .kumi-narabi {
+    display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px 28px;
+  }
+  @media (max-width: 960px) {
+    .kimari .kumi-narabi { grid-template-columns: minmax(0, 1fr); }
+  }
+  .kimari h3 {
+    font-size: 20px; font-weight: 600; margin: 0; letter-spacing: .08em; color: var(--usuzumi);
+  }
+  .kimari ol { list-style: none; margin: 0; padding: 0; }
+  .kimari li {
+    display: flex; align-items: baseline; gap: 4px;
+    padding: 6px 0; border-bottom: 1px solid var(--sen);
+  }
+  .kimari li:last-child { border-bottom: none; }
+  .kimari .ban { flex: none; width: 1.3em; }
+  /* 文は言葉の途中で折らず、<wbr> を入れたところ（言葉の切れ目）でだけ折る */
+  .kimari .bun { min-width: 0; line-height: 1.7; word-break: keep-all; }
+  .kimari .bun input { vertical-align: middle; margin: 3px 4px; }
+  .kimari .ran { white-space: nowrap; }  /* 数の欄と「つ以上なら、」を離さない */
 
   /* 父に見せる画面 */
   dialog#oogaki {
@@ -239,6 +269,37 @@
     <p class="kotowari"><span>これは目安です。</span><span>決めるのはお父さんです</span></p>
     <button class="ookii" id="okuru-btn" type="button">父に送る</button>
   </section>
+
+  <!-- 父の決まり。文を直せば、画面の文が変わる（計算は下の meyasu() で、この番号の順に当てはめる） -->
+  <section class="waku kimari" aria-labelledby="h-kimari">
+    <h2 id="h-kimari">父の決まり</h2>
+    <p class="setsumei"><span>上から順に当てはめて、あすの目安を出しています。</span><span>四角の数は直せます。</span><span>直した数は、次に開いても残ります。</span></p>
+    <div class="kumi-narabi" id="kimari-list">
+      <div class="kumi">
+        <h3>売れ残りで変える</h3>
+        <ol>
+          <li><span class="ban">①</span><span class="bun">売れ残りが<wbr><span class="ran"><input type="number" inputmode="numeric" step="1" data-kimari="ooi" aria-label="①　いくつ以上残ったら減らすか">つ以上なら、</span><wbr><span class="ran"><input type="number" inputmode="numeric" step="1" data-kimari="herasu" aria-label="①　いくつ減らすか">つ減らす</span></span></li>
+          <li><span class="ban">②</span><span class="bun">売れ残りが0なら、<wbr><span class="ran"><input type="number" inputmode="numeric" step="1" data-kimari="fuyasu" aria-label="②　いくつ増やすか">つ増やす</span></span></li>
+          <li><span class="ban">③</span><span class="bun">練り切りは<wbr>日持ちしないので、<wbr>売れ残りが<wbr>1つでもあれば、<wbr><span class="ran">さらに<input type="number" inputmode="numeric" step="1" data-kimari="nerikiri" aria-label="③　練り切りをいくつ減らすか">つ減らす</span></span></li>
+        </ol>
+      </div>
+      <div class="kumi">
+        <h3>あすの天気と曜日で変える</h3>
+        <ol>
+          <li><span class="ban">④</span><span class="bun">あすが雨なら、<wbr><span class="ran"><input type="number" inputmode="numeric" step="1" data-kimari="ame" aria-label="④　雨のとき何割減らすか">割減らす</span></span></li>
+          <li><span class="ban">⑤</span><span class="bun">あす（作る日）が<wbr>土曜か日曜なら、<wbr><span class="ran"><input type="number" inputmode="numeric" step="1" data-kimari="donichi" aria-label="⑤　土曜と日曜に何割増やすか">割増やす</span></span></li>
+          <li><span class="ban">⑥</span><span class="bun">あすが月曜なら、<wbr>お客さんが<wbr>少ないので、<wbr><span class="ran"><input type="number" inputmode="numeric" step="1" data-kimari="getsu" aria-label="⑥　月曜に何割減らすか">割減らす</span></span></li>
+        </ol>
+      </div>
+      <div class="kumi">
+        <h3>いつも守る</h3>
+        <ol>
+          <li><span class="ban">⑦</span><span class="bun">一度に変えるのは、<wbr>きょう作った数から<wbr><span class="ran"><input type="number" inputmode="numeric" step="1" data-kimari="haba" aria-label="⑦　一度に何個まで変えるか">個まで</span></span></li>
+          <li><span class="ban">⑧</span><span class="bun">どのお菓子も、<wbr>作る数は<wbr><span class="ran"><input type="number" inputmode="numeric" step="1" data-kimari="saitei" aria-label="⑧　作る数を何個より少なくしないか">個より</span><wbr>少なくしない</span></li>
+        </ol>
+      </div>
+    </div>
+  </section>
 </main>
 
 <dialog id="oogaki" aria-labelledby="h-oogaki">
@@ -270,18 +331,45 @@ const OKASHI = [
   { id: "nerikiri",    na: "練り切り", kisetsu: true, tsukutta: 12, rei: 4 },
 ];
 
-// 父に聞いた決まり
-//   売れ残りが 3 以上 → きょう作った数から 2 減らす
-//   売れ残りが 0     → 2 増やす
-//   1 か 2           → 変えない
-//   あすが雨         → そこからさらに 1 割減らす（四捨五入）
-function meyasu(tsukutta, nokori, ame) {
+// ───────────────────────────────────────────
+// 父の決まりの、はじめの数。画面の「父の決まり」の欄で直せて、直した数は保存される。
+//   ooi, herasu = ① 売れ残りが ooi つ以上なら、herasu つ減らす
+//   fuyasu      = ② 売れ残りが 0 なら、fuyasu つ増やす
+//   nerikiri    = ③ 練り切りは、売れ残りが 1 つでもあれば、さらに nerikiri つ減らす（①と重ねる）
+//   ame         = ④ あすが雨なら、ame 割減らす
+//   donichi     = ⑤ あすが土曜か日曜なら、donichi 割増やす
+//   getsu       = ⑥ あすが月曜なら、getsu 割減らす
+//   haba        = ⑦ 一度に変えるのは、きょう作った数から haba 個まで
+//   saitei      = ⑧ どのお菓子も、saitei 個より少なくしない（最後に当てるので、⑦とぶつかったら⑧を守る）
+// ───────────────────────────────────────────
+const KIMARI_HAJIME = { ooi: 3, herasu: 2, fuyasu: 2, nerikiri: 1, ame: 1, donichi: 1, getsu: 1, haba: 5, saitei: 10 };
+// 欄に入れてよい数の幅。①の「以上」は 1 から（0 にすると②とぶつかる）。割は 0〜9 割
+const KIMARI_HANI = { ooi: [1, 999], ame: [0, 9], donichi: [0, 9], getsu: [0, 9] };
+function kimariHani(k) { return KIMARI_HANI[k] || [0, 999]; }
+// 決まりの数として使えるなら、その数。使えなければ null
+function kimariKazu(k, v) {
+  const [shita, ue] = kimariHani(k);
+  return (Number.isInteger(v) && v >= shita && v <= ue) ? v : null;
+}
+
+// 父の決まり①〜⑧を、上から順に当てはめる
+//   id    = お菓子の id（③で練り切りを見分ける）
+//   youbi = あすの曜日（0 = 日曜、1 = 月曜 … 6 = 土曜）
+function meyasu(tsukutta, nokori, ame, id, youbi, k = kimari) {
   let n = tsukutta;
-  if (nokori >= 3) n -= 2;
-  else if (nokori === 0) n += 2;
-  if (ame) n = Math.round(n * 0.9);
+  if (nokori >= k.ooi) n -= k.herasu;                      // ①
+  else if (nokori === 0) n += k.fuyasu;                    // ②
+  if (id === "nerikiri" && nokori >= 1) n -= k.nerikiri;   // ③
+  if (ame) n = wari(n, -k.ame);                            // ④
+  if (youbi === 0 || youbi === 6) n = wari(n, k.donichi);  // ⑤
+  if (youbi === 1) n = wari(n, -k.getsu);                  // ⑥
+  n = Math.min(Math.max(n, tsukutta - k.haba), tsukutta + k.haba);  // ⑦
+  n = Math.max(n, k.saitei);                               // ⑧ いちばん最後
   return Math.max(0, n);
 }
+// n を w 割増やす（w が負なら減らす）。端数は四捨五入。
+// 0.9 倍のような小数のかけ算はずれが出るので、整数でかけてから 10 で割る
+function wari(n, w) { return Math.round(n * (10 + w) / 10); }
 
 // ───────────────────────────────────────────
 // 日付の区切り（父と相談して決めた）
@@ -345,6 +433,20 @@ function kaku() {
   try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) { /* 保存できなくても動く */ }
 }
 
+// 父の決まりの数は、売れ残りとは別に保存する（12 時の区切りで消えないように）
+const KIMARI_KEY = "urenokori-kimari-v1";
+let kimari = { ...KIMARI_HAJIME };
+function yomuKimari() {
+  let s = null;
+  try { s = JSON.parse(localStorage.getItem(KIMARI_KEY) || "null"); } catch (e) { s = null; }
+  const t = (s && typeof s === "object") ? s : {};
+  kimari = {};
+  for (const k of Object.keys(KIMARI_HAJIME)) kimari[k] = kimariKazu(k, t[k]) ?? KIMARI_HAJIME[k];
+}
+function hozonKimari() {
+  try { localStorage.setItem(KIMARI_KEY, JSON.stringify(kimari)); } catch (e) { /* 保存できなくても動く */ }
+}
+
 const YOUBI = ["日", "月", "火", "水", "木", "金", "土"];
 function hiMoji(d) {
   return `${d.getMonth() + 1}月${d.getDate()}日（${YOUBI[d.getDay()]}）`;
@@ -355,6 +457,20 @@ function asuNoHi() { const d = new Date(kyouNoHi); d.setDate(d.getDate() + 1); r
 
 function naHTML(o) {
   return o.na + (o.kisetsu ? '<small>季節</small>' : "");
+}
+
+// お菓子 1 つの、あすの目安
+function okashiMeyasu(o) {
+  return meyasu(state.tsukutta[o.id], state.nokori[o.id], state.ame, o.id, asuNoHi().getDay());
+}
+
+// 父の決まりの欄に、いまの数を入れる
+function kakuKimari() {
+  for (const inp of document.querySelectorAll("#kimari-list input[data-kimari]")) {
+    const k = inp.dataset.kimari;
+    [inp.min, inp.max] = kimariHani(k);
+    inp.value = kimari[k];
+  }
 }
 
 function kakuUrenokori() {
@@ -385,7 +501,7 @@ function kakuMeyasu() {
   el.innerHTML = "";
   for (const o of OKASHI) {
     const n = state.nokori[o.id], t = state.tsukutta[o.id];
-    const m = meyasu(t, n, state.ame);
+    const m = okashiMeyasu(o);
     const gyo = document.createElement("div");
     gyo.className = "meyasu-gyo";
     gyo.innerHTML = `
@@ -402,18 +518,20 @@ function kakuOogaki() {
   const el = document.getElementById("oogaki-list");
   el.innerHTML = "";
   for (const o of OKASHI) {
-    const m = meyasu(state.tsukutta[o.id], state.nokori[o.id], state.ame);
+    const m = okashiMeyasu(o);
     const gyo = document.createElement("div");
     gyo.className = "gyo2";
     gyo.innerHTML = `<div class="na">${o.na}</div><div class="kazu">${m}<small>個</small></div>`;
     el.appendChild(gyo);
   }
-  document.getElementById("oogaki-ame").innerHTML = state.ame ? "<span>☂ あすは雨</span> <span>（1割減らしています）</span>" : "";
+  // 「何割」は、父の決まり④の数に合わせる。0 割なら括弧は出さない
+  document.getElementById("oogaki-ame").innerHTML = !state.ame ? ""
+    : "<span>☂ あすは雨</span>" + (kimari.ame > 0 ? ` <span>（${kimari.ame}割減らしています）</span>` : "");
 }
 
 function bunshou() {
   const asu = asuNoHi();
-  const gyo = OKASHI.map(o => `${o.na} ${meyasu(state.tsukutta[o.id], state.nokori[o.id], state.ame)}個`);
+  const gyo = OKASHI.map(o => `${o.na} ${okashiMeyasu(o)}個`);
   return [`あす ${hiMoji(asu)} の目安${state.ame ? "（雨）" : ""}`, ...gyo,
           "これは目安です。決めるのはお父さんです"].join("\n");
 }
@@ -454,6 +572,25 @@ function tsukuttaKazu(moji) {
   return Number(s);
 }
 
+// 父の決まりの欄。作った数の欄と同じく、打っている途中は目安だけ直し、
+// 欄から出たら、空や幅の外の数は直前の数に戻す
+const kimariList = document.getElementById("kimari-list");
+kimariList.addEventListener("input", (e) => {
+  const inp = e.target.closest("input[data-kimari]");
+  if (!inp) return;
+  const v = kimariKazu(inp.dataset.kimari, tsukuttaKazu(inp.value));
+  if (v === null) return;
+  kimari[inp.dataset.kimari] = v;
+  kakuMeyasu(); hozonKimari();
+});
+kimariList.addEventListener("change", (e) => {
+  const inp = e.target.closest("input[data-kimari]");
+  if (!inp) return;
+  const k = inp.dataset.kimari;
+  kimari[k] = kimariKazu(k, tsukuttaKazu(inp.value)) ?? kimari[k];
+  kakuKimari(); kakuMeyasu(); hozonKimari();
+});
+
 document.getElementById("ame-btn").addEventListener("click", () => {
   state.ame = !state.ame;
   zenbu();
@@ -491,7 +628,9 @@ if (navigator.share) {
   document.getElementById("asu-hi").textContent = hiMoji(asu);
   document.getElementById("oogaki-hi").textContent = hiMoji(asu);
   yomu(ima);
+  yomuKimari();
   kakuUrenokori();
+  kakuKimari();
   kakuMeyasu();
 })();
 </script>
