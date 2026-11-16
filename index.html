@@ -148,8 +148,8 @@
     width: 64px; font-size: 40px; text-align: center; font-variant-numeric: tabular-nums;
     line-height: 1;
   }
-  .gyo button { width: 56px; height: 56px; font-size: 30px; line-height: 1; padding: 0; }
-  .gyo button:disabled { opacity: .35; cursor: default; box-shadow: none; }
+  .gyo button, .meyasu-gyo .chichi button { width: 56px; height: 56px; font-size: 30px; line-height: 1; padding: 0; }
+  .gyo button:disabled, .meyasu-gyo .chichi button:disabled { opacity: .35; cursor: default; box-shadow: none; }
 
   /* 目安の枠 */
   .ame-btn {
@@ -173,6 +173,28 @@
     line-height: 1; white-space: nowrap;
   }
   .meyasu-gyo .kazu small { font-size: 20px; color: var(--usuzumi); margin-left: 2px; }
+  /* 父の数の段。道具の目安の下に置き、−・＋で直す。目安とちがえば差を出す */
+  .meyasu-gyo .chichi {
+    grid-column: 1 / -1;
+    display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px;
+    margin-top: 4px;
+  }
+  .meyasu-gyo .chichi .mei { font-size: 16px; color: var(--usuzumi); white-space: nowrap; }
+  .meyasu-gyo .chichi .sa {
+    font-size: 18px; color: var(--mezasu); white-space: nowrap; line-height: 1.5;
+    border: 1px solid var(--mezasu); border-radius: 6px; padding: 0 6px;
+  }
+  .meyasu-gyo .chichi .te { margin-left: auto; display: flex; align-items: center; gap: 8px; }
+  .meyasu-gyo .chichi .chichi-kazu {
+    width: 64px; font-size: 40px; text-align: center; font-variant-numeric: tabular-nums;
+    line-height: 1;
+  }
+  /* 「父に送る」を押したあとの知らせ */
+  .nokoshita {
+    margin: 12px 0 0; font-size: 18px; color: var(--usuzumi); text-align: center;
+  }
+  .nokoshita span { display: inline-block; }
+  .nokoshita:empty { margin: 0; }
   .kotowari {
     margin: 16px 0; padding: 10px 12px;
     border: 1px solid var(--sen-koi); border-radius: 10px;
@@ -206,6 +228,52 @@
   .kimari .bun input { vertical-align: middle; margin: 3px 4px; }
   .kimari .ran { white-space: nowrap; }  /* 数の欄と「つ以上なら、」を離さない */
 
+  /* これまでの記録。父の決まりと同じく、パソコン幅では横いっぱい */
+  .kiroku { grid-column: 1 / -1; }
+  .kiroku .kara { margin: 0; font-size: 18px; color: var(--usuzumi); }
+  .kiroku .kara span { display: inline-block; }
+  .kiroku .matome {
+    display: flex; flex-wrap: wrap; gap: 8px 36px;
+    margin: 0 0 16px; padding: 0 0 12px; border-bottom: 1px dashed var(--sen);
+  }
+  .kiroku .matome > div { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 8px; }
+  .kiroku .matome .mei { font-size: 18px; color: var(--usuzumi); }
+  .kiroku .matome .atai { font-size: 36px; line-height: 1.2; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .kiroku .matome .atai small { font-size: 20px; color: var(--usuzumi); margin-left: 2px; }
+  .kiroku .matome .soe { font-size: 16px; color: var(--usuzumi); }
+  .kiroku .hibi {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(300px, 100%), 1fr));
+    gap: 20px 28px;
+  }
+  .kiroku .hi-kiroku { border-top: 1px solid var(--sen-koi); padding-top: 8px; min-width: 0; }
+  .kiroku h3 { font-size: 20px; font-weight: 600; margin: 0; letter-spacing: .04em; }
+  .kiroku h3 span { display: inline-block; }
+  .kiroku .hi-soe { margin: 0 0 4px; font-size: 16px; color: var(--usuzumi); }
+  .kiroku .hi-soe span { display: inline-block; margin-right: 1em; }
+  .kiroku table {
+    width: 100%; border-collapse: collapse;
+    font-size: 20px; font-variant-numeric: tabular-nums;
+  }
+  .kiroku th {
+    font-size: 15px; font-weight: 400; color: var(--usuzumi); line-height: 1.3;
+    text-align: right; vertical-align: bottom; word-break: keep-all;
+    padding: 4px 0 4px 10px; border-bottom: 1px solid var(--sen-koi);
+  }
+  .kiroku td { text-align: right; padding: 3px 0 3px 10px; border-bottom: 1px solid var(--sen); }
+  .kiroku th:first-child, .kiroku td:first-child { text-align: left; padding-left: 0; }
+  .kiroku td:first-child { word-break: keep-all; }
+  .kiroku tr:last-child td { border-bottom: none; }
+  .kiroku tr.naoshita .chichi-ran { font-weight: 600; }
+  .kiroku td.sa { color: var(--mezasu); font-weight: 600; white-space: nowrap; }
+  /* 差の列の幅をそろえて、日ごとの表の列の位置が同じになるようにする */
+  .kiroku th:last-child { width: 3em; }
+  /* せまいスマホ（320px ほど）でも、表が枠からはみ出さないように詰める */
+  @media (max-width: 360px) {
+    .kiroku table { font-size: 18px; }
+    .kiroku th, .kiroku td { padding-left: 6px; }
+  }
+
   /* 父に見せる画面 */
   dialog#oogaki {
     border: none; border-radius: 0; padding: 0; margin: 0;
@@ -230,6 +298,8 @@
     border-bottom: 1px solid var(--sen-koi); padding: 6px 0; gap: 12px;
   }
   .oogaki-naka .gyo2 .na { font-size: 34px; min-width: 0; word-break: keep-all; }
+  /* 父が直したお菓子だけ、品名の下に道具の目安を小さく添える */
+  .oogaki-naka .gyo2 .na .moto { display: block; font-size: 20px; color: var(--usuzumi); }
   .oogaki-naka .ame-moji span { display: inline-block; }
   .oogaki-naka .gyo2 .kazu {
     font-size: 64px; color: var(--mezasu); line-height: 1; white-space: nowrap;
@@ -268,6 +338,7 @@
     <div id="meyasu-list" aria-live="polite"></div>
     <p class="kotowari"><span>これは目安です。</span><span>決めるのはお父さんです</span></p>
     <button class="ookii" id="okuru-btn" type="button">父に送る</button>
+    <p class="nokoshita" id="nokoshita" aria-live="polite"></p>
   </section>
 
   <!-- 父の決まり。文を直せば、画面の文が変わる（計算は下の meyasu() で、この番号の順に当てはめる） -->
@@ -299,6 +370,12 @@
         </ol>
       </div>
     </div>
+  </section>
+
+  <!-- これまでの記録。「父に送る」を押した日ごとに、道具の目安と父の数を残す（中身は下の kakuKiroku() で書く） -->
+  <section class="waku kiroku" aria-labelledby="h-kiroku">
+    <h2 id="h-kiroku">これまでの記録</h2>
+    <div id="kiroku-naka"></div>
   </section>
 </main>
 
@@ -393,7 +470,8 @@ function hiKey(d) {
 
 // ───────────────────────────────────────────
 const KEY = "urenokori-v1";
-const state = { hi: "", tsukutta: {}, nokori: {}, ame: false };
+// chichi = 父が直した、あすに作る数。直したお菓子だけ入る（直していなければ道具の目安と同じ）
+const state = { hi: "", tsukutta: {}, nokori: {}, ame: false, chichi: {} };
 
 // 0 以上の整数ならそのまま、そうでなければ代わりの数
 function seisuu(v, kawari) {
@@ -410,6 +488,7 @@ function yomu(ima = new Date()) {
   state.tsukutta = {};
   state.nokori = {};
   state.ame = false;
+  state.chichi = {};
 
   // 作った数は、日付が変わっても前回入れた数を引き継ぐ（父と相談して決めた）
   const t = (s && s.tsukutta && typeof s.tsukutta === "object") ? s.tsukutta : {};
@@ -423,8 +502,13 @@ function yomu(ima = new Date()) {
     const n = (s.nokori && typeof s.nokori === "object") ? s.nokori : {};
     for (const o of OKASHI) state.nokori[o.id] = seisuu(n[o.id], 0);
     state.ame = !!s.ame;
+    const c = (s.chichi && typeof s.chichi === "object") ? s.chichi : {};
+    for (const o of OKASHI) {
+      const v = seisuu(c[o.id], null);
+      if (v !== null) state.chichi[o.id] = v;
+    }
   } else {
-    // 日付が変わった → 売れ残り 0、雨の印なし
+    // 日付が変わった → 売れ残り 0、雨の印なし、父の数は直す前（道具の目安と同じ）
     for (const o of OKASHI) state.nokori[o.id] = 0;
   }
   kaku();
@@ -447,6 +531,58 @@ function hozonKimari() {
   try { localStorage.setItem(KIMARI_KEY, JSON.stringify(kimari)); } catch (e) { /* 保存できなくても動く */ }
 }
 
+// ───────────────────────────────────────────
+// これまでの記録。「父に送る」を押した日ごとに 1 つ残す（同じ日に押し直したら書き直す）。
+// 売れ残りとは別に保存するので、12 時の区切りでは消えない。はじめは空。
+//   hi     = 送った日（12 時の区切りで決めた「きょう」）
+//   asu    = 作る日（あす）
+//   ame    = あすは雨の印
+//   okashi = お菓子ごとに { id, na, meyasu: 道具の目安, chichi: 父の数, tsukutta: きょう作った数, nokori: 売れ残り }
+// ───────────────────────────────────────────
+const KIROKU_KEY = "urenokori-kiroku-v1";
+let kiroku = [];
+const HI_KATACHI = /^\d{4}-\d{2}-\d{2}$/;
+function yomuKiroku() {
+  let s = null;
+  try { s = JSON.parse(localStorage.getItem(KIROKU_KEY) || "null"); } catch (e) { s = null; }
+  kiroku = [];
+  if (!Array.isArray(s)) return;
+  for (const r of s) {
+    if (!r || typeof r !== "object" || !HI_KATACHI.test(r.hi) || !HI_KATACHI.test(r.asu)) continue;
+    if (!Array.isArray(r.okashi)) continue;
+    const okashi = r.okashi.filter(o => o && typeof o.na === "string"
+      && seisuu(o.meyasu, null) !== null && seisuu(o.chichi, null) !== null);
+    if (okashi.length) kiroku.push({ ...r, ame: !!r.ame, okashi });
+  }
+  kiroku.sort((a, b) => a.hi.localeCompare(b.hi));
+}
+function hozonKiroku() {
+  try { localStorage.setItem(KIROKU_KEY, JSON.stringify(kiroku)); } catch (e) { /* 保存できなくても動く */ }
+}
+// いまの数で、きょうの分を記録に残す
+function nokosu() {
+  const r = {
+    hi: hiKey(kyouNoHi), asu: hiKey(asuNoHi()), ame: state.ame,
+    okashi: OKASHI.map(o => ({
+      id: o.id, na: o.na, meyasu: okashiMeyasu(o), chichi: chichiKazu(o),
+      tsukutta: state.tsukutta[o.id], nokori: state.nokori[o.id],
+    })),
+  };
+  kiroku = kiroku.filter(k => k.hi !== r.hi);
+  kiroku.push(r);
+  kiroku.sort((a, b) => a.hi.localeCompare(b.hi));
+  hozonKiroku();
+}
+// 保存の日付（2026-11-16）を Date にする
+function keyHi(key) {
+  const [y, m, d] = key.split("-").map(Number);
+  return new Date(y, m - 1, d);
+}
+// 品名などを HTML に入れるときの用心
+function esc(s) {
+  return String(s).replace(/[&<>"']/g, ch => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[ch]));
+}
+
 const YOUBI = ["日", "月", "火", "水", "木", "金", "土"];
 function hiMoji(d) {
   return `${d.getMonth() + 1}月${d.getDate()}日（${YOUBI[d.getDay()]}）`;
@@ -462,6 +598,14 @@ function naHTML(o) {
 // お菓子 1 つの、あすの目安
 function okashiMeyasu(o) {
   return meyasu(state.tsukutta[o.id], state.nokori[o.id], state.ame, o.id, asuNoHi().getDay());
+}
+// お菓子 1 つの、父の数。父が直していなければ、道具の目安と同じ
+function chichiKazu(o) {
+  return state.chichi[o.id] ?? okashiMeyasu(o);
+}
+// 差（父の数 − 道具の目安）を「＋2」「−1」の形にする。0 なら空
+function saMoji(sa) {
+  return sa > 0 ? `＋${sa}` : sa < 0 ? `−${-sa}` : "";
 }
 
 // 父の決まりの欄に、いまの数を入れる
@@ -501,12 +645,21 @@ function kakuMeyasu() {
   el.innerHTML = "";
   for (const o of OKASHI) {
     const n = state.nokori[o.id], t = state.tsukutta[o.id];
-    const m = okashiMeyasu(o);
+    const m = okashiMeyasu(o), c = chichiKazu(o), sa = c - m;
     const gyo = document.createElement("div");
     gyo.className = "meyasu-gyo";
     gyo.innerHTML = `
       <div class="na">${naHTML(o)}<span class="wake">きょう ${t}・残り ${n}</span></div>
-      <div class="kazu">${m}<small>個</small></div>`;
+      <div class="kazu">${m}<small>個</small></div>
+      <div class="chichi">
+        <span class="mei">父の数</span>
+        ${sa ? `<span class="sa" aria-label="道具の目安より${Math.abs(sa)}個${sa > 0 ? "多い" : "少ない"}">${saMoji(sa)}</span>` : ""}
+        <div class="te">
+          <button type="button" data-chichi="${o.id}" data-d="-1" aria-label="${o.na}の父の数を1つ減らす" ${c <= 0 ? "disabled" : ""}>−</button>
+          <div class="chichi-kazu" aria-label="${o.na}の父の数">${c}</div>
+          <button type="button" data-chichi="${o.id}" data-d="1" aria-label="${o.na}の父の数を1つ増やす">＋</button>
+        </div>
+      </div>`;
     el.appendChild(gyo);
   }
   const btn = document.getElementById("ame-btn");
@@ -517,11 +670,13 @@ function kakuMeyasu() {
 function kakuOogaki() {
   const el = document.getElementById("oogaki-list");
   el.innerHTML = "";
+  // 大きな数は父の数。父が直したお菓子だけ、道具の目安を小さく添える
   for (const o of OKASHI) {
-    const m = okashiMeyasu(o);
+    const m = okashiMeyasu(o), c = chichiKazu(o);
     const gyo = document.createElement("div");
     gyo.className = "gyo2";
-    gyo.innerHTML = `<div class="na">${o.na}</div><div class="kazu">${m}<small>個</small></div>`;
+    gyo.innerHTML = `<div class="na">${o.na}${c !== m ? `<span class="moto">道具の目安 ${m}個</span>` : ""}</div>`
+                  + `<div class="kazu">${c}<small>個</small></div>`;
     el.appendChild(gyo);
   }
   // 「何割」は、父の決まり④の数に合わせる。0 割なら括弧は出さない
@@ -531,9 +686,63 @@ function kakuOogaki() {
 
 function bunshou() {
   const asu = asuNoHi();
-  const gyo = OKASHI.map(o => `${o.na} ${okashiMeyasu(o)}個`);
+  const gyo = OKASHI.map(o => {
+    const m = okashiMeyasu(o), c = chichiKazu(o);
+    return `${o.na} ${c}個` + (c !== m ? `（道具の目安 ${m}個）` : "");
+  });
   return [`あす ${hiMoji(asu)} の目安${state.ame ? "（雨）" : ""}`, ...gyo,
           "これは目安です。決めるのはお父さんです"].join("\n");
+}
+
+// これまでの記録の欄。上に「何日ぶん・直した回数・差」、その下に日ごとの表（新しい日が先）
+function kakuKiroku() {
+  const el = document.getElementById("kiroku-naka");
+  if (!kiroku.length) {
+    el.innerHTML = '<p class="kara"><span>まだ記録はありません。</span>'
+                 + '<span>「父に送る」を押すと、</span><span>その日の分がここに残ります。</span></p>';
+    return;
+  }
+  let hinsuu = 0, naoshita = 0, ooku = 0, sukunaku = 0;
+  for (const r of kiroku) for (const o of r.okashi) {
+    const sa = o.chichi - o.meyasu;
+    hinsuu++;
+    if (sa !== 0) naoshita++;
+    if (sa > 0) ooku += sa; else sukunaku += -sa;
+  }
+  const matome = `
+    <div class="matome">
+      <div><span class="mei">記録</span><span class="atai">${kiroku.length}<small>日ぶん</small></span></div>
+      <div><span class="mei">父が直した</span><span class="atai">${naoshita}<small>回</small></span>
+           <span class="soe">（${hinsuu}品のうち）</span></div>
+      <div><span class="mei">道具の目安との差</span><span class="atai"><small>合わせて</small>${ooku + sukunaku}<small>個</small></span>
+           <span class="soe">（多くした ${ooku}個・少なくした ${sukunaku}個）</span></div>
+    </div>`;
+  const hibi = kiroku.slice().reverse().map(r => {
+    const n = r.okashi.filter(o => o.chichi !== o.meyasu).length;
+    const gyo = r.okashi.map(o => {
+      const sa = o.chichi - o.meyasu;
+      return `<tr${sa ? ' class="naoshita"' : ""}><td>${esc(o.na)}</td><td>${o.meyasu}</td>`
+           + `<td class="chichi-ran">${o.chichi}</td><td class="sa">${saMoji(sa)}</td></tr>`;
+    }).join("");
+    return `
+      <article class="hi-kiroku">
+        <h3><span>${hiMoji(keyHi(r.hi))}に</span><span>送った分</span></h3>
+        <p class="hi-soe"><span>作る日 ${hiMoji(keyHi(r.asu))}${r.ame ? "・雨" : ""}</span><span>${n ? `父が直したのは ${n}品` : "父の直しはなし"}</span></p>
+        <table>
+          <thead><tr><th scope="col">お菓子</th><th scope="col">道具の<wbr>目安</th><th scope="col">父の<wbr>数</th><th scope="col">差</th></tr></thead>
+          <tbody>${gyo}</tbody>
+        </table>
+      </article>`;
+  }).join("");
+  el.innerHTML = matome + `<div class="hibi">${hibi}</div>`;
+}
+
+// 「父に送る」の下の知らせ。きょうの分が記録にあれば、そう伝える
+function kakuNokoshita() {
+  const ari = kiroku.some(r => r.hi === hiKey(kyouNoHi));
+  document.getElementById("nokoshita").innerHTML = !ari ? ""
+    : `<span>${hiMoji(kyouNoHi)}の分は、</span><span>下の「これまでの記録」に</span><span>残しました。</span>`
+    + `<span>数を直したら、</span><span>もう一度押すと</span><span>書き直します。</span>`;
 }
 
 function zenbu() { kakuUrenokori(); kakuMeyasu(); kaku(); }
@@ -591,6 +800,18 @@ kimariList.addEventListener("change", (e) => {
   kakuKimari(); kakuMeyasu(); hozonKimari();
 });
 
+// 父の数の −・＋。道具の目安と同じ数に戻したら、「直していない」に戻す
+document.getElementById("meyasu-list").addEventListener("click", (e) => {
+  const b = e.target.closest("button[data-chichi]");
+  if (!b) return;
+  const o = OKASHI.find(x => x.id === b.dataset.chichi);
+  if (!o) return;
+  const v = Math.max(0, chichiKazu(o) + Number(b.dataset.d));
+  if (v === okashiMeyasu(o)) delete state.chichi[o.id];
+  else state.chichi[o.id] = v;
+  kakuMeyasu(); kaku();
+});
+
 document.getElementById("ame-btn").addEventListener("click", () => {
   state.ame = !state.ame;
   zenbu();
@@ -602,6 +823,10 @@ document.getElementById("shashin-btn").addEventListener("click", () => {
 
 const oogaki = document.getElementById("oogaki");
 document.getElementById("okuru-btn").addEventListener("click", () => {
+  // 押した日の分を記録に残してから、大きな字の画面を出す
+  nokosu();
+  kakuKiroku();
+  kakuNokoshita();
   kakuOogaki();
   oogaki.showModal();
   // 開くと「閉じる」ボタンに移動して下までずれるので、いちばん上の見出しに戻す
@@ -629,9 +854,12 @@ if (navigator.share) {
   document.getElementById("oogaki-hi").textContent = hiMoji(asu);
   yomu(ima);
   yomuKimari();
+  yomuKiroku();
   kakuUrenokori();
   kakuKimari();
   kakuMeyasu();
+  kakuKiroku();
+  kakuNokoshita();
 })();
 </script>
 </body>
