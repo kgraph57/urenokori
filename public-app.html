@@ -1,0 +1,2321 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="売れ残り帳" />
+    <meta name="theme-color" content="#f5f5f3" />
+    <meta name="color-scheme" content="light" />
+    <title>売れ残り帳</title>
+    <link rel="icon" href="/assets/design/mame.jpg">
+    <style>
+      /* 組み立て: 場面ごとに3画面。きょう＝閉店後の写真が主役で数を入れる／あす＝翌朝の写真の下で、1品ずつ大きな絵と数、目盛りを指で動かして父が決める／記録＝合った割合ひとつ。
+   色は点だけ（緑＝目安どおり・珊瑚＝父が直した・青＝雨）。面は白と写真。ボタンは墨の丸。書体は Zen Kaku Gothic New と、数字だけ Inter。 */
+      :root {
+        color-scheme: light;
+        --page: #e4e5e2;
+        --bg: #f5f5f3;
+        --surface: #ffffff;
+        --ink: #151413;
+        --sub: #5d5a55;
+        --faint: #706c66;
+        --line: #e6e6e2;
+        --press: #efefec;
+        --green: #2f7a55;
+        --coral: #b1432a;
+        --coral-soft: #fbe9e3;
+        --blue: #2f67a0;
+        --sans:
+          "Zen Kaku Gothic New", "Hiragino Sans", "Hiragino Kaku Gothic ProN",
+          "Yu Gothic", system-ui, sans-serif;
+        --num: "Inter", "Zen Kaku Gothic New", system-ui, sans-serif;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        height: 100%;
+      }
+      body {
+        background: var(--page);
+        color: var(--ink);
+        font-family: var(--sans);
+        font-size: 16px;
+        line-height: 1.6;
+        -webkit-text-size-adjust: 100%;
+        -webkit-tap-highlight-color: transparent;
+        font-feature-settings: "palt" 1;
+      }
+      button {
+        font: inherit;
+        color: inherit;
+        background: none;
+        border: 0;
+        padding: 0;
+        cursor: pointer;
+        touch-action: manipulation;
+      }
+      button:focus-visible,
+      input:focus-visible,
+      [role="slider"]:focus-visible {
+        outline: 3px solid #4b86c4;
+        outline-offset: 3px;
+      }
+      img {
+        display: block;
+        max-width: 100%;
+      }
+      .app {
+        position: relative;
+        max-width: 430px;
+        min-height: 100%;
+        margin: 0 auto;
+        background: var(--bg);
+        overflow: hidden;
+        padding-bottom: calc(112px + env(safe-area-inset-bottom, 0px));
+      }
+      @media (min-width: 520px) {
+        .app {
+          box-shadow:
+            0 0 0 1px #d9d5ce,
+            0 40px 90px -50px rgba(30, 25, 20, 0.45);
+        }
+      }
+      .screen[hidden] {
+        display: none;
+      }
+      .num {
+        font-family: var(--num);
+        font-variant-numeric: tabular-nums;
+        letter-spacing: -0.01em;
+      }
+      .dot {
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--green);
+        flex: none;
+      }
+      .dot.coral {
+        background: var(--coral);
+      }
+      .dot.blue {
+        background: var(--blue);
+      }
+      .dot.ink {
+        background: var(--ink);
+      }
+      .pad {
+        padding-left: max(20px, env(safe-area-inset-left, 0px));
+        padding-right: max(20px, env(safe-area-inset-right, 0px));
+      }
+
+      /* 写真の上の札 */
+      .glass {
+        background: rgba(255, 255, 255, 0.78);
+        -webkit-backdrop-filter: blur(20px) saturate(1.3);
+        backdrop-filter: blur(20px) saturate(1.3);
+      }
+      .glass-dark {
+        background: rgba(20, 18, 16, 0.6);
+        -webkit-backdrop-filter: blur(16px);
+        backdrop-filter: blur(16px);
+        color: #fff;
+      }
+      .topbar {
+        position: absolute;
+        z-index: 3;
+        left: 0;
+        right: 0;
+        top: 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-top: calc(14px + env(safe-area-inset-top, 0px));
+      }
+      .brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        height: 40px;
+        padding: 0 16px 0 8px;
+        border-radius: 20px;
+        font-weight: 700;
+        font-size: 15px;
+        background: rgba(28, 25, 22, 0.86);
+        color: #fff;
+      }
+      .brand i {
+        display: grid;
+        place-items: center;
+        width: 26px;
+        height: 26px;
+        border-radius: 50%;
+        background: #fff;
+        color: var(--ink);
+        font-style: normal;
+        font-size: 13px;
+        font-weight: 900;
+      }
+      .iconbtn {
+        display: grid;
+        place-items: center;
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+      }
+      .iconbtn svg {
+        width: 20px;
+        height: 20px;
+      }
+      .chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        height: 44px;
+        padding: 0 16px;
+        border-radius: 22px;
+        font-size: 15px;
+        font-weight: 700;
+      }
+      .chip svg {
+        width: 18px;
+        height: 18px;
+      }
+
+      /* きょう */
+      .hero {
+        position: relative;
+        height: 572px;
+        margin-bottom: -96px;
+      }
+      .hero img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: 50% 40%;
+      }
+      .hero::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          180deg,
+          rgba(18, 12, 6, 0.42) 0%,
+          rgba(18, 12, 6, 0.08) 34%,
+          rgba(18, 12, 6, 0) 55%,
+          rgba(245, 245, 243, 0) 80%,
+          rgba(245, 245, 243, 1) 100%
+        );
+      }
+      .hero-copy {
+        position: absolute;
+        z-index: 2;
+        left: 0;
+        right: 0;
+        top: calc(92px + env(safe-area-inset-top, 0px));
+        color: #fff;
+      }
+      .eyebrow {
+        font-size: 14px;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        margin: 0 0 6px;
+        opacity: 0.92;
+      }
+      h1 {
+        font-size: 34px;
+        line-height: 1.28;
+        margin: 0;
+        font-weight: 900;
+        letter-spacing: 0.01em;
+        text-wrap: balance;
+      }
+      .hero-copy p {
+        margin: 10px 0 0;
+        font-size: 15px;
+        font-weight: 500;
+        opacity: 0.9;
+        max-width: 19em;
+      }
+      .sumcard {
+        position: relative;
+        z-index: 3;
+        margin: 0 16px;
+        border-radius: 30px;
+        padding: 22px 22px 20px;
+        box-shadow:
+          0 24px 60px -32px rgba(40, 25, 10, 0.55),
+          0 0 0 1px rgba(255, 255, 255, 0.6) inset;
+      }
+      .sumcard .label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 14px;
+        font-weight: 700;
+        color: var(--sub);
+      }
+      .sumcard .row {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 12px;
+        margin-top: 6px;
+      }
+      .total {
+        display: flex;
+        align-items: baseline;
+        gap: 4px;
+      }
+      .total b {
+        font: 800 76px/1 var(--num);
+        letter-spacing: -0.03em;
+      }
+      .total span {
+        font-size: 20px;
+        font-weight: 700;
+      }
+      .most {
+        text-align: right;
+        font-size: 14px;
+        color: var(--sub);
+        line-height: 1.45;
+        padding-bottom: 8px;
+      }
+      .most strong {
+        display: block;
+        color: var(--ink);
+        font-size: 16px;
+      }
+      .bars {
+        display: flex;
+        gap: 4px;
+        height: 6px;
+        margin: 18px 0 18px;
+      }
+      .bars i {
+        flex: 1;
+        border-radius: 3px;
+        background: var(--press);
+        position: relative;
+        overflow: hidden;
+      }
+      .bars i b {
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        background: var(--ink);
+        border-radius: 3px;
+        transition: width 0.3s;
+      }
+      .cta {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        width: 100%;
+        height: 58px;
+        border-radius: 29px;
+        background: var(--ink);
+        color: #fff;
+        font-size: 17px;
+        font-weight: 700;
+      }
+      .cta:active {
+        transform: scale(0.985);
+      }
+      .cta svg {
+        width: 20px;
+        height: 20px;
+      }
+      .cta.done {
+        background: var(--green);
+      }
+      .cta.done svg {
+        animation: pop 0.35s cubic-bezier(0.2, 0.9, 0.3, 1.4);
+      }
+      @keyframes pop {
+        from {
+          transform: scale(0.3);
+          opacity: 0;
+        }
+        to {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+      .example {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        margin-left: auto;
+        font-size: 13px;
+        font-weight: 700;
+        color: var(--coral);
+        background: var(--coral-soft);
+        border-radius: 12px;
+        padding: 2px 10px;
+      }
+      .sec-title {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        margin: 34px 0 12px;
+      }
+      .sec-title h2 {
+        font-size: 21px;
+        margin: 0;
+        font-weight: 900;
+      }
+      .sec-title span {
+        font-size: 14px;
+        color: var(--faint);
+        font-weight: 500;
+      }
+      .list {
+        background: var(--surface);
+        border-radius: 26px;
+        overflow: hidden;
+        margin: 0 16px;
+      }
+      .item {
+        display: grid;
+        grid-template-columns: 68px 1fr auto;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 14px 12px 10px;
+        min-height: 96px;
+      }
+      .item + .item {
+        border-top: 1px solid var(--line);
+      }
+      .item img {
+        mix-blend-mode: multiply;
+        width: 68px;
+        height: 68px;
+        border-radius: 16px;
+        object-fit: cover;
+      }
+      .item .name {
+        font-size: 17px;
+        font-weight: 700;
+        line-height: 1.3;
+      }
+      .item .name small {
+        font-size: 12px;
+        font-weight: 700;
+        color: var(--sub);
+        margin-left: 6px;
+      }
+      .meta {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-top: 6px;
+        font-size: 13px;
+        color: var(--sub);
+        flex-wrap: wrap;
+      }
+      .made {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+      }
+      .made input {
+        width: 52px;
+        height: 44px;
+        border: 0;
+        border-radius: 12px;
+        background: var(--press);
+        font: 700 16px var(--num);
+        text-align: center;
+        color: var(--ink);
+        font-variant-numeric: tabular-nums;
+        -moz-appearance: textfield;
+      }
+      .made input::-webkit-outer-spin-button,
+      .made input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+      }
+      .next {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        font-weight: 700;
+        color: var(--ink);
+      }
+      .next b {
+        font: 700 15px var(--num);
+      }
+      .counter {
+        display: flex;
+        align-items: center;
+        gap: 2px;
+      }
+      .counter button {
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        display: grid;
+        place-items: center;
+        background: var(--press);
+      }
+      .counter button.plus {
+        background: var(--ink);
+        color: #fff;
+      }
+      .counter button:active {
+        transform: scale(0.92);
+      }
+      .counter button:disabled {
+        opacity: 0.3;
+        cursor: default;
+        transform: none;
+      }
+      .counter svg {
+        width: 20px;
+        height: 20px;
+      }
+      .counter output {
+        min-width: 46px;
+        text-align: center;
+        font: 800 32px/1 var(--num);
+        letter-spacing: -0.02em;
+      }
+
+      /* あす */
+      .band {
+        position: relative;
+        height: 300px;
+      }
+      .band img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: 28% 50%;
+      }
+      .band::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          180deg,
+          rgba(0, 0, 0, 0.18) 0%,
+          rgba(0, 0, 0, 0) 30%,
+          rgba(245, 245, 243, 0) 62%,
+          var(--bg) 100%
+        );
+      }
+      .asu-head {
+        position: relative;
+        z-index: 2;
+        margin-top: -58px;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        gap: 12px;
+      }
+      .asu-head .eyebrow {
+        color: var(--sub);
+        opacity: 1;
+      }
+      .chip.rain {
+        background: var(--surface);
+        box-shadow: 0 0 0 1px var(--line);
+      }
+      .chip.rain[aria-pressed="true"] {
+        background: var(--blue);
+        color: #fff;
+        box-shadow: none;
+      }
+      .deck {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        overflow-x: auto;
+        overflow-y: hidden;
+        scroll-snap-type: x mandatory;
+        scrollbar-width: none;
+        padding: 22px 20px 4px;
+        scroll-padding: 0 20px;
+      }
+      .deck::-webkit-scrollbar {
+        display: none;
+      }
+      .card {
+        flex: 0 0 calc(100% - 28px);
+        min-width: 0;
+        scroll-snap-align: start;
+        background: var(--surface);
+        border-radius: 32px;
+        padding: 20px 20px 18px;
+        box-shadow: 0 18px 50px -36px rgba(40, 25, 10, 0.4);
+      }
+      .card-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+      }
+      .card-top strong {
+        font-size: 21px;
+        font-weight: 900;
+      }
+      .card-top span {
+        font: 600 14px var(--num);
+        color: var(--faint);
+      }
+      .card .pic {
+        mix-blend-mode: multiply;
+        width: 190px;
+        height: 190px;
+        margin: 4px auto 0;
+        object-fit: cover;
+      }
+      .big {
+        display: flex;
+        justify-content: center;
+        align-items: baseline;
+        gap: 4px;
+        margin-top: 2px;
+      }
+      .big b {
+        font: 800 104px/1 var(--num);
+        letter-spacing: -0.045em;
+      }
+      .big span {
+        font-size: 22px;
+        font-weight: 700;
+      }
+      .verdict {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+        min-height: 44px;
+        font-size: 15px;
+        font-weight: 700;
+        color: var(--sub);
+        margin-top: 4px;
+        flex-wrap: wrap;
+      }
+      .verdict .reset {
+        height: 44px;
+        padding: 0 14px;
+        border-radius: 22px;
+        background: var(--press);
+        color: var(--ink);
+        font-size: 14px;
+        font-weight: 700;
+      }
+      .ruler-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        margin-top: 14px;
+        font-size: 15px;
+        font-weight: 700;
+      }
+      .ruler-head span {
+        font-size: 13px;
+        font-weight: 500;
+        color: var(--faint);
+      }
+      .ruler {
+        position: relative;
+        margin: 8px -20px 0;
+        height: 76px;
+        overflow-x: auto;
+        overflow-y: hidden;
+        scroll-snap-type: x mandatory;
+        scrollbar-width: none;
+        overscroll-behavior-x: contain;
+        cursor: grab;
+        outline-offset: -3px;
+      }
+      .ruler::-webkit-scrollbar {
+        display: none;
+      }
+      .ruler-track {
+        display: flex;
+        align-items: flex-start;
+        height: 100%;
+        padding: 0 calc(50% - 7px);
+      }
+      .tick {
+        flex: 0 0 14px;
+        height: 100%;
+        scroll-snap-align: center;
+        position: relative;
+      }
+      .tick::before {
+        content: "";
+        position: absolute;
+        left: 6px;
+        top: 14px;
+        width: 2px;
+        height: 16px;
+        border-radius: 1px;
+        background: #cfcac2;
+      }
+      .tick.five::before {
+        height: 26px;
+        background: #9f9a92;
+      }
+      .tick.tool::before {
+        background: var(--green);
+        height: 30px;
+      }
+      .tick em {
+        position: absolute;
+        left: 50%;
+        top: 46px;
+        transform: translateX(-50%);
+        font: 600 12px var(--num);
+        font-style: normal;
+        color: var(--faint);
+        white-space: nowrap;
+      }
+      .tick.tool em {
+        color: var(--green);
+      }
+      .needle {
+        position: absolute;
+        left: 50%;
+        top: 6px;
+        width: 4px;
+        height: 36px;
+        margin-left: -2px;
+        border-radius: 2px;
+        background: var(--ink);
+        pointer-events: none;
+        z-index: 2;
+      }
+      .ruler-wrap {
+        position: relative;
+      }
+      .ruler-wrap::before,
+      .ruler-wrap::after {
+        content: "";
+        position: absolute;
+        top: 8px;
+        bottom: 0;
+        width: 48px;
+        z-index: 1;
+        pointer-events: none;
+      }
+      .ruler-wrap::before {
+        left: -20px;
+        background: linear-gradient(90deg, #fff, rgba(255, 255, 255, 0));
+      }
+      .ruler-wrap::after {
+        right: -20px;
+        background: linear-gradient(270deg, #fff, rgba(255, 255, 255, 0));
+      }
+      .why {
+        list-style: none;
+        margin: 12px 0 0;
+        padding: 14px 0 0;
+        border-top: 1px solid var(--line);
+        display: grid;
+        gap: 6px;
+      }
+      .why li {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        font-size: 15px;
+        color: var(--sub);
+      }
+      .why li b {
+        font: 600 15px var(--num);
+        color: var(--ink);
+        white-space: nowrap;
+      }
+      .why li.total-row {
+        color: var(--ink);
+        font-weight: 700;
+      }
+      .dots {
+        display: flex;
+        justify-content: center;
+        gap: 7px;
+        margin: 14px 0 0;
+      }
+      .dots i {
+        width: 7px;
+        height: 7px;
+        border-radius: 4px;
+        background: #cdc8c0;
+        transition:
+          width 0.25s,
+          background 0.25s;
+      }
+      .dots i.on {
+        width: 22px;
+        background: var(--ink);
+      }
+      .dots i.ch {
+        background: var(--coral);
+      }
+      .mini {
+        background: var(--surface);
+        border-radius: 26px;
+        margin: 0 16px;
+        padding: 4px 0;
+      }
+      .mini button {
+        display: grid;
+        grid-template-columns: 40px 1fr auto auto;
+        align-items: center;
+        gap: 12px;
+        width: 100%;
+        min-height: 58px;
+        padding: 7px 18px 7px 12px;
+        text-align: left;
+      }
+      .mini button + button {
+        border-top: 1px solid var(--line);
+      }
+      .mini img {
+        mix-blend-mode: multiply;
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+        object-fit: cover;
+      }
+      .mini .n {
+        font-size: 16px;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .mini .t {
+        font: 500 14px var(--num);
+        color: var(--faint);
+      }
+      .mini .f {
+        font: 800 24px var(--num);
+        min-width: 38px;
+        text-align: right;
+      }
+      .diff {
+        font: 700 13px var(--num);
+        color: var(--coral);
+        background: var(--coral-soft);
+        border-radius: 8px;
+        padding: 1px 7px;
+      }
+      .stickycta {
+        position: sticky;
+        bottom: calc(92px + env(safe-area-inset-bottom, 0px));
+        z-index: 5;
+        margin: 18px 16px 0;
+      }
+
+      /* 記録 */
+      .k-head {
+        padding-top: calc(64px + env(safe-area-inset-top, 0px));
+        margin-bottom: 20px;
+      }
+      .k-head .eyebrow {
+        color: var(--sub);
+        opacity: 1;
+      }
+      .score {
+        background: var(--surface);
+        border-radius: 32px;
+        margin: 0 16px;
+        padding: 24px 22px 22px;
+      }
+      .score .label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 14px;
+        font-weight: 700;
+        color: var(--sub);
+      }
+      .score .pct {
+        display: flex;
+        align-items: baseline;
+        gap: 2px;
+        margin: 10px 0 2px;
+      }
+      .score .pct b {
+        font: 800 112px/1 var(--num);
+        letter-spacing: -0.05em;
+      }
+      .score .pct span {
+        font: 800 40px var(--num);
+      }
+      .score p {
+        margin: 0;
+        font-size: 15px;
+        color: var(--sub);
+      }
+      .strip-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 8px;
+        margin: 20px 0 8px;
+        font-size: 13px;
+        font-weight: 700;
+        color: var(--sub);
+      }
+      .strip-head span span {
+        display: inline-flex;
+        align-items: center;
+      }
+      .daystrip {
+        display: grid;
+        grid-template-columns: repeat(14, minmax(0, 1fr));
+        gap: 4px;
+      }
+      .daystrip i {
+        aspect-ratio: 1 / 1.35;
+        border-radius: 7px;
+        background: var(--press);
+        display: grid;
+        place-items: end center;
+        padding-bottom: 3px;
+        font: 600 10px var(--num);
+        font-style: normal;
+        color: var(--faint);
+      }
+      .daystrip i.ok {
+        background: var(--green);
+        color: #fff;
+      }
+      .daystrip i.ch {
+        background: var(--coral);
+        color: #fff;
+      }
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 8px;
+        margin-top: 18px;
+        padding-top: 16px;
+        border-top: 1px solid var(--line);
+      }
+      .stats div {
+        font-size: 13px;
+        color: var(--sub);
+        line-height: 1.35;
+      }
+      .stats b {
+        display: block;
+        font: 800 28px/1.2 var(--num);
+        color: var(--ink);
+      }
+      .stats b small {
+        font: 700 13px var(--sans);
+        color: var(--sub);
+        margin-left: 2px;
+      }
+      .day {
+        background: var(--surface);
+        border-radius: 26px;
+        margin: 12px 16px 0;
+        padding: 18px 18px 16px;
+      }
+      .day-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin-bottom: 12px;
+      }
+      .day-head strong {
+        font-size: 17px;
+        font-weight: 900;
+      }
+      .day-head span {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 13px;
+        color: var(--sub);
+        font-weight: 700;
+      }
+      .grid6 {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+      }
+      .cell {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        min-width: 0;
+        padding: 6px;
+        border-radius: 14px;
+      }
+      .cell.ch {
+        background: var(--coral-soft);
+      }
+      .cell img {
+        mix-blend-mode: multiply;
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+        object-fit: cover;
+        flex: none;
+      }
+      .cell b {
+        display: block;
+        font: 800 20px/1.1 var(--num);
+      }
+      .cell small {
+        display: block;
+        font-size: 12px;
+        color: var(--sub);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .cell b .diff {
+        margin-left: 4px;
+        vertical-align: 3px;
+        font-size: 11px;
+        padding: 0 5px;
+      }
+      .empty {
+        background: var(--surface);
+        border-radius: 32px;
+        margin: 0 16px;
+        padding: 30px 22px 22px;
+        text-align: center;
+      }
+      .trio {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 14px;
+      }
+      .trio img {
+        width: 88px;
+        height: 88px;
+        border-radius: 50%;
+        object-fit: cover;
+        box-shadow: 0 0 0 4px #fff;
+      }
+      .trio img + img {
+        margin-left: -18px;
+      }
+      .empty h2 {
+        font-size: 22px;
+        margin: 0 0 8px;
+        font-weight: 900;
+      }
+      .empty p {
+        margin: 0 auto 20px;
+        max-width: 21em;
+        font-size: 15px;
+        color: var(--sub);
+      }
+      .caveat {
+        font-size: 13px;
+        color: var(--faint);
+        margin: 16px 20px 0;
+        line-height: 1.7;
+      }
+
+      /* 父の決まり */
+      .scrim {
+        position: fixed;
+        inset: 0;
+        background: rgba(20, 16, 12, 0.38);
+        z-index: 30;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.25s;
+      }
+      .scrim.open {
+        opacity: 1;
+        pointer-events: auto;
+      }
+      .sheet {
+        position: fixed;
+        z-index: 31;
+        left: 50%;
+        bottom: 0;
+        width: min(430px, 100%);
+        max-height: 90%;
+        overflow-y: auto;
+        transform: translate(-50%, 105%);
+        visibility: hidden;
+        transition:
+          transform 0.34s cubic-bezier(0.2, 0.8, 0.2, 1),
+          visibility 0s linear 0.34s;
+        background: var(--bg);
+        border-radius: 30px 30px 0 0;
+        padding: 10px max(16px, env(safe-area-inset-right, 0px))
+          calc(28px + env(safe-area-inset-bottom, 0px))
+          max(16px, env(safe-area-inset-left, 0px));
+      }
+      .sheet.open {
+        transform: translate(-50%, 0);
+        visibility: visible;
+        transition: transform 0.34s cubic-bezier(0.2, 0.8, 0.2, 1);
+      }
+      .grab {
+        width: 40px;
+        height: 5px;
+        border-radius: 3px;
+        background: #cbc6be;
+        margin: 0 auto 14px;
+      }
+      .sheet-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 4px;
+      }
+      .sheet-head h2 {
+        font-size: 24px;
+        margin: 0;
+        font-weight: 900;
+      }
+      .sheet-head button {
+        height: 44px;
+        padding: 0 16px;
+        border-radius: 22px;
+        background: var(--ink);
+        color: #fff;
+        font-weight: 700;
+        font-size: 15px;
+      }
+      .sheet .note {
+        margin: 8px 4px 6px;
+        font-size: 15px;
+        color: var(--sub);
+      }
+      .rgroup {
+        font-size: 14px;
+        font-weight: 700;
+        color: var(--sub);
+        margin: 18px 6px 8px;
+      }
+      .rules {
+        background: var(--surface);
+        border-radius: 24px;
+        overflow: hidden;
+      }
+      .rule {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        align-items: center;
+        gap: 10px;
+        padding: 12px 12px 12px 16px;
+        min-height: 72px;
+      }
+      .rule + .rule {
+        border-top: 1px solid var(--line);
+      }
+      .rule p {
+        margin: 0;
+        font-size: 16px;
+        line-height: 1.6;
+        word-break: keep-all;
+        overflow-wrap: anywhere;
+      }
+      .rule p b {
+        display: inline-block;
+        min-width: 1.6em;
+        margin: 0 3px;
+        padding: 0 7px;
+        border-radius: 9px;
+        background: var(--ink);
+        color: #fff;
+        font: 700 18px/1.45 var(--num);
+        text-align: center;
+      }
+      .pm {
+        display: flex;
+        gap: 6px;
+      }
+      .pm button {
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        background: var(--press);
+        display: grid;
+        place-items: center;
+      }
+      .pm button:active {
+        transform: scale(0.92);
+      }
+      .pm button:disabled {
+        opacity: 0.3;
+        cursor: default;
+      }
+      .pm svg {
+        width: 20px;
+        height: 20px;
+      }
+
+      /* 下のタブ */
+      .tabs {
+        position: fixed;
+        z-index: 20;
+        left: 50%;
+        transform: translateX(-50%);
+        bottom: calc(14px + env(safe-area-inset-bottom, 0px));
+        width: min(398px, calc(100% - 32px));
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 4px;
+        padding: 6px;
+        border-radius: 34px;
+        background: rgba(255, 255, 255, 0.82);
+        -webkit-backdrop-filter: blur(20px) saturate(1.4);
+        backdrop-filter: blur(20px) saturate(1.4);
+        box-shadow:
+          0 18px 40px -20px rgba(30, 20, 10, 0.45),
+          0 0 0 1px rgba(0, 0, 0, 0.05);
+      }
+      .tabs button {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 2px;
+        height: 56px;
+        border-radius: 28px;
+        font-size: 13px;
+        font-weight: 700;
+        color: var(--sub);
+      }
+      .tabs button svg {
+        width: 22px;
+        height: 22px;
+      }
+      .tabs button[aria-current="page"] {
+        background: var(--ink);
+        color: #fff;
+      }
+      .toast {
+        position: fixed;
+        z-index: 40;
+        left: 50%;
+        bottom: calc(96px + env(safe-area-inset-bottom, 0px));
+        transform: translate(-50%, 16px);
+        opacity: 0;
+        pointer-events: none;
+        background: var(--ink);
+        color: #fff;
+        font-size: 15px;
+        font-weight: 700;
+        padding: 12px 18px;
+        border-radius: 24px;
+        transition:
+          opacity 0.25s,
+          transform 0.25s;
+        white-space: nowrap;
+      }
+      .toast.show {
+        opacity: 1;
+        transform: translate(-50%, 0);
+      }
+      @media (prefers-reduced-motion: reduce) {
+        * {
+          transition: none !important;
+          animation: none !important;
+          scroll-behavior: auto !important;
+        }
+      }
+      @media (max-width: 350px) {
+        h1 {
+          font-size: 29px;
+        }
+        .big b {
+          font-size: 88px;
+        }
+        .total b {
+          font-size: 64px;
+        }
+        .item {
+          grid-template-columns: 56px 1fr auto;
+        }
+        .item img {
+          width: 56px;
+          height: 56px;
+        }
+        .counter output {
+          min-width: 38px;
+          font-size: 28px;
+        }
+      }
+
+      .cta.light {
+        margin-top: 10px;
+        background: var(--press);
+        color: var(--ink);
+      }
+      .cta svg { flex: none; }
+      .proof {
+        margin: 34px 16px 0;
+        padding: 26px 22px 22px;
+        border-radius: 30px;
+        background: var(--ink);
+        color: #fff;
+      }
+      .proof-eyebrow {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin: 0;
+        font-size: 14px;
+        font-weight: 700;
+        color: #cfcbc4;
+      }
+      .proof-eyebrow .dot { background: #6fc59a; }
+      .proof h2 {
+        margin: 10px 0 0;
+        font-size: 24px;
+        line-height: 1.45;
+        font-weight: 900;
+      }
+      .proof h2 b { font: 800 40px/1 var(--num); letter-spacing: -0.02em; margin-right: 2px; }
+      .proof-lead { margin: 10px 0 0; font-size: 15px; color: #e4e1db; }
+      .proof-rows { margin: 18px 0 0; padding: 0; border-top: 1px solid #3a3733; }
+      .proof-rows div { display: flex; justify-content: space-between; gap: 12px; padding: 12px 0; border-bottom: 1px solid #3a3733; }
+      .proof-rows dt { font-size: 15px; color: #e4e1db; }
+      .proof-rows dd { margin: 0; font: 700 18px var(--num); }
+      .proof-note { margin: 14px 0 0; font-size: 15px; line-height: 1.7; color: #bdb8b0; }
+      .scan {
+        position: fixed;
+        inset: 0;
+        z-index: 50;
+        background: var(--bg);
+        overflow-y: auto;
+        padding-bottom: calc(28px + env(safe-area-inset-bottom, 0px));
+      }
+      .scan > * { max-width: 430px; margin-left: auto; margin-right: auto; }
+      .scan-top {
+        position: sticky;
+        top: 0;
+        z-index: 2;
+        display: grid;
+        grid-template-columns: 44px 1fr auto;
+        align-items: center;
+        gap: 8px;
+        padding: calc(10px + env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) 10px max(16px, env(safe-area-inset-left, 0px));
+        background: rgba(245, 245, 243, 0.9);
+        -webkit-backdrop-filter: blur(16px);
+        backdrop-filter: blur(16px);
+      }
+      .scan-top h2 { margin: 0; font-size: 18px; font-weight: 900; text-align: center; }
+      .scan-by { font: 600 12px var(--num); color: var(--sub); }
+      .iconbtn.plain { background: var(--press); color: var(--ink); }
+      .scan-body { padding: 8px 16px 0; }
+      .scan-lead { margin: 6px 4px 16px; font-size: 15px; color: var(--sub); }
+      .picks { display: grid; gap: 12px; }
+      .pick { display: grid; grid-template-columns: 112px 1fr auto; align-items: center; gap: 14px; width: 100%; padding: 10px 16px 10px 10px; border-radius: 22px; background: var(--surface); text-align: left; }
+      .pick img { width: 112px; height: 76px; border-radius: 14px; object-fit: cover; }
+      .pick strong { display: block; font-size: 16px; font-weight: 700; line-height: 1.4; }
+      .pick small { display: block; margin-top: 2px; font-size: 13px; color: var(--sub); }
+      .pick svg { width: 20px; height: 20px; color: var(--faint); }
+      .live-pick { display: flex; align-items: center; justify-content: center; gap: 10px; height: 64px; margin-bottom: 18px; border-radius: 22px; background: var(--ink); color: #fff; font-size: 17px; font-weight: 700; cursor: pointer; }
+      .live-pick svg { width: 22px; height: 22px; }
+      .live-pick input { position: absolute; width: 1px; height: 1px; opacity: 0; }
+      .photo { position: relative; border-radius: 24px; overflow: hidden; background: #ddd; }
+      .photo img { width: 100%; height: auto; }
+      .photo .beam { position: absolute; left: 0; right: 0; height: 90px; top: -90px; background: linear-gradient(180deg, rgba(111, 197, 154, 0) 0%, rgba(111, 197, 154, 0.38) 85%, rgba(111, 197, 154, 0.95) 100%); animation: beam 1.3s cubic-bezier(.45, 0, .3, 1) infinite; }
+      @keyframes beam { from { top: -90px; } to { top: 100%; } }
+      .reading { display: flex; align-items: center; justify-content: center; gap: 10px; margin: 18px 0 0; font-size: 16px; font-weight: 700; }
+      .reading i { width: 10px; height: 10px; border-radius: 50%; background: var(--green); animation: blink 0.9s ease-in-out infinite alternate; }
+      @keyframes blink { from { opacity: 0.25; } to { opacity: 1; } }
+      .result-head { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; margin: 18px 4px 10px; }
+      .result-head strong { font-size: 20px; font-weight: 900; }
+      .result-head span { font-size: 13px; color: var(--sub); }
+      .rlist { background: var(--surface); border-radius: 24px; overflow: hidden; }
+      .rrow { display: grid; grid-template-columns: 52px 1fr auto; align-items: center; gap: 12px; padding: 10px 14px 10px 10px; min-height: 76px; }
+      .rrow + .rrow { border-top: 1px solid var(--line); }
+      .rrow img { width: 52px; height: 52px; border-radius: 12px; object-fit: cover; mix-blend-mode: multiply; }
+      .rrow .n { font-size: 16px; font-weight: 700; line-height: 1.3; }
+      .rrow .seen { display: block; margin-top: 3px; font-size: 13px; color: var(--sub); }
+      .rrow .got { font: 800 30px/1 var(--num); min-width: 40px; text-align: right; }
+      .rrow.miss { background: var(--coral-soft); }
+      .rrow.miss .seen { color: var(--coral); font-weight: 700; }
+      .rrow .counter output { min-width: 34px; font-size: 26px; }
+      .apply-row { display: grid; gap: 10px; margin-top: 18px; }
+      .scan-foot { margin: 14px 4px 0; font-size: 14px; line-height: 1.7; color: var(--sub); }
+    </style>
+  </head>
+  <body>
+    <div class="app">
+      <!-- きょう -->
+      <section class="screen" id="s-kyou" aria-labelledby="h-kyou">
+        <div class="hero">
+          <img
+            src="/assets/design/evening.jpg"
+            alt="閉店後の和菓子店の、売れ残ったお菓子が少し残るガラスの棚"
+          />
+          <div class="topbar pad">
+            <span class="brand glass-dark"><i>帳</i><span>売れ残り帳</span></span>
+            <button
+              class="iconbtn glass-dark"
+              type="button"
+              data-open-rules
+              aria-label="父の決まりを開く"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                aria-hidden="true"
+              >
+                <path d="M4 7h10M18 7h2M4 17h4M12 17h8" />
+                <circle cx="16" cy="7" r="2" />
+                <circle cx="10" cy="17" r="2" />
+              </svg>
+            </button>
+          </div>
+          <div class="hero-copy pad">
+            <p class="eyebrow" id="kyou-date"></p>
+            <h1 id="h-kyou">閉店後の、<br />売れ残り。</h1>
+            <p>数えた数を入れると、<br>父の決め方で、あすの目安が出ます。</p>
+          </div>
+        </div>
+        <div class="sumcard glass" aria-live="polite">
+          <div class="label">
+            <span class="dot coral"></span>きょう残ったお菓子<span
+              class="example"
+              id="example"
+              hidden
+              >いまは例の数です</span
+            >
+          </div>
+          <div class="row">
+            <div class="total">
+              <b class="num" id="total">0</b><span>個</span>
+            </div>
+            <div class="most" id="most"></div>
+          </div>
+          <div class="bars" id="bars" aria-hidden="true"></div>
+          <button class="cta" type="button" id="open-scan"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8.5A2.5 2.5 0 0 1 6.5 6h1.6l1.3-2h5.2l1.3 2h1.6A2.5 2.5 0 0 1 20 8.5v8A2.5 2.5 0 0 1 17.5 19h-11A2.5 2.5 0 0 1 4 16.5Z"/><circle cx="12" cy="12.5" r="3.4"/></svg>見本のノートで試す</button>
+          <button class="cta light" type="button" data-tab="asu">
+            父に見てもらう
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M5 12h14M13 6l6 6-6 6" />
+            </svg>
+          </button>
+        </div>
+        <div class="sec-title pad">
+          <h2>お菓子ごとに</h2>
+          <span>数えた数に直す</span>
+        </div>
+        <div class="list" id="kyou-list"></div>
+        <section class="proof" aria-labelledby="h-proof">
+          <p class="proof-eyebrow"><span class="dot"></span>制作中に別途確かめたこと</p>
+          <h2 id="h-proof"><b class="num">312</b>欄のうち、<br><b class="num">305</b>欄で答えが一致。</h2>
+          <p class="proof-lead">画像生成のノート52枚を、Claude Haiku 5.5 に読ませた記録です。この公開見本のボタンはAIを呼びません。</p>
+          <dl class="proof-rows">
+            <div><dt>ふつうの写真 12枚</dt><dd class="num">72 / 72</dd></div>
+            <div><dt>暗い・斜め・粗い 36枚</dt><dd class="num">209 / 216</dd></div>
+            <div><dt>数が指などで隠れた 4枚</dt><dd class="num">24 / 24</dd></div>
+          </dl>
+          <p class="proof-note">父の書き方の決まりを加える前は302 / 312、加えた後は305 / 312。残る7欄は「読めない」という答えで、違う数が入った欄は0でした。写真は架空の見本です。実在の店での精度や、今後の写真でも間違えないことを示す数字ではありません。2026年11月16日の記録。</p>
+        </section>
+      </section>
+
+      <!-- あす -->
+      <section class="screen" id="s-asu" aria-labelledby="h-asu" hidden>
+        <div class="band">
+          <img
+            src="/assets/design/morning.jpg"
+            alt="夜明けの和菓子店の仕事場。湯気の立つせいろと、あんの入った木の鉢"
+          />
+          <div class="topbar pad">
+            <span class="brand glass-dark"><i>帳</i><span>売れ残り帳</span></span>
+            <button
+              class="iconbtn glass-dark"
+              type="button"
+              data-open-rules
+              aria-label="父の決まりを開く"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                aria-hidden="true"
+              >
+                <path d="M4 7h10M18 7h2M4 17h4M12 17h8" />
+                <circle cx="16" cy="7" r="2" />
+                <circle cx="10" cy="17" r="2" />
+              </svg>
+            </button>
+          </div>
+        </div>
+        <div class="asu-head pad">
+          <div>
+            <p class="eyebrow" id="asu-date"></p>
+            <h1 id="h-asu">あすの仕込み。</h1>
+          </div>
+          <button
+            class="chip rain"
+            id="rain"
+            type="button"
+            aria-pressed="false"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path
+                d="M7 15a4.5 4.5 0 0 1-.4-9A6 6 0 0 1 18 7.5a3.8 3.8 0 0 1-.5 7.5Z"
+              />
+              <path d="M9 18l-1 2.5M13 18l-1 2.5M17 18l-1 2.5" />
+            </svg>
+            <span id="rain-label">雨</span>
+          </button>
+        </div>
+        <div
+          class="deck"
+          id="deck"
+          aria-label="お菓子ごとの、あすに作る数"
+        ></div>
+        <div class="dots" id="dots" aria-hidden="true"></div>
+        <div class="sec-title pad">
+          <h2>6品まとめて</h2>
+          <span id="changed-count"></span>
+        </div>
+        <div class="mini" id="mini"></div>
+        <div class="stickycta">
+          <button class="cta" id="decide" type="button">この数で決める</button>
+        </div>
+      </section>
+
+      <!-- 記録 -->
+      <section class="screen" id="s-kiroku" aria-labelledby="h-kiroku" hidden>
+        <div class="k-head pad">
+          <p class="eyebrow">道具の目安と、父が決めた数</p>
+          <h1 id="h-kiroku">これまでの記録。</h1>
+        </div>
+        <div id="kiroku"></div>
+      </section>
+
+      <nav class="tabs" aria-label="画面の切り替え">
+        <button type="button" data-tab="kyou" aria-current="page">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M12 3a6 6 0 1 0 9 7.8A8 8 0 1 1 12 3Z" /></svg
+          >きょう
+        </button>
+        <button type="button" data-tab="asu">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M4 18h16M7.5 18a4.5 4.5 0 0 1 9 0" />
+            <path d="M12 6.5V9M5.6 10.2l1.7 1.6M18.4 10.2l-1.7 1.6" /></svg
+          >あす
+        </button>
+        <button type="button" data-tab="kiroku">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M5 19V11M10 19V6M15 19v-5M20 19V9" /></svg
+          >記録
+        </button>
+      </nav>
+    </div>
+
+    <div class="scrim" id="scrim"></div>
+    <div
+      class="sheet"
+      id="sheet"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="h-rules"
+      aria-hidden="true"
+    >
+      <div class="grab"></div>
+      <div class="sheet-head">
+        <h2 id="h-rules">父の決まり</h2>
+        <button type="button" id="close-rules">閉じる</button>
+      </div>
+      <p class="note">
+        上から順に当てはめて、あすの目安を出します。黒い四角の数は、父が −・＋
+        で直せます。
+      </p>
+      <div id="rules"></div>
+    </div>
+    <div class="scan" id="scan" role="dialog" aria-modal="true" aria-labelledby="h-scan" hidden>
+      <div class="scan-top">
+        <button class="iconbtn plain" type="button" id="close-scan" aria-label="閉じる"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+        <h2 id="h-scan">見本の答えを確かめる</h2>
+        <span class="scan-by">写真と答えの見本</span>
+      </div>
+      <div class="scan-body" id="scan-body" aria-live="polite"></div>
+    </div>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <script>
+      (() => {
+        const OKASHI = [
+          { name: "豆大福", img: "/assets/design/mame.jpg" },
+          { name: "どら焼き", img: "/assets/design/dora.jpg" },
+          { name: "栗まんじゅう", img: "/assets/design/kuri.jpg" },
+          { name: "草餅", img: "/assets/design/kusa.jpg" },
+          { name: "最中", img: "/assets/design/monaka.jpg" },
+          { name: "練り切り", img: "/assets/design/neri.jpg", kisetsu: true },
+        ];
+        const EX_MADE = [30, 24, 20, 18, 15, 12];
+        const EX_LEFT = [5, 3, 0, 2, 1, 4];
+        const RULES0 = {
+          r1a: 3,
+          r1b: 2,
+          r2: 2,
+          r3: 1,
+          r4: 1,
+          r5: 1,
+          r6: 1,
+          r7: 5,
+          r8: 10,
+        };
+        const RULE_MIN = {
+          r1a: 1,
+          r1b: 0,
+          r2: 0,
+          r3: 0,
+          r4: 0,
+          r5: 0,
+          r6: 0,
+          r7: 0,
+          r8: 0,
+        };
+        const RULE_MAX = {
+          r1a: 20,
+          r1b: 20,
+          r2: 20,
+          r3: 10,
+          r4: 9,
+          r5: 9,
+          r6: 9,
+          r7: 50,
+          r8: 200,
+        };
+        const KEY = "urenokori-app-v3";
+        const WD = "日月火水木金土";
+        const STEP = 14;
+        const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+        const MINUS =
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 12h12"/></svg>';
+        const PLUS =
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 12h12M12 6v12"/></svg>';
+        const CHECK =
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
+        const $ = (id) => document.getElementById(id);
+
+        function baseDay(now) {
+          const d = new Date(now);
+          if (d.getHours() < 12) d.setDate(d.getDate() - 1);
+          d.setHours(12, 0, 0, 0);
+          return d;
+        }
+        const keyOf = (d) =>
+          `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
+        const label = (d) =>
+          `${d.getMonth() + 1}月${d.getDate()}日 ${WD[d.getDay()]}曜`;
+        const nextDay = (d) => {
+          const n = new Date(d);
+          n.setDate(n.getDate() + 1);
+          return n;
+        };
+
+        const count = (value, fallback = 0) => Number.isInteger(value) && value >= 0 && value <= 999 ? value : fallback;
+        const object = (value) => value && typeof value === "object" && !Array.isArray(value) ? value : {};
+        function storedDay(value) {
+          if (typeof value !== "string" || !/^\d{4}-\d{1,2}-\d{1,2}$/.test(value)) return null;
+          const [year, month, day] = value.split("-").map(Number);
+          const result = new Date(year, month - 1, day, 12);
+          return keyOf(result) === value ? result : null;
+        }
+        function load() {
+          let raw = null;
+          try { raw = JSON.parse(localStorage.getItem(KEY) || "null"); } catch (e) {}
+          const source = object(raw);
+          const day = baseDay(Date.now());
+          const fresh = !raw;
+          const rules = Object.fromEntries(Object.entries(RULES0).map(([key, fallback]) => {
+            const value = object(source.rules)[key];
+            return [key, Number.isInteger(value) && value >= RULE_MIN[key] && value <= RULE_MAX[key] ? value : fallback];
+          }));
+          const records = [];
+          for (const row of Array.isArray(source.records) ? source.records : []) {
+            const entry = object(row), date = storedDay(entry.day);
+            if (!date || !Array.isArray(entry.items) || entry.items.length !== OKASHI.length) continue;
+            if (!entry.items.every(item => item && [item.made, item.left, item.tool, item.father].every(v => count(v, null) !== null))) continue;
+            const items = entry.items.map((item, i) => ({ name: OKASHI[i].name, made: item.made, left: item.left, tool: item.tool, father: item.father }));
+            const safe = { day: entry.day, at: Number.isFinite(entry.at) && entry.at >= 0 ? entry.at : date.getTime(), tomorrowLabel: label(nextDay(date)), rain: entry.rain === true, items };
+            const previous = records.findIndex(item => item.day === entry.day);
+            if (previous >= 0) records[previous] = safe; else records.push(safe);
+          }
+          const sameDay = source.day === keyOf(day);
+          const father = {};
+          if (sameDay) for (let i = 0; i < OKASHI.length; i++) {
+            const value = count(object(source.father)[i], null);
+            if (value !== null) father[i] = value;
+          }
+          return {
+            day: keyOf(day),
+            made: OKASHI.map((_, i) => count(source.made?.[i], EX_MADE[i])),
+            left: OKASHI.map((_, i) => sameDay ? count(source.left?.[i]) : fresh ? EX_LEFT[i] : 0),
+            rain: sameDay && source.rain === true,
+            father, rules, records, example: fresh || (sameDay && source.example === true),
+          };
+        }
+        let S = load();
+        let saveTimer;
+        function save() {
+          clearTimeout(saveTimer);
+          saveTimer = setTimeout(() => {
+            try {
+              localStorage.setItem(KEY, JSON.stringify(S));
+            } catch (e) {
+              /* 保存できない端末では、開いている間だけ動く */
+            }
+          }, 120);
+        }
+        const today = () => baseDay(Date.now());
+        const tomorrow = () => nextDay(today());
+
+        function compute(i) {
+          const r = S.rules,
+            made = S.made[i],
+            left = S.left[i];
+          let v = made;
+          const steps = [];
+          if (left >= r.r1a) {
+            v -= r.r1b;
+            steps.push([`売れ残りが ${left}個`, -r.r1b]);
+          } else if (left === 0) {
+            v += r.r2;
+            steps.push(["売り切れた", r.r2]);
+          }
+          if (OKASHI[i].kisetsu && left >= 1) {
+            v -= r.r3;
+            steps.push(["日持ちしない", -r.r3]);
+          }
+          const pct = (lbl, rate, sign) => {
+            const nv = Math.round(v * (1 + (sign * rate) / 10));
+            if (nv !== v) steps.push([lbl, nv - v]);
+            v = nv;
+          };
+          if (S.rain) pct(`雨で ${r.r4}割減`, r.r4, -1);
+          const dow = tomorrow().getDay();
+          if (dow === 0 || dow === 6)
+            pct(`${WD[dow]}曜で ${r.r5}割増`, r.r5, 1);
+          if (dow === 1) pct(`月曜で ${r.r6}割減`, r.r6, -1);
+          if (v > made + r.r7) {
+            steps.push([`変えるのは ${r.r7}個まで`, made + r.r7 - v]);
+            v = made + r.r7;
+          }
+          if (v < made - r.r7) {
+            steps.push([`変えるのは ${r.r7}個まで`, made - r.r7 - v]);
+            v = made - r.r7;
+          }
+          if (v < r.r8) {
+            steps.push([`${r.r8}個より少なくしない`, r.r8 - v]);
+            v = r.r8;
+          }
+          return { tool: v, steps };
+        }
+        const fatherOf = (i, tool) => S.father[i] ?? tool;
+        const sign = (n) => (n > 0 ? `+${n}` : n < 0 ? `−${-n}` : "±0");
+
+        /* きょう */
+        function renderSummary() {
+          const total = S.left.reduce((a, b) => a + b, 0);
+          $("total").textContent = total;
+          const max = Math.max(...S.left);
+          const top = S.left.indexOf(max);
+          const kinds = S.left.filter((v) => v > 0).length;
+          $("most").innerHTML = total
+            ? `いちばん残ったのは<strong>${OKASHI[top].name}（${max}個）</strong>6品のうち ${kinds}品`
+            : "<strong>全部、売り切れました</strong>";
+          const peak = Math.max(1, max);
+          $("bars").innerHTML = S.left
+            .map((v) => `<i><b style="width:${(v / peak) * 100}%"></b></i>`)
+            .join("");
+          $("example").hidden = !S.example;
+        }
+        function renderKyou() {
+          $("kyou-date").textContent = `${label(today())}`;
+          renderSummary();
+          $("kyou-list").innerHTML = OKASHI.map(
+            (o, i) => `
+      <div class="item">
+        <img src="${o.img}" alt="" loading="lazy">
+        <div style="min-width:0">
+          <div class="name">${o.name}${o.kisetsu ? "<small>季節</small>" : ""}</div>
+          <div class="meta">
+            <label class="made">作った <input type="number" inputmode="numeric" min="0" max="999" value="${S.made[i]}" data-made="${i}" aria-label="${o.name}の、きょう作った数"></label>
+            <span class="next"><span class="dot"></span>あす <b data-next="${i}">${compute(i).tool}</b></span>
+          </div>
+        </div>
+        <div class="counter">
+          <button type="button" data-left="-1" data-i="${i}" aria-label="${o.name}の売れ残りを1つ減らす" ${S.left[i] <= 0 ? "disabled" : ""}>${MINUS}</button>
+          <output class="num" data-left-out="${i}" aria-label="${o.name}の売れ残り">${S.left[i]}</output>
+          <button type="button" class="plus" data-left="1" data-i="${i}" aria-label="${o.name}の売れ残りを1つ増やす">${PLUS}</button>
+        </div>
+      </div>`,
+          ).join("");
+        }
+        function bumpLeft(i, d) {
+          S.left[i] = Math.max(0, Math.min(999, S.left[i] + d));
+          S.example = false;
+          delete S.father[i];
+          save();
+          document.querySelector(`[data-left-out="${i}"]`).textContent =
+            S.left[i];
+          document.querySelector(`[data-left="-1"][data-i="${i}"]`).disabled =
+            S.left[i] <= 0;
+          document.querySelector(`[data-next="${i}"]`).textContent =
+            compute(i).tool;
+          renderSummary();
+        }
+
+        /* あす */
+        let current = 0;
+        function rangeOf(i) {
+          const { tool } = compute(i);
+          const f = fatherOf(i, tool);
+          return {
+            min: Math.max(0, Math.min(tool, f) - 20),
+            max: Math.max(tool, f) + 20,
+            tool,
+            f,
+          };
+        }
+        function verdictHTML(i, tool, f) {
+          const d = f - tool;
+          return d
+            ? `<span class="dot coral"></span>父が ${sign(d)}・目安は ${tool}個<button type="button" class="reset" data-reset="${i}">目安に戻す</button>`
+            : '<span class="dot"></span>目安どおり';
+        }
+        function whyHTML(i) {
+          const { tool, steps } = compute(i);
+          return `<li><span>きょう作った数</span><b>${S.made[i]}</b></li>${steps.map(([a, b]) => `<li><span>${a}</span><b>${sign(b)}</b></li>`).join("")}<li class="total-row"><span>道具の目安</span><b>${tool}</b></li>`;
+        }
+        function cardHTML(o, i) {
+          const { min, max, tool, f } = rangeOf(i);
+          let ticks = "";
+          for (let v = min; v <= max; v++)
+            ticks += `<i class="tick${v % 5 === 0 ? " five" : ""}${v === tool ? " tool" : ""}">${v === tool ? `<em>目安 ${v}</em>` : v % 5 === 0 && Math.abs(v - tool) >= 3 ? `<em>${v}</em>` : ""}</i>`;
+          return `<article class="card" data-card="${i}" aria-label="${o.name}">
+      <div class="card-top"><strong>${o.name}</strong><span>${i + 1} / ${OKASHI.length}</span></div>
+      <img class="pic" src="${o.img}" alt="">
+      <div class="big"><b class="num" data-big="${i}">${f}</b><span>個</span></div>
+      <div class="verdict" data-verdict="${i}">${verdictHTML(i, tool, f)}</div>
+      <div class="ruler-head">父が決める数<span>指で左右に動かせます</span></div>
+      <div class="ruler-wrap">
+        <div class="ruler" data-ruler="${i}" data-min="${min}" role="slider" tabindex="0" aria-label="${o.name}の、あすに作る数" aria-valuemin="${min}" aria-valuemax="${max}" aria-valuenow="${f}">
+          <div class="ruler-track">${ticks}</div>
+        </div>
+        <span class="needle"></span>
+      </div>
+      <ul class="why" aria-label="目安の出し方">${whyHTML(i)}</ul>
+    </article>`;
+        }
+        function renderAsu() {
+          $("asu-date").textContent = `${label(tomorrow())}に作る数`;
+          const rb = $("rain");
+          rb.setAttribute("aria-pressed", S.rain ? "true" : "false");
+          $("rain-label").textContent = S.rain ? "あすは雨" : "雨";
+          const deck = $("deck");
+          const keep = deck.scrollLeft;
+          deck.innerHTML = OKASHI.map(cardHTML).join("");
+          deck.scrollLeft = keep;
+          requestAnimationFrame(() => {
+            deck.querySelectorAll(".ruler").forEach((r) => {
+              const i = +r.dataset.ruler;
+              const { min } = rangeOf(i);
+              r.dataset.silent = "1";
+              r.scrollLeft = (fatherOf(i, compute(i).tool) - min) * STEP;
+              requestAnimationFrame(() => {
+                delete r.dataset.silent;
+              });
+            });
+            fitDeck();
+          });
+          renderMini();
+          renderDots();
+          renderDecide();
+        }
+        function renderMini() {
+          let changed = 0;
+          $("mini").innerHTML = OKASHI.map((o, i) => {
+            const { tool } = compute(i),
+              f = fatherOf(i, tool),
+              d = f - tool;
+            if (d) changed++;
+            return `<button type="button" data-go="${i}"><img src="${o.img}" alt=""><span class="n">${o.name}${d ? `<span class="diff">${sign(d)}</span>` : ""}</span><span class="t">目安 ${tool}</span><span class="f num">${f}</span></button>`;
+          }).join("");
+          $("changed-count").textContent = changed
+            ? `父が直した ${changed}品`
+            : "すべて目安どおり";
+        }
+        function renderDots() {
+          $("dots").innerHTML = OKASHI.map((o, i) => {
+            const { tool } = compute(i);
+            return `<i class="${i === current ? "on" : ""}${fatherOf(i, tool) !== tool ? " ch" : ""}"></i>`;
+          }).join("");
+        }
+        function renderDecide() {
+          const b = $("decide");
+          if (b.classList.contains("done")) return;
+          b.textContent = S.records.some((r) => r.day === S.day)
+            ? "決めた数を書き直す"
+            : "この数で決める";
+        }
+        function setFather(i, v) {
+          const { tool } = compute(i);
+          if (v === tool) delete S.father[i];
+          else S.father[i] = v;
+          save();
+          $("deck").querySelector(`[data-big="${i}"]`).textContent = v;
+          $("deck").querySelector(`[data-verdict="${i}"]`).innerHTML =
+            verdictHTML(i, tool, v);
+          const r = $("deck").querySelector(`[data-ruler="${i}"]`);
+          r.setAttribute("aria-valuenow", v);
+          renderMini();
+          renderDots();
+          requestAnimationFrame(fitDeck);
+        }
+        function fitDeck() {
+          const card = $("deck").children[current];
+          if (card) $("deck").style.height = `${card.offsetHeight + 26}px`;
+        }
+        $("deck").addEventListener(
+          "scroll",
+          (e) => {
+            if (e.target.id !== "deck") return;
+            const d = $("deck");
+            const first = d.children[0];
+            if (!first) return;
+            const i = Math.max(
+              0,
+              Math.min(
+                OKASHI.length - 1,
+                Math.round(d.scrollLeft / (first.offsetWidth + 12)),
+              ),
+            );
+            if (i !== current) {
+              current = i;
+              renderDots();
+              fitDeck();
+            }
+          },
+          { passive: true },
+        );
+        $("deck").addEventListener(
+          "scroll",
+          (e) => {
+            const r = e.target;
+            if (
+              !r.classList ||
+              !r.classList.contains("ruler") ||
+              r.dataset.silent
+            )
+              return;
+            const i = +r.dataset.ruler,
+              min = +r.dataset.min;
+            const v = min + Math.round(r.scrollLeft / STEP);
+            if (v !== fatherOf(i, compute(i).tool))
+              setFather(i, Math.max(0, v));
+          },
+          { passive: true, capture: true },
+        );
+        $("deck").addEventListener("keydown", (e) => {
+          const r = e.target;
+          if (!r.classList || !r.classList.contains("ruler")) return;
+          if (e.key !== "ArrowLeft" && e.key !== "ArrowRight") return;
+          e.preventDefault();
+          r.scrollBy({
+            left: e.key === "ArrowLeft" ? -STEP : STEP,
+            behavior: reduced ? "auto" : "smooth",
+          });
+        });
+
+        /* 記録 */
+        function renderKiroku() {
+          const box = $("kiroku");
+          if (!S.records.length) {
+            box.innerHTML = `<div class="empty"><div class="trio"><img src="/assets/design/mame.jpg" alt=""><img src="/assets/design/neri.jpg" alt=""><img src="/assets/design/dora.jpg" alt=""></div><h2>まだ記録はありません</h2>
+        <p>「あす」で父が数を決めると、その日の分がここに残ります。道具の目安と父が決めた数が、品ごとに並びます。</p>
+        <button class="cta" type="button" data-tab="asu">あすの仕込みへ</button></div>`;
+            return;
+          }
+          let total = 0,
+            same = 0,
+            plus = 0,
+            minus = 0;
+          S.records.forEach((r) =>
+            r.items.forEach((it) => {
+              total++;
+              const d = it.father - it.tool;
+              if (!d) same++;
+              else if (d > 0) plus += d;
+              else minus -= d;
+            }),
+          );
+          const pct = Math.round((same / total) * 100);
+          const sorted = S.records.slice().sort((a, b) => b.at - a.at);
+          const byDay = Object.fromEntries(S.records.map((r) => [r.day, r]));
+          let strip = "";
+          for (let k = 13; k >= 0; k--) {
+            const d = new Date(today()); d.setDate(d.getDate() - k);
+            const r = byDay[keyOf(d)];
+            const c = !r ? "" : r.items.every((it) => it.father === it.tool) ? " ok" : " ch";
+            strip += `<i class="${c.trim()}"><span>${d.getDate()}</span></i>`;
+          }
+          const days = sorted
+            .map((r) => {
+              const ch = r.items.filter((it) => it.father !== it.tool).length;
+              return `<div class="day"><div class="day-head"><strong>${r.tomorrowLabel}に作る分</strong><span>${r.rain ? '<span class="dot blue"></span>雨　' : ""}${ch ? `<span class="dot coral"></span>父が直した ${ch}品` : '<span class="dot"></span>すべて目安どおり'}</span></div>
+        <div class="grid6">${r.items
+          .map((it, k) => {
+            const d = it.father - it.tool;
+            return `<div class="cell${d ? " ch" : ""}"><img src="${OKASHI[k].img}" alt=""><div style="min-width:0"><b class="num">${it.father}${d ? `<span class="diff">${sign(d)}</span>` : ""}</b><small>${it.name}</small></div></div>`;
+          })
+          .join("")}</div></div>`;
+            })
+            .join("");
+          box.innerHTML = `<div class="score"><div class="label"><span class="dot"></span>目安が、父の数と合った品</div>
+        <div class="pct"><b class="num">${pct}</b><span>%</span></div>
+        <p>${S.records.length}日・${total}品のうち ${same}品</p>
+        <div class="strip-head"><span>この2週間</span><span><span class="dot"></span>目安どおり　<span class="dot coral"></span>父が直した</span></div>
+        <div class="daystrip" aria-hidden="true">${strip}</div>
+        <div class="stats"><div>記録<b class="num">${S.records.length}<small>日</small></b></div><div>父が増やした<b class="num">${plus}<small>個</small></b></div><div>父が減らした<b class="num">${minus}<small>個</small></b></div></div></div>
+      ${days}
+      <p class="caveat">合ったかどうかは、目安と父の数がぴったり同じときだけ数えます。日数が少ないうちは、割合が大きく動きます。</p>`;
+        }
+
+        /* 父の決まり */
+        const RULE_TEXT = [
+          [
+            "売れ残りで変える",
+            [
+              ["r1a", (v) => `売れ残りが <b>${v}</b>つ以上 なら、`],
+              ["r1b", (v) => `きょうより <b>${v}</b>つ 減らす`],
+              ["r2", (v) => `売り切れたら、 <b>${v}</b>つ 増やす`],
+              [
+                "r3",
+                (v) => `練り切りは 1つでも残れば、 さらに <b>${v}</b>つ 減らす`,
+              ],
+            ],
+          ],
+          [
+            "あすの天気と曜日で変える",
+            [
+              ["r4", (v) => `雨なら <b>${v}</b>割 減らす`],
+              ["r5", (v) => `土曜・日曜なら <b>${v}</b>割 増やす`],
+              [
+                "r6",
+                (v) => `月曜は お客さんが少ないので、 <b>${v}</b>割 減らす`,
+              ],
+            ],
+          ],
+          [
+            "いつも守る",
+            [
+              [
+                "r7",
+                (v) => `一度に変えるのは、 きょうの数から <b>${v}</b>個まで`,
+              ],
+              ["r8", (v) => `どのお菓子も <b>${v}</b>個より 少なくしない`],
+            ],
+          ],
+        ];
+        function renderRules() {
+          $("rules").innerHTML = RULE_TEXT.map(
+            ([g, items]) =>
+              `<div class="rgroup">${g}</div><div class="rules">${items
+                .map(
+                  ([k, t]) => `
+      <div class="rule"><p aria-live="polite">${t(S.rules[k])}</p><div class="pm">
+        <button type="button" data-r="${k}" data-d="-1" aria-label="この決まりの数を1つ減らす" ${S.rules[k] <= RULE_MIN[k] ? "disabled" : ""}>${MINUS}</button>
+        <button type="button" data-r="${k}" data-d="1" aria-label="この決まりの数を1つ増やす" ${S.rules[k] >= RULE_MAX[k] ? "disabled" : ""}>${PLUS}</button></div></div>`,
+                )
+                .join("")}</div>`,
+          ).join("");
+        }
+        let opener = null;
+        function openRules(open, from) {
+          $("sheet").classList.toggle("open", open);
+          $("scrim").classList.toggle("open", open);
+          $("sheet").setAttribute("aria-hidden", open ? "false" : "true");
+          if (open) {
+            $("toast").classList.remove("show");
+            opener = from || null;
+            renderRules();
+            $("close-rules").focus();
+          } else {
+            render();
+            if (opener) opener.focus();
+          }
+        }
+
+        /* 画面 */
+        let tab = "kyou";
+        function show(t) {
+          tab = t;
+          ["kyou", "asu", "kiroku"].forEach((k) => {
+            $(`s-${k}`).hidden = k !== t;
+          });
+          document.querySelectorAll(".tabs button").forEach((b) => {
+            if (b.dataset.tab === t) b.setAttribute("aria-current", "page");
+            else b.removeAttribute("aria-current");
+          });
+          render();
+          window.scrollTo(0, 0);
+        }
+        function render() {
+          if (tab === "kyou") renderKyou();
+          if (tab === "asu") renderAsu();
+          if (tab === "kiroku") renderKiroku();
+        }
+        const SAMPLES = [{"id": "p03", "title": "略した名前で書いた夜", "img": "/sample-note.png", "date": "11/5 水", "items": [{"name": "豆大福", "readable": true, "count": 6, "seen": "豆大 6"}, {"name": "どら焼き", "readable": true, "count": 2, "seen": "どら 2"}, {"name": "栗まんじゅう", "readable": true, "count": 0, "seen": "栗まん 0"}, {"name": "草餅", "readable": true, "count": 3, "seen": "草 3"}, {"name": "最中", "readable": true, "count": 0, "seen": "最中 0"}, {"name": "練り切り", "readable": true, "count": 5, "seen": "ねりきり 5"}]}];
+
+        let toastTimer;
+        function toast(msg) {
+          const t = $("toast");
+          t.textContent = msg;
+          t.classList.add("show");
+          clearTimeout(toastTimer);
+          toastTimer = setTimeout(() => t.classList.remove("show"), 2200);
+        }
+
+        document.addEventListener("click", (e) => {
+          const b = e.target.closest("button");
+          if (!b) return;
+          const d = b.dataset;
+          if (d.tab) {
+            show(d.tab);
+            return;
+          }
+          if (d.left) {
+            bumpLeft(+d.i, +d.left);
+            return;
+          }
+          if (d.reset !== undefined) {
+            const i = +d.reset;
+            delete S.father[i];
+            save();
+            renderAsu();
+            return;
+          }
+          if (d.r) {
+            const k = d.r;
+            S.rules[k] = Math.max(
+              RULE_MIN[k],
+              Math.min(RULE_MAX[k], S.rules[k] + +d.d),
+            );
+            save();
+            renderRules();
+            return;
+          }
+          if (d.go !== undefined) {
+            const i = +d.go,
+              deck = $("deck"),
+              first = deck.children[0];
+            deck.scrollTo({
+              left: i * (first.offsetWidth + 12),
+              behavior: reduced ? "auto" : "smooth",
+            });
+            current = i;
+            renderDots();
+            fitDeck();
+            deck.scrollIntoView({
+              behavior: reduced ? "auto" : "smooth",
+              block: "start",
+            });
+            return;
+          }
+          if (d.openRules !== undefined) {
+            openRules(true, b);
+            return;
+          }
+          if (b.id === "close-rules") {
+            openRules(false);
+            return;
+          }
+          if (b.id === "rain") {
+            S.rain = !S.rain;
+            save();
+            renderAsu();
+            return;
+          }
+          if (b.id === "decide") {
+            const items = OKASHI.map((o, i) => {
+              const { tool } = compute(i);
+              return {
+                name: o.name,
+                made: S.made[i],
+                left: S.left[i],
+                tool,
+                father: fatherOf(i, tool),
+              };
+            });
+            const rec = {
+              day: S.day,
+              at: Date.now(),
+              tomorrowLabel: label(tomorrow()),
+              rain: S.rain,
+              items,
+            };
+            const at = S.records.findIndex((r) => r.day === S.day);
+            if (at >= 0) S.records[at] = rec;
+            else S.records.push(rec);
+            save();
+            b.classList.add("done");
+            b.innerHTML = `${CHECK}記録しました`;
+            setTimeout(() => {
+              b.classList.remove("done");
+              renderDecide();
+            }, 1800);
+            toast("「記録」で、これまでと見比べられます");
+            return;
+          }
+        });
+        $("scrim").addEventListener("click", () => openRules(false));
+        document.addEventListener("keydown", (e) => {
+          if (e.key === "Escape" && $("sheet").classList.contains("open"))
+            openRules(false);
+        });
+        document.addEventListener("change", (e) => {
+          const el = e.target;
+          if (el.dataset.made === undefined) return;
+          const i = +el.dataset.made,
+            v = parseInt(el.value, 10);
+          if (Number.isFinite(v) && v >= 0 && v <= 999) {
+            S.made[i] = v;
+            S.example = false;
+            delete S.father[i];
+            save();
+          }
+          el.value = S.made[i];
+          document.querySelector(`[data-next="${i}"]`).textContent =
+            compute(i).tool;
+        });
+        window.addEventListener("resize", fitDeck);
+
+        /* ノートを読む */
+        const esc = (v) => String(v ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
+        let scanState = null;
+        const ARROW = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>';
+        function openScan(open) {
+          $("scan").hidden = !open;
+          document.body.style.overflow = open ? "hidden" : "";
+          if (open) { renderPick(); $("close-scan").focus(); } else { $("open-scan").focus(); }
+        }
+        function renderPick() {
+          scanState = null;
+          $("scan-body").innerHTML = `<p class="scan-lead">画像生成で作った、架空のノートです。保存してある見本の答えを写真と比べて確かめます。AIには送らず、料金も発生しません。</p>
+            <div class="picks">${SAMPLES.map((x, k) => `<button type="button" class="pick" data-sample="${k}"><img src="${x.img}" alt=""><span><strong>${esc(x.title)}</strong><small>${esc(x.date)}・画像生成の見本</small></span>${ARROW}</button>`).join("")}</div>
+            <p class="scan-foot">自分の写真は、この公開見本では送れません。きょうの数は手で入れられます。</p>`;
+        }
+        function renderResult() {
+          const st = scanState;
+          const missing = st.items.filter((it) => !it.readable).length;
+          $("scan-body").innerHTML = `<div class="photo"><img src="${st.src}" alt="読み取ったノートの写真"></div>
+            <div class="result-head"><strong>${esc(st.date || "日付なし")}のノート</strong><span>記録した見本の答え</span></div>
+            <div class="rlist">${st.items.map((it, k) => {
+              const o = OKASHI.findIndex((x) => x.name === it.name);
+              const img = o >= 0 ? OKASHI[o].img : "";
+              if (it.readable) return `<div class="rrow"><img src="${img}" alt=""><div><span class="n">${esc(it.name)}</span><span class="seen">ノートの字: ${esc(it.seen)}</span></div><b class="got num">${Number(it.count)}</b></div>`;
+              return `<div class="rrow miss"><img src="${img}" alt=""><div><span class="n">${esc(it.name)}</span><span class="seen">読めませんでした。数えて入れてください</span></div>
+                <div class="counter"><button type="button" data-fix="${k}" data-d="-1" aria-label="${esc(it.name)}の数を1つ減らす" ${it.fix <= 0 ? "disabled" : ""}>${MINUS}</button><output class="num">${it.fix}</output><button type="button" class="plus" data-fix="${k}" data-d="1" aria-label="${esc(it.name)}の数を1つ増やす">${PLUS}</button></div></div>`;
+            }).join("")}</div>
+            <div class="apply-row"><button type="button" class="cta" id="apply-scan">${CHECK}写真と比べて、この数を入れる</button><button type="button" class="cta light" id="rescan">見本の一覧へ</button></div>
+            <p class="scan-foot">${missing ? `読めなかった ${missing}品は、人が数えた数を入れます。` : "6品の見本の答えです。"}数は入れたあとも、きょうの画面で直せます。</p>`;
+        }
+        function showResult(src, data) {
+          const names = OKASHI.map((o) => o.name);
+          scanState = { src, date: String(data.date || ""), items: (Array.isArray(data.items) ? data.items : []).filter((it) => names.includes(it.name)).map((it) => ({ name: it.name, readable: !!it.readable && Number.isInteger(it.count) && it.count >= 0, count: Number(it.count), seen: String(it.seen || ""), fix: 0 })) };
+          renderResult();
+        }
+        function scanSample(k) {
+          const x = SAMPLES[k];
+          if (x) showResult(x.img, x);
+        }
+        function applyScan() {
+          scanState.items.forEach((it) => {
+            const i = OKASHI.findIndex((x) => x.name === it.name);
+            if (i < 0) return;
+            S.left[i] = it.readable ? it.count : it.fix;
+            delete S.father[i];
+          });
+          S.example = false; save();
+          const missing = scanState.items.filter((it) => !it.readable).length;
+          openScan(false); renderKyou();
+          toast(missing ? `見本の数を入れました（${missing}品は数えた数）` : "見本の数を入れました");
+        }
+        document.addEventListener("click", (e) => {
+          const b = e.target.closest("button"); if (!b) return;
+          if (b.id === "open-scan") { openScan(true); return; }
+          if (b.id === "close-scan") { openScan(false); return; }
+          if (b.dataset.sample !== undefined) { scanSample(+b.dataset.sample); return; }
+          if (b.id === "rescan") { renderPick(); return; }
+          if (b.id === "apply-scan") { applyScan(); return; }
+          if (b.dataset.fix !== undefined) { const it = scanState.items[+b.dataset.fix]; it.fix = Math.max(0, Math.min(999, it.fix + +b.dataset.d)); renderResult(); return; }
+        });
+        document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("scan").hidden) openScan(false); });
+        show("kyou");
+      })();
+    </script>
+  </body>
+</html>

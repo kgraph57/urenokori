@@ -1,0 +1,17 @@
+{
+  "source": "AMPL Books/first-hackathon-20261111/walkthrough/reading-20261116/pages/p03.png",
+  "provenance": "同フォルダのrun.jsonlに、p03・gpt-image-2.6-sunburstの生成記録あり。2026年11月16日作成。架空のノート。",
+  "sha256": "379ff9269337024460c281284701c15c5bea7cb290a6f5a5f87f4b213d4688b7",
+  "checked": "2026-11-16。画像を目視し、略記の豆大・どら・栗まん・草・最中・ねりきりと下記6品の数を照合。",
+  "result": {
+    "urenokori": [
+      { "id": "mamedaifuku", "na": "豆大福", "kazu": 6 },
+      { "id": "dorayaki", "na": "どら焼き", "kazu": 2 },
+      { "id": "kurimanju", "na": "栗まんじゅう", "kazu": 0 },
+      { "id": "kusamochi", "na": "草餅", "kazu": 3 },
+      { "id": "monaka", "na": "最中", "kazu": 0 },
+      { "id": "nerikiri", "na": "練り切り", "kazu": 5 }
+    ],
+    "shiranai": []
+  }
+}

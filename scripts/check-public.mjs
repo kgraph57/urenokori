@@ -1,0 +1,84 @@
+import assert from 'node:assert/strict';
+import { mkdir, writeFile } from 'node:fs/promises';
+import path from 'node:path';
+import { pathToFileURL } from 'node:url';
+const { chromium } = await import(process.env.PLAYWRIGHT_MODULE ? pathToFileURL(process.env.PLAYWRIGHT_MODULE).href : 'playwright');
+const base = process.env.PUBLIC_BASE_URL || 'http://127.0.0.1:8794';
+const out = process.env.PUBLIC_CHECK_OUTPUT || path.resolve('test-results/public');
+await mkdir(out, {recursive:true});
+const browser=await chromium.launch({headless:true});
+const results=[];
+try {
+ for (const width of [390, 1280, 320]) {
+  const context=await browser.newContext({viewport:{width,height:844},locale:'ja-JP',timezoneId:'Asia/Tokyo'});
+  const page=await context.newPage();
+  await page.clock.setFixedTime(new Date('2026-11-16T19:00:00+09:00'));
+  const errors=[], requests=[];
+  page.on('pageerror', e=>errors.push(e.message));
+  page.on('request', r=>requests.push({url:r.url(),method:r.method()}));
+  await page.goto(base);
+  await page.waitForFunction(()=>Array.from(document.images).every(i=>i.complete&&i.naturalWidth>0));
+  assert.equal(await page.locator('input[type=file]').count(),0);
+  assert.equal(await page.locator('#total').textContent(),'15');
+  await page.screenshot({path:path.join(out,`public-kyou-${width}.png`)});
+  await page.getByRole('button',{name:'豆大福の売れ残りを1つ増やす',exact:true}).click();
+  assert.equal(await page.locator('[data-left-out="0"]').textContent(),'6');
+  await page.waitForTimeout(200);
+  await page.reload();
+  assert.equal(await page.locator('[data-left-out="0"]').textContent(),'6');
+  await page.getByRole('button',{name:'見本のノートで試す',exact:true}).click();
+  await page.locator('[data-sample="0"]').click();
+  assert.deepEqual(await page.locator('.rrow .got').allTextContents(),['6','2','0','3','0','5']);
+  assert.match(await page.locator('#scan-body').textContent(),/記録した見本の答え/);
+  await page.screenshot({path:path.join(out,`public-sample-${width}.png`)});
+  await page.getByRole('button',{name:'写真と比べて、この数を入れる',exact:true}).click();
+  assert.deepEqual(await page.locator('[data-left-out]').allTextContents(),['6','2','0','3','0','5']);
+  await page.getByRole('button',{name:'父の決まりを開く',exact:true}).first().click();
+  await page.locator('[data-r="r1b"][data-d="1"]').click();
+  assert.match(await page.locator('#rules').textContent(),/きょうより 3つ 減らす/);
+  await page.getByRole('button',{name:'閉じる',exact:true}).first().click();
+  await page.getByRole('button',{name:'あす',exact:true}).click();
+  const slider=page.getByRole('slider',{name:'豆大福の、あすに作る数',exact:true});
+  assert.equal(await slider.getAttribute('aria-valuenow'),'27');
+  await slider.focus();await page.keyboard.press('ArrowRight');
+  await page.waitForFunction(()=>document.querySelector('[data-ruler="0"]').getAttribute('aria-valuenow')==='28');
+  assert.match(await page.locator('[data-verdict="0"]').textContent(),/父が \+1/);
+  await page.screenshot({path:path.join(out,`public-asu-${width}.png`)});
+  await page.locator('#decide').click();
+  await page.waitForTimeout(250);
+  await page.getByRole('button',{name:'記録',exact:true}).click();
+  assert.match(await page.locator('#kiroku').textContent(),/1日・6品のうち 5品/);
+  assert.match(await page.locator('#kiroku').textContent(),/83/);
+  await page.reload();
+  await page.getByRole('button',{name:'記録',exact:true}).click();
+  assert.match(await page.locator('#kiroku').textContent(),/1日・6品のうち 5品/);
+  await page.screenshot({path:path.join(out,`public-record-${width}.png`)});
+  assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
+  assert.deepEqual(errors,[]);
+  assert.equal(requests.filter(r=>r.method!=='GET').length,0);
+  assert.equal(requests.filter(r=>new URL(r.url).origin!==new URL(base).origin).length,0);
+  await page.evaluate(() => {
+   const raw = JSON.parse(localStorage.getItem('urenokori-app-v3'));
+   raw.made = ['bad']; raw.left = [-1, null]; raw.rules = {r1a:-10};
+   raw.records[0].tomorrowLabel = '<img src=x onerror=alert(1)>';
+   raw.records[0].items[0].name = '<img src=x onerror=alert(1)>';
+   localStorage.setItem('urenokori-app-v3',JSON.stringify(raw));
+  });
+  await page.reload();
+  assert.equal(await page.locator('[data-left-out="0"]').textContent(),'0');
+  await page.getByRole('button',{name:'記録',exact:true}).click();
+  assert.equal(await page.locator('#kiroku img[src="x"]').count(),0);
+  assert.match(await page.locator('#kiroku').textContent(),/豆大福/);
+  assert.doesNotMatch(await page.locator('#kiroku').textContent(),/NaN|onerror/);
+  assert.deepEqual(errors,[]);
+  results.push({width,status:'PASS',requests:requests.length,apiRequests:0,pageErrors:0});
+  await context.close();
+ }
+ const responses=[];
+ for (const route of ['/.env','/.env.local','/README.md','/CLAUDE.md','/server.js','/yomu.js','/yomu','/api/read','/public-sample.json']) {
+  const r=await fetch(base+route);assert.equal(r.status,404,route);responses.push({route,status:r.status});
+ }
+ const post=await fetch(base+'/yomu',{method:'POST',body:'{}'});assert.equal(post.status,405);
+ await writeFile(path.join(out,'public-local-validation.json'),JSON.stringify({base,results,responses,postStatus:post.status},null,2));
+ console.log(JSON.stringify({status:'PASS',results,privatePaths:responses.length,postStatus:post.status}));
+} finally {await browser.close();}

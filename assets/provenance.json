@@ -1,0 +1,46 @@
+{
+  "images": [
+    {
+      "file": "design/evening.jpg",
+      "sha256": "eee16d4006832dff07d935a5173a7136054384381c6ffa7bd189b29341c99eed",
+      "source": "walkthrough/design-v3-20261116/img/evening.jpg"
+    },
+    {
+      "file": "design/morning.jpg",
+      "sha256": "9c66706fe7a28d96d1099e28497c2e7537ffd1e33c5340248991088eb1cffabf",
+      "source": "walkthrough/design-v3-20261116/img/morning.jpg"
+    },
+    {
+      "file": "design/mame.jpg",
+      "sha256": "f977c79f928b7ffa6d65ad560e70525472aa9802413977056e7ea13429c441a7",
+      "source": "walkthrough/design-v3-20261116/img/mame.jpg"
+    },
+    {
+      "file": "design/dora.jpg",
+      "sha256": "9d3e30572f82fa031860b40822afb1f70f918deea448e5f19c0fd7c6d7b0edec",
+      "source": "walkthrough/design-v3-20261116/img/dora.jpg"
+    },
+    {
+      "file": "design/kuri.jpg",
+      "sha256": "e7f5d353851dedfd2ae01210c6944d689174473e0ed31caaeb2d72b058fbd741",
+      "source": "walkthrough/design-v3-20261116/img/kuri.jpg"
+    },
+    {
+      "file": "design/kusa.jpg",
+      "sha256": "c4d69ad1b2ae2a127e030b058db601cc9297f5ec0a3868e37956f5e58861d554",
+      "source": "walkthrough/design-v3-20261116/img/kusa.jpg"
+    },
+    {
+      "file": "design/monaka.jpg",
+      "sha256": "0504b79951a0d8bd7e4927081f0d6291cdf73d1296943160582a19d193ca8074",
+      "source": "walkthrough/design-v3-20261116/img/monaka.jpg"
+    },
+    {
+      "file": "design/neri.jpg",
+      "sha256": "7dad452e0deee3fb398cac0288748796e847ef27aad5033bf51a033dec92ba40",
+      "source": "walkthrough/design-v3-20261116/img/neri.jpg"
+    }
+  ],
+  "sourceGenerationRecord": "walkthrough/design-v3-20261116/img/run.jsonl",
+  "publicSample": "../public-sample.json"
+}

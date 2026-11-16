@@ -14,6 +14,9 @@
 
 # 部品（ライブラリ）を入れたときにできる大きなフォルダ。いつでも入れ直せるので記録しない
 node_modules/
+.public/
+.wrangler/
+.playwright-cli/
 
 # 動かしたときに残る記録（ログ）
 *.log
@@ -27,3 +30,6 @@ tameshi/kekka.json
 # 編集中にできる一時ファイル
 *.tmp
 *~
+
+.public-build/
+test-results/
