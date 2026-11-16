@@ -40,6 +40,10 @@ try {
   await page.getByRole('button',{name:'あす',exact:true}).click();
   const slider=page.getByRole('slider',{name:'豆大福の、あすに作る数',exact:true});
   assert.equal(await slider.getAttribute('aria-valuenow'),'27');
+  await page.waitForFunction(() => {
+   const ruler = document.querySelector('[data-ruler="0"]');
+   return ruler && !ruler.dataset.silent && Math.round(ruler.scrollLeft / 14) + Number(ruler.dataset.min) === 27;
+  });
   await slider.focus();await page.keyboard.press('ArrowRight');
   await page.waitForFunction(()=>document.querySelector('[data-ruler="0"]').getAttribute('aria-valuenow')==='28');
   assert.match(await page.locator('[data-verdict="0"]').textContent(),/父が \+1/);
