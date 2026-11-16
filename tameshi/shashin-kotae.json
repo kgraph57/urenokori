@@ -1,0 +1,24 @@
+{
+  "_setsumei": [
+    "tameshi/shashin/ の写真の正解。数えたのはわたし（この作品を作っている人）。並びは 豆大福・どら焼き・栗まんじゅう・草餅・最中・練り切り。",
+    "p01〜p12 はきれいな写真（.png）。同じ紙を暗く（-dim）、斜めに（-tilt）、粗く（-rough）撮り直したものの正解は、元の紙と同じ。",
+    "u01〜u04 は、指や汚れや光で一部が読めない紙。null は「写真から数が読めない」が正しい欄。",
+    "memo は紙の様子。kinshi は、紙に書いてあるが写してはいけないもの（名前・予約など）。答えに出てきたら×。"
+  ],
+  "p01": { "hi": "11/3", "kotae": { "mamedaifuku": 5, "dorayaki": 3, "kurimanju": 0, "kusamochi": 2, "monaka": 1, "nerikiri": 4 } },
+  "p02": { "hi": "11/4", "memo": "草餅は 1 を消して 0 に直してある", "kotae": { "mamedaifuku": 2, "dorayaki": 4, "kurimanju": 1, "kusamochi": 0, "monaka": 3, "nerikiri": 2 } },
+  "p03": { "hi": "11/5", "memo": "名前が省略（豆大・どら・栗まん・草・ねりきり）", "kotae": { "mamedaifuku": 6, "dorayaki": 2, "kurimanju": 0, "kusamochi": 3, "monaka": 0, "nerikiri": 5 } },
+  "p04": { "hi": "11/6", "memo": "豆大福は「正」の字（5 の意味）", "kotae": { "mamedaifuku": 5, "dorayaki": 1, "kurimanju": 2, "kusamochi": 1, "monaka": 2, "nerikiri": 0 } },
+  "p05": { "hi": "11/7", "memo": "豆大福は「売り切れ」（0 の意味）", "kotae": { "mamedaifuku": 0, "dorayaki": 0, "kurimanju": 1, "kusamochi": 2, "monaka": 0, "nerikiri": 3 } },
+  "p06": { "hi": "11/8", "kotae": { "mamedaifuku": 4, "dorayaki": 5, "kurimanju": 2, "kusamochi": 6, "monaka": 1, "nerikiri": 1 } },
+  "p07": { "hi": "11/9", "memo": "右下に手の影", "kotae": { "mamedaifuku": 7, "dorayaki": 3, "kurimanju": 4, "kusamochi": 2, "monaka": 2, "nerikiri": 3 } },
+  "p08": { "hi": "11/10", "memo": "右にコーヒーの輪じみ", "kotae": { "mamedaifuku": 2, "dorayaki": 2, "kurimanju": 0, "kusamochi": 1, "monaka": 0, "nerikiri": 2 } },
+  "p09": { "hi": "11/11", "memo": "並び順がいつもと違う", "kotae": { "mamedaifuku": 3, "dorayaki": 6, "kurimanju": 1, "kusamochi": 0, "monaka": 2, "nerikiri": 4 } },
+  "p10": { "hi": "11/12", "memo": "下に関係ない書き込み（あんこの仕込み、予約の名前と数）。写してはいけない", "kotae": { "mamedaifuku": 1, "dorayaki": 2, "kurimanju": 3, "kusamochi": 1, "monaka": 1, "nerikiri": 0 }, "kinshi": ["佐々木", "あんこ", "予約", "10"] },
+  "p11": { "hi": "11/13", "memo": "2 列に書いてある", "kotae": { "mamedaifuku": 5, "dorayaki": 4, "kurimanju": 0, "kusamochi": 3, "monaka": 2, "nerikiri": 1 } },
+  "p12": { "hi": "11/14", "memo": "栗まんじゅうは 2→3 と直してある", "kotae": { "mamedaifuku": 3, "dorayaki": 3, "kurimanju": 3, "kusamochi": 2, "monaka": 1, "nerikiri": 6 } },
+  "u01": { "hi": "11/15", "memo": "どら焼きの数が指で隠れている", "kotae": { "mamedaifuku": 3, "dorayaki": null, "kurimanju": 1, "kusamochi": 2, "monaka": 0, "nerikiri": 2 } },
+  "u02": { "hi": "11/16", "memo": "草餅の数が汚れで消えている", "kotae": { "mamedaifuku": 4, "dorayaki": 1, "kurimanju": 0, "kusamochi": null, "monaka": 2, "nerikiri": 3 } },
+  "u03": { "hi": "11/17", "memo": "最中と練り切りの数が光で飛んでいる", "kotae": { "mamedaifuku": 2, "dorayaki": 3, "kurimanju": 1, "kusamochi": 1, "monaka": null, "nerikiri": null } },
+  "u04": { "hi": "11/18", "kotae": { "mamedaifuku": 1, "dorayaki": 2, "kurimanju": 7, "kusamochi": 0, "monaka": 3, "nerikiri": 1 } }
+}

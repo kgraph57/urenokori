@@ -1,0 +1,4303 @@
+{
+ "hi": "2026-11-16T09:42:44.209Z",
+ "model": "claude-haiku-5-5",
+ "kumi": {
+  "futsuu": {
+   "mai": 12,
+   "zenbuAtta": 11,
+   "atta": 71,
+   "yomenaiKotae": 1,
+   "chigau": 0,
+   "yomenaiRanNiKazu": 0,
+   "nakatta": 0,
+   "shiranai": 0,
+   "kinshi": 0,
+   "input": 36132,
+   "output": 3768,
+   "shippai": 0
+  },
+  "warui": {
+   "mai": 36,
+   "zenbuAtta": 29,
+   "atta": 200,
+   "yomenaiKotae": 10,
+   "chigau": 0,
+   "yomenaiRanNiKazu": 0,
+   "nakatta": 0,
+   "shiranai": 0,
+   "kinshi": 0,
+   "input": 105385,
+   "output": 12198,
+   "shippai": 1
+  },
+  "kakure": {
+   "mai": 4,
+   "zenbuAtta": 4,
+   "atta": 24,
+   "yomenaiKotae": 0,
+   "chigau": 0,
+   "yomenaiRanNiKazu": 0,
+   "nakatta": 0,
+   "shiranai": 0,
+   "kinshi": 0,
+   "input": 12044,
+   "output": 1060,
+   "shippai": 0
+  },
+  "zenbu": {
+   "mai": 52,
+   "zenbuAtta": 44,
+   "atta": 295,
+   "yomenaiKotae": 11,
+   "chigau": 0,
+   "yomenaiRanNiKazu": 0,
+   "nakatta": 0,
+   "shiranai": 0,
+   "kinshi": 0,
+   "input": 153561,
+   "output": 17026,
+   "shippai": 1
+  }
+ },
+ "kekka": [
+  {
+   "file": "p01-dim.jpg",
+   "key": "p01",
+   "kumi": "warui",
+   "ran": {
+    "mamedaifuku": {
+     "seikai": 5,
+     "kotae": 5,
+     "shu": "atta"
+    },
+    "dorayaki": {
+     "seikai": 3,
+     "kotae": 3,
+     "shu": "atta"
+    },
+    "kurimanju": {
+     "seikai": 0,
+     "kotae": 0,
+     "shu": "atta"
+    },
+    "kusamochi": {
+     "seikai": 2,
+     "kotae": 2,
+     "shu": "atta"
+    },
+    "monaka": {
+     "seikai": 1,
+     "kotae": 1,
+     "shu": "atta"
+    },
+    "nerikiri": {
+     "seikai": 4,
+     "kotae": 4,
+     "shu": "atta"
+    }
+   },
+   "shiranai": [],
+   "kinshi": [],
+   "kazoe": {
+    "atta": 6,
+    "yomenaiKotae": 0,
+    "chigau": 0,
+    "yomenaiRanNiKazu": 0,
+    "nakatta": 0
+   },
+   "zenbuAtta": true,
+   "usage": {
+    "input": 3011,
+    "output": 110
+   },
+   "namaKotae": [
+    {
+     "id": "mamedaifuku",
+     "na": "豆大福",
+     "kazu": 5
+    },
+    {
+     "id": "dorayaki",
+     "na": "どら焼き",
+     "kazu": 3
+    },
+    {
+     "id": "kurimanju",
+     "na": "栗まんじゅう",
+     "kazu": 0
+    },
+    {
+     "id": "kusamochi",
+     "na": "草餅",
+     "kazu": 2
+    },
+    {
+     "id": "monaka",
+     "na": "最中",
+     "kazu": 1
+    },
+    {
+     "id": "nerikiri",
+     "na": "練り切り",
+     "kazu": 4
+    }
+   ]
+  },
+  {
+   "file": "p01-rough.jpg",
+   "key": "p01",
+   "kumi": "warui",
+   "ran": {
+    "mamedaifuku": {
+     "seikai": 5,
+     "kotae": 5,
+     "shu": "atta"
+    },
+    "dorayaki": {
+     "seikai": 3,
+     "kotae": 3,
+     "shu": "atta"
+    },
+    "kurimanju": {
+     "seikai": 0,
+     "kotae": 0,
+     "shu": "atta"
+    },
+    "kusamochi": {
+     "seikai": 2,
+     "kotae": 2,
+     "shu": "atta"
+    },
+    "monaka": {
+     "seikai": 1,
+     "kotae": 1,
+     "shu": "atta"
+    },
+    "nerikiri": {
+     "seikai": 4,
+     "kotae": 4,
+     "shu": "atta"
+    }
+   },
+   "shiranai": [],
+   "kinshi": [],
+   "kazoe": {
+    "atta": 6,
+    "yomenaiKotae": 0,
+    "chigau": 0,
+    "yomenaiRanNiKazu": 0,
+    "nakatta": 0
+   },
+   "zenbuAtta": true,
+   "usage": {
+    "input": 3011,
+    "output": 432
+   },
+   "namaKotae": [
+    {
+     "id": "mamedaifuku",
+     "na": "豆大福",
+     "kazu": 5
+    },
+    {
+     "id": "dorayaki",
+     "na": "どら焼き",
+     "kazu": 3
+    },
+    {
+     "id": "kurimanju",
+     "na": "栗まんじゅう",
+     "kazu": 0
+    },
+    {
+     "id": "kusamochi",
+     "na": "草餅",
+     "kazu": 2
+    },
+    {
+     "id": "monaka",
+     "na": "最中",
+     "kazu": 1
+    },
+    {
+     "id": "nerikiri",
+     "na": "練り切り（季節）",
+     "kazu": 4
+    }
+   ]
+  },
+  {
+   "file": "p01-tilt.jpg",
+   "key": "p01",
+   "kumi": "warui",
+   "ran": {
+    "mamedaifuku": {
+     "seikai": 5,
+     "kotae": 5,
+     "shu": "atta"
+    },
+    "dorayaki": {
+     "seikai": 3,
+     "kotae": 3,
+     "shu": "atta"
+    },
+    "kurimanju": {
+     "seikai": 0,
+     "kotae": 0,
+     "shu": "atta"
+    },
+    "kusamochi": {
+     "seikai": 2,
+     "kotae": 2,
+     "shu": "atta"
+    },
+    "monaka": {
+     "seikai": 1,
+     "kotae": 1,
+     "shu": "atta"
+    },
+    "nerikiri": {
+     "seikai": 4,
+     "kotae": 4,
+     "shu": "atta"
+    }
+   },
+   "shiranai": [],
+   "kinshi": [],
+   "kazoe": {
+    "atta": 6,
+    "yomenaiKotae": 0,
+    "chigau": 0,
+    "yomenaiRanNiKazu": 0,
+    "nakatta": 0
+   },
+   "zenbuAtta": true,
+   "usage": {
+    "input": 3011,
+    "output": 110
+   },
+   "namaKotae": [
+    {
+     "id": "mamedaifuku",
+     "na": "豆大福",
+     "kazu": 5
+    },
+    {
+     "id": "dorayaki",
+     "na": "どら焼き",
+     "kazu": 3
+    },
+    {
+     "id": "kurimanju",
+     "na": "栗まんじゅう",
+     "kazu": 0
+    },
+    {
+     "id": "kusamochi",
+     "na": "草餅",
+     "kazu": 2
+    },
+    {
+     "id": "monaka",
+     "na": "最中",
+     "kazu": 1
+    },
+    {
+     "id": "nerikiri",
+     "na": "練り切り",
+     "kazu": 4
+    }
+   ]
+  },
+  {
+   "file": "p01.png",
+   "key": "p01",
+   "kumi": "futsuu",
+   "ran": {
+    "mamedaifuku": {
+     "seikai": 5,
+     "kotae": 5,
+     "shu": "atta"
+    },
+    "dorayaki": {
+     "seikai": 3,
+     "kotae": 3,
+     "shu": "atta"
+    },
+    "kurimanju": {
+     "seikai": 0,
+     "kotae": 0,
+     "shu": "atta"
+    },
+    "kusamochi": {
+     "seikai": 2,
+     "kotae": 2,
+     "shu": "atta"
+    },
+    "monaka": {
+     "seikai": 1,
+     "kotae": 1,
+     "shu": "atta"
+    },
+    "nerikiri": {
+     "seikai": 4,
+     "kotae": 4,
+     "shu": "atta"
+    }
+   },
+   "shiranai": [],
+   "kinshi": [],
+   "kazoe": {
+    "atta": 6,
+    "yomenaiKotae": 0,
+    "chigau": 0,
+    "yomenaiRanNiKazu": 0,
+    "nakatta": 0
+   },
+   "zenbuAtta": true,
+   "usage": {
+    "input": 3011,
+    "output": 110
+   },
+   "namaKotae": [
+    {
+     "id": "mamedaifuku",
+     "na": "豆大福",
+     "kazu": 5
+    },
+    {
+     "id": "dorayaki",
+     "na": "どら焼き",
+     "kazu": 3
+    },
+    {
+     "id": "kurimanju",
+     "na": "栗まんじゅう",
+     "kazu": 0
+    },
+    {
+     "id": "kusamochi",
+     "na": "草餅",
+     "kazu": 2
+    },
+    {
+     "id": "monaka",
+     "na": "最中",
+     "kazu": 1
+    },
+    {
+     "id": "nerikiri",
+     "na": "練り切り",
+     "kazu": 4
+    }
+   ]
+  },
+  {
+   "file": "p02-dim.jpg",
+   "key": "p02",
+   "kumi": "warui",
+   "ran": {
+    "mamedaifuku": {
+     "seikai": 2,
+     "kotae": 2,
+     "shu": "atta"
+    },
+    "dorayaki": {
+     "seikai": 4,
+     "kotae": 4,
+     "shu": "atta"
+    },
+    "kurimanju": {
+     "seikai": 1,
+     "kotae": 1,
+     "shu": "atta"
+    },
+    "kusamochi": {
+     "seikai": 0,
+     "kotae": null,
+     "shu": "yomenaiKotae"
+    },
+    "monaka": {
+     "seikai": 3,
+     "kotae": 3,
+     "shu": "atta"
+    },
+    "nerikiri": {
+     "seikai": 2,
+     "kotae": 2,
+     "shu": "atta"
+    }
+   },
+   "shiranai": [],
+   "kinshi": [],
+   "kazoe": {
+    "atta": 5,
+    "yomenaiKotae": 1,
+    "chigau": 0,
+    "yomenaiRanNiKazu": 0,
+    "nakatta": 0
+   },
+   "zenbuAtta": false,
+   "usage": {
+    "input": 3011,
+    "output": 483
+   },
+   "namaKotae": [
+    {
+     "id": "mamedaifuku",
+     "na": "豆大福",
+     "kazu": 2
+    },
+    {
+     "id": "dorayaki",
+     "na": "どら焼き",
+     "kazu": 4
+    },
+    {
+     "id": "kurimanju",
+     "na": "栗まんじゅう",
+     "kazu": 1
+    },
+    {
+     "id": "kusamochi",
+     "na": "草餅",
+     "kazu": null
+    },
+    {
+     "id": "monaka",
+     "na": "最中",
+     "kazu": 3
+    },
+    {
+     "id": "nerikiri",
+     "na": "練り切り（季節）",
+     "kazu": 2
+    }
+   ]
+  },
+  {
+   "file": "p02-rough.jpg",
+   "key": "p02",
+   "kumi": "warui",
+   "ran": {
+    "mamedaifuku": {
+     "seikai": 2,
+     "kotae": 2,
+     "shu": "atta"
+    },
+    "dorayaki": {
+     "seikai": 4,
+     "kotae": 4,
+     "shu": "atta"
+    },
+    "kurimanju": {
+     "seikai": 1,
+     "kotae": 1,
+     "shu": "atta"
+    },
+    "kusamochi": {
+     "seikai": 0,
+     "kotae": null,
+     "shu": "yomenaiKotae"
+    },
+    "monaka": {
+     "seikai": 3,
+     "kotae": 3,
+     "shu": "atta"
+    },
+    "nerikiri": {
+     "seikai": 2,
+     "kotae": 2,
+     "shu": "atta"
+    }
+   },
+   "shiranai": [],
+   "kinshi": [],
+   "kazoe": {
+    "atta": 5,
+    "yomenaiKotae": 1,
+    "chigau": 0,
+    "yomenaiRanNiKazu": 0,
+    "nakatta": 0
+   },
+   "zenbuAtta": false,
+   "usage": {
+    "input": 3011,
+    "output": 390
+   },
+   "namaKotae": [
+    {
+     "id": "mamedaifuku",
+     "na": "豆大福",
+     "kazu": 2
+    },
+    {
+     "id": "dorayaki",
+     "na": "どら焼き",
+     "kazu": 4
+    },
+    {
+     "id": "kurimanju",
+     "na": "栗まんじゅう",
+     "kazu": 1
+    },
+    {
+     "id": "kusamochi",
+     "na": "草餅",
+     "kazu": null
+    },
+    {
+     "id": "monaka",
+     "na": "最中",
+     "kazu": 3
+    },
+    {
+     "id": "nerikiri",
+     "na": "練り切り（季節）",
+     "kazu": 2
+    }
+   ]
+  },
+  {
+   "file": "p02-tilt.jpg",
+   "key": "p02",
+   "kumi": "warui",
+   "shippai": "答えが途中で切れました。もう一度試してください。"
+  },
+  {
+   "file": "p02.png",
+   "key": "p02",
+   "kumi": "futsuu",
+   "ran": {
+    "mamedaifuku": {
+     "seikai": 2,
+     "kotae": 2,
+     "shu": "atta"
+    },
+    "dorayaki": {
+     "seikai": 4,
+     "kotae": 4,
+     "shu": "atta"
+    },
+    "kurimanju": {
+     "seikai": 1,
+     "kotae": 1,
+     "shu": "atta"
+    },
+    "kusamochi": {
+     "seikai": 0,
+     "kotae": null,
+     "shu": "yomenaiKotae"
+    },
+    "monaka": {
+     "seikai": 3,
+     "kotae": 3,
+     "shu": "atta"
+    },
+    "nerikiri": {
+     "seikai": 2,
+     "kotae": 2,
+     "shu": "atta"
+    }
+   },
+   "shiranai": [],
+   "kinshi": [],
+   "kazoe": {
+    "atta": 5,
+    "yomenaiKotae": 1,
+    "chigau": 0,
+    "yomenaiRanNiKazu": 0,
+    "nakatta": 0
+   },
+   "zenbuAtta": false,
+   "usage": {
+    "input": 3011,
+    "output": 580
+   },
+   "namaKotae": [
+    {
+     "id": "mamedaifuku",
+     "na": "豆大福",
+     "kazu": 2
+    },
+    {
+     "id": "dorayaki",
+     "na": "どら焼き",
+     "kazu": 4
+    },
+    {
+     "id": "kurimanju",
+     "na": "栗まんじゅう",
+     "kazu": 1
+    },
+    {
+     "id": "kusamochi",
+     "na": "草餅",
+     "kazu": null
+    },
+    {
+     "id": "monaka",
+     "na": "最中",
+     "kazu": 3
+    },
+    {
+     "id": "nerikiri",
+     "na": "練り切り（季節）",
+     "kazu": 2
+    }
+   ]
+  },
+  {
+   "file": "p03-dim.jpg",
+   "key": "p03",
+   "kumi": "warui",
+   "ran": {
+    "mamedaifuku": {
+     "seikai": 6,
+     "kotae": 6,
+     "shu": "atta"
+    },
+    "dorayaki": {
+     "seikai": 2,
+     "kotae": 2,
+     "shu": "atta"
+    },
+    "kurimanju": {
+     "seikai": 0,
+     "kotae": 0,
+     "shu": "atta"
+    },
+    "kusamochi": {
+     "seikai": 3,
+     "kotae": 3,
+     "shu": "atta"
+    },
+    "monaka": {
+     "seikai": 0,
+     "kotae": 0,
+     "shu": "atta"
+    },
+    "nerikiri": {
+     "seikai": 5,
+     "kotae": 5,
+     "shu": "atta"
+    }
+   },
+   "shiranai": [],
+   "kinshi": [],
+   "kazoe": {
+    "atta": 6,
+    "yomenaiKotae": 0,
+    "chigau": 0,
+    "yomenaiRanNiKazu": 0,
+    "nakatta": 0
+   },
+   "zenbuAtta": true,
+   "usage": {
+    "input": 3011,
+    "output": 281
+   },
+   "namaKotae": [
+    {
+     "id": "mamedaifuku",
+     "na": "豆大福",
+     "kazu": 6
+    },
+    {
+     "id": "dorayaki",
+     "na": "どら焼き",
+     "kazu": 2
+    },
+    {
+     "id": "kurimanju",
+     "na": "栗まんじゅう",
+     "kazu": 0
+    },
+    {
+     "id": "kusamochi",
+     "na": "草餅",
+     "kazu": 3
+    },
+    {
+     "id": "monaka",
+     "na": "最中",
+     "kazu": 0
+    },
+    {
+     "id": "nerikiri",
+     "na": "練り切り（季節）",
+     "kazu": 5
+    }
+   ]
+  },
+  {
+   "file": "p03-rough.jpg",
+   "key": "p03",
+   "kumi": "warui",
+   "ran": {
+    "mamedaifuku": {
+     "seikai": 6,
+     "kotae": 6,
+     "shu": "atta"
+    },
+    "dorayaki": {
+     "seikai": 2,
+     "kotae": 2,
+     "shu": "atta"
+    },
+    "kurimanju": {
+     "seikai": 0,
+     "kotae": 0,
+     "shu": "atta"
+    },
+    "kusamochi": {
+     "seikai": 3,
+     "kotae": 3,
+     "shu": "atta"
+    },
+    "monaka": {
+     "seikai": 0,
+     "kotae": 0,
+     "shu": "atta"
+    },
+    "nerikiri": {
+     "seikai": 5,
+     "kotae": 5,
+     "shu": "atta"
+    }
+   },
+   "shiranai": [],
+   "kinshi": [],
+   "kazoe": {
+    "atta": 6,
+    "yomenaiKotae": 0,
+    "chigau": 0,
+    "yomenaiRanNiKazu": 0,
+    "nakatta": 0
+   },
+   "zenbuAtta": true,
+   "usage": {
+    "input": 3011,
+    "output": 325
+   },
+   "namaKotae": [
+    {
+     "id": "mamedaifuku",
+     "na": "豆大福",
+     "kazu": 6
+    },
+    {
+     "id": "dorayaki",
+     "na": "どら焼き",
+     "kazu": 2
+    },
+    {
+     "id": "kurimanju",
+     "na": "栗まんじゅう",
+     "kazu": 0
+    },
+    {
+     "id": "kusamochi",
+     "na": "草餅",
+     "kazu": 3
+    },
+    {
+     "id": "monaka",
+     "na": "最中",
+     "kazu": 0
+    },
+    {
+     "id": "nerikiri",
+     "na": "練り切り（季節）",
+     "kazu": 5
+    }
+   ]
+  },
+  {
+   "file": "p03-tilt.jpg",
+   "key": "p03",
+   "kumi": "warui",
+   "ran": {
+    "mamedaifuku": {
+     "seikai": 6,
+     "kotae": 6,
+     "shu": "atta"
+    },
+    "dorayaki": {
+     "seikai": 2,
+     "kotae": 2,
+     "shu": "atta"
+    },
+    "kurimanju": {
+     "seikai": 0,
+     "kotae": 0,
+     "shu": "atta"
+    },
+    "kusamochi": {
+     "seikai": 3,
+     "kotae": 3,
+     "shu": "atta"
+    },
+    "monaka": {
+     "seikai": 0,
+     "kotae": 0,
+     "shu": "atta"
+    },
+    "nerikiri": {
+     "seikai": 5,
+     "kotae": 5,
+     "shu": "atta"
+    }
+   },
+   "shiranai": [],
+   "kinshi": [],
+   "kazoe": {
+    "atta": 6,
+    "yomenaiKotae": 0,
+    "chigau": 0,
+    "yomenaiRanNiKazu": 0,
+    "nakatta": 0
+   },
+   "zenbuAtta": true,
+   "usage": {
+    "input": 3011,
+    "output": 114
+   },
+   "namaKotae": [
+    {
+     "id": "mamedaifuku",
+     "na": "豆大福",
+     "kazu": 6
+    },
+    {
+     "id": "dorayaki",
+     "na": "どら焼き",
+     "kazu": 2
+    },
+    {
+     "id": "kurimanju",
+     "na": "栗まんじゅう",
+     "kazu": 0
+    },
+    {
+     "id": "kusamochi",
+     "na": "草餅",
+     "kazu": 3
+    },
+    {
+     "id": "monaka",
+     "na": "最中",
+     "kazu": 0
+    },
+    {
+     "id": "nerikiri",
+     "na": "練り切り（季節）",
+     "kazu": 5
+    }
+   ]
+  },
+  {
+   "file": "p03.png",
+   "key": "p03",
+   "kumi": "futsuu",
+   "ran": {
+    "mamedaifuku": {
+     "seikai": 6,
+     "kotae": 6,
+     "shu": "atta"
+    },
+    "dorayaki": {
+     "seikai": 2,
+     "kotae": 2,
+     "shu": "atta"
+    },
+    "kurimanju": {
+     "seikai": 0,
+     "kotae": 0,
+     "shu": "atta"
+    },
+    "kusamochi": {
+     "seikai": 3,
+     "kotae": 3,
+     "shu": "atta"
+    },
+    "monaka": {
+     "seikai": 0,
+     "kotae": 0,
+     "shu": "atta"
+    },
+    "nerikiri": {
+     "seikai": 5,
+     "kotae": 5,
+     "shu": "atta"
+    }
+   },
+   "shiranai": [],
+   "kinshi": [],
+   "kazoe": {
+    "atta": 6,
+    "yomenaiKotae": 0,
+    "chigau": 0,
+    "yomenaiRanNiKazu": 0,
+    "nakatta": 0
+   },
+   "zenbuAtta": true,
+   "usage": {
+    "input": 3011,
+    "output": 369
+   },
+   "namaKotae": [
+    {
+     "id": "mamedaifuku",
+     "na": "豆大福",
+     "kazu": 6
+    },
+    {
+     "id": "dorayaki",
+     "na": "どら焼き",
+     "kazu": 2
+    },
+    {
+     "id": "kurimanju",
+     "na": "栗まんじゅう",
+     "kazu": 0
+    },
+    {
+     "id": "kusamochi",
+     "na": "草餅",
+     "kazu": 3
+    },
+    {
+     "id": "monaka",
+     "na": "最中",
+     "kazu": 0
+    },
+    {
+     "id": "nerikiri",
+     "na": "練り切り",
+     "kazu": 5
+    }
+   ]
+  },
+  {
+   "file": "p04-dim.jpg",
+   "key": "p04",
+   "kumi": "warui",
+   "ran": {
+    "mamedaifuku": {
+     "seikai": 5,
+     "kotae": 5,
+     "shu": "atta"
+    },
+    "dorayaki": {
+     "seikai": 1,
+     "kotae": 1,
+     "shu": "atta"
+    },
+    "kurimanju": {
+     "seikai": 2,
+     "kotae": 2,
+     "shu": "atta"
+    },
+    "kusamochi": {
+     "seikai": 1,
+     "kotae": 1,
+     "shu": "atta"
+    },
+    "monaka": {
+     "seikai": 2,
+     "kotae": 2,
+     "shu": "atta"
+    },
+    "nerikiri": {
+     "seikai": 0,
+     "kotae": 0,
+     "shu": "atta"
+    }
+   },
+   "shiranai": [],
+   "kinshi": [],
+   "kazoe": {
+    "atta": 6,
+    "yomenaiKotae": 0,
+    "chigau": 0,
+    "yomenaiRanNiKazu": 0,
+    "nakatta": 0
+   },
+   "zenbuAtta": true,
+   "usage": {
+    "input": 3011,
+    "output": 339
+   },
+   "namaKotae": [
+    {
+     "id": "mamedaifuku",
+     "na": "豆大福",
+     "kazu": 5
+    },
+    {
+     "id": "dorayaki",
+     "na": "どら焼き",
+     "kazu": 1
+    },
+    {
+     "id": "kurimanju",
+     "na": "栗まんじゅう",
+     "kazu": 2
+    },
+    {
+     "id": "kusamochi",
+     "na": "草餅",
+     "kazu": 1
+    },
+    {
+     "id": "monaka",
+     "na": "最中",
+     "kazu": 2
+    },
+    {
+     "id": "nerikiri",
+     "na": "練り切り",
+     "kazu": 0
+    }
+   ]
+  },
+  {
+   "file": "p04-rough.jpg",
+   "key": "p04",
+   "kumi": "warui",
+   "ran": {
+    "mamedaifuku": {
+     "seikai": 5,
+     "kotae": 5,
+     "shu": "atta"
+    },
+    "dorayaki": {
+     "seikai": 1,
+     "kotae": 1,
+     "shu": "atta"
+    },
+    "kurimanju": {
+     "seikai": 2,
+     "kotae": 2,
+     "shu": "atta"
+    },
+    "kusamochi": {
+     "seikai": 1,
+     "kotae": 1,
+     "shu": "atta"
+    },
+    "monaka": {
+     "seikai": 2,
+     "kotae": 2,
+     "shu": "atta"
+    },
+    "nerikiri": {
+     "seikai": 0,
+     "kotae": 0,
+     "shu": "atta"
+    }
+   },
+   "shiranai": [],
+   "kinshi": [],
+   "kazoe": {
+    "atta": 6,
+    "yomenaiKotae": 0,
+    "chigau": 0,
+    "yomenaiRanNiKazu": 0,
+    "nakatta": 0
+   },
+   "zenbuAtta": true,
+   "usage": {
+    "input": 3011,
+    "output": 621
+   },
+   "namaKotae": [
+    {
+     "id": "mamedaifuku",
+     "na": "豆大福",
+     "kazu": 5
+    },
+    {
+     "id": "dorayaki",
+     "na": "どら焼き",
+     "kazu": 1
+    },
+    {
+     "id": "kurimanju",
+     "na": "栗まんじゅう",
+     "kazu": 2
+    },
+    {
+     "id": "kusamochi",
+     "na": "草餅",
+     "kazu": 1
+    },
+    {
+     "id": "monaka",
+     "na": "最中",
+     "kazu": 2
+    },
+    {
+     "id": "nerikiri",
+     "na": "練り切り",
+     "kazu": 0
+    }
+   ]
+  },
+  {
+   "file": "p04-tilt.jpg",
+   "key": "p04",
+   "kumi": "warui",
+   "ran": {
+    "mamedaifuku": {
+     "seikai": 5,
+     "kotae": 5,
+     "shu": "atta"
+    },
+    "dorayaki": {
+     "seikai": 1,
+     "kotae": 1,
+     "shu": "atta"
+    },
+    "kurimanju": {
+     "seikai": 2,
+     "kotae": 2,
+     "shu": "atta"
+    },
+    "kusamochi": {
+     "seikai": 1,
+     "kotae": 1,
+     "shu": "atta"
+    },
+    "monaka": {
+     "seikai": 2,
+     "kotae": 2,
+     "shu": "atta"
+    },
+    "nerikiri": {
+     "seikai": 0,
+     "kotae": 0,
+     "shu": "atta"
+    }
+   },
+   "shiranai": [],
+   "kinshi": [],
+   "kazoe": {
+    "atta": 6,
+    "yomenaiKotae": 0,
+    "chigau": 0,
+    "yomenaiRanNiKazu": 0,
+    "nakatta": 0
+   },
+   "zenbuAtta": true,
+   "usage": {
+    "input": 3011,
+    "output": 498
+   },
+   "namaKotae": [
+    {
+     "id": "mamedaifuku",
+     "na": "豆大福",
+     "kazu": 5
+    },
+    {
+     "id": "dorayaki",
+     "na": "どら焼き",
+     "kazu": 1
+    },
+    {
+     "id": "kurimanju",
+     "na": "栗まんじゅう",
+     "kazu": 2
+    },
+    {
+     "id": "kusamochi",
+     "na": "草餅",
+     "kazu": 1
+    },
+    {
+     "id": "monaka",
+     "na": "最中",
+     "kazu": 2
+    },
+    {
+     "id": "nerikiri",
+     "na": "練り切り（季節）",
+     "kazu": 0
+    }
+   ]
+  },
+  {
+   "file": "p04.png",
+   "key": "p04",
+   "kumi": "futsuu",
+   "ran": {
+    "mamedaifuku": {
+     "seikai": 5,
+     "kotae": 5,
+     "shu": "atta"
+    },
+    "dorayaki": {
+     "seikai": 1,
+     "kotae": 1,
+     "shu": "atta"
+    },
+    "kurimanju": {
+     "seikai": 2,
+     "kotae": 2,
+     "shu": "atta"
+    },
+    "kusamochi": {
+     "seikai": 1,
+     "kotae": 1,
+     "shu": "atta"
+    },
+    "monaka": {
+     "seikai": 2,
+     "kotae": 2,
+     "shu": "atta"
+    },
+    "nerikiri": {
+     "seikai": 0,
+     "kotae": 0,
+     "shu": "atta"
+    }
+   },
+   "shiranai": [],
+   "kinshi": [],
+   "kazoe": {
+    "atta": 6,
+    "yomenaiKotae": 0,
+    "chigau": 0,
+    "yomenaiRanNiKazu": 0,
+    "nakatta": 0
+   },
+   "zenbuAtta": true,
+   "usage": {
+    "input": 3011,
+    "output": 491
+   },
+   "namaKotae": [
+    {
+     "id": "mamedaifuku",
+     "na": "豆大福",
+     "kazu": 5
+    },
+    {
+     "id": "dorayaki",
+     "na": "どら焼き",
+     "kazu": 1
+    },
+    {
+     "id": "kurimanju",
+     "na": "栗まんじゅう",
+     "kazu": 2
+    },
+    {
+     "id": "kusamochi",
+     "na": "草餅",
+     "kazu": 1
+    },
+    {
+     "id": "monaka",
+     "na": "最中",
+     "kazu": 2
+    },
+    {
+     "id": "nerikiri",
+     "na": "練り切り",
+     "kazu": 0
+    }
+   ]
+  },
+  {
+   "file": "p05-dim.jpg",
+   "key": "p05",
+   "kumi": "warui",
+   "ran": {
+    "mamedaifuku": {
+     "seikai": 0,
+     "kotae": 0,
+     "shu": "atta"
+    },
+    "dorayaki": {
+     "seikai": 0,
+     "kotae": 0,
+     "shu": "atta"
+    },
+    "kurimanju": {
+     "seikai": 1,
+     "kotae": 1,
+     "shu": "atta"
+    },
+    "kusamochi": {
+     "seikai": 2,
+     "kotae": 2,
+     "shu": "atta"
+    },
+    "monaka": {
+     "seikai": 0,
+     "kotae": 0,
+     "shu": "atta"
+    },
+    "nerikiri": {
+     "seikai": 3,
+     "kotae": 3,
+     "shu": "atta"
+    }
+   },
+   "shiranai": [],
+   "kinshi": [],
+   "kazoe": {
+    "atta": 6,
+    "yomenaiKotae": 0,
+    "chigau": 0,
+    "yomenaiRanNiKazu": 0,
+    "nakatta": 0
+   },
+   "zenbuAtta": true,
+   "usage": {
+    "input": 3011,
+    "output": 480
+   },
+   "namaKotae": [
+    {
+     "id": "mamedaifuku",
+     "na": "豆大福",
+     "kazu": 0
+    },
+    {
+     "id": "dorayaki",
+     "na": "どら焼き",
+     "kazu": 0
+    },
+    {
+     "id": "kurimanju",
+     "na": "栗まんじゅう",
+     "kazu": 1
+    },
+    {
+     "id": "kusamochi",
+     "na": "草餅",
+     "kazu": 2
+    },
+    {
+     "id": "monaka",
+     "na": "最中",
+     "kazu": 0
+    },
+    {
+     "id": "nerikiri",
+     "na": "練り切り",
+     "kazu": 3
+    }
+   ]
+  },
+  {
+   "file": "p05-rough.jpg",
+   "key": "p05",
+   "kumi": "warui",
+   "ran": {
+    "mamedaifuku": {
+     "seikai": 0,
+     "kotae": null,
+     "shu": "yomenaiKotae"
+    },
+    "dorayaki": {
+     "seikai": 0,
+     "kotae": 0,
+     "shu": "atta"
+    },
+    "kurimanju": {
+     "seikai": 1,
+     "kotae": 1,
+     "shu": "atta"
+    },
+    "kusamochi": {
+     "seikai": 2,
+     "kotae": 2,
+     "shu": "atta"
+    },
+    "monaka": {
+     "seikai": 0,
+     "kotae": 0,
+     "shu": "atta"
+    },
+    "nerikiri": {
+     "seikai": 3,
+     "kotae": 3,
+     "shu": "atta"
+    }
+   },
+   "shiranai": [],
+   "kinshi": [],
+   "kazoe": {
+    "atta": 5,
+    "yomenaiKotae": 1,
+    "chigau": 0,
+    "yomenaiRanNiKazu": 0,
+    "nakatta": 0
+   },
+   "zenbuAtta": false,
+   "usage": {
+    "input": 3011,
+    "output": 499
+   },
+   "namaKotae": [
+    {
+     "id": "mamedaifuku",
+     "na": "豆大福",
+     "kazu": null
+    },
+    {
+     "id": "dorayaki",
+     "na": "どら焼き",
+     "kazu": 0
+    },
+    {
+     "id": "kurimanju",
+     "na": "栗まんじゅう",
+     "kazu": 1
+    },
+    {
+     "id": "kusamochi",
+     "na": "草餅",
+     "kazu": 2
+    },
+    {
+     "id": "monaka",
+     "na": "最中",
+     "kazu": 0
+    },
+    {
+     "id": "nerikiri",
+     "na": "練り切り",
+     "kazu": 3
+    }
+   ]
+  },
+  {
+   "file": "p05-tilt.jpg",
+   "key": "p05",
+   "kumi": "warui",
+   "ran": {
+    "mamedaifuku": {
+     "seikai": 0,
+     "kotae": 0,
+     "shu": "atta"
+    },
+    "dorayaki": {
+     "seikai": 0,
+     "kotae": 0,
+     "shu": "atta"
+    },
+    "kurimanju": {
+     "seikai": 1,
+     "kotae": 1,
+     "shu": "atta"
+    },
+    "kusamochi": {
+     "seikai": 2,
+     "kotae": 2,
+     "shu": "atta"
+    },
+    "monaka": {
+     "seikai": 0,
+     "kotae": 0,
+     "shu": "atta"
+    },
+    "nerikiri": {
+     "seikai": 3,
+     "kotae": 3,
+     "shu": "atta"
+    }
+   },
+   "shiranai": [],
+   "kinshi": [],
+   "kazoe": {
+    "atta": 6,
+    "yomenaiKotae": 0,
+    "chigau": 0,
+    "yomenaiRanNiKazu": 0,
+    "nakatta": 0
+   },
+   "zenbuAtta": true,
+   "usage": {
+    "input": 3011,
+    "output": 380
+   },
+   "namaKotae": [
+    {
+     "id": "mamedaifuku",
+     "na": "豆大福",
+     "kazu": 0
+    },
+    {
+     "id": "dorayaki",
+     "na": "どら焼き",
+     "kazu": 0
+    },
+    {
+     "id": "kurimanju",
+     "na": "栗まんじゅう",
+     "kazu": 1
+    },
+    {
+     "id": "kusamochi",
+     "na": "草餅",
+     "kazu": 2
+    },
+    {
+     "id": "monaka",
+     "na": "最中",
+     "kazu": 0
+    },
+    {
+     "id": "nerikiri",
+     "na": "練り切り",
+     "kazu": 3
+    }
+   ]
+  },
+  {
+   "file": "p05.png",
+   "key": "p05",
+   "kumi": "futsuu",
+   "ran": {
+    "mamedaifuku": {
+     "seikai": 0,
+     "kotae": 0,
+     "shu": "atta"
+    },
+    "dorayaki": {
+     "seikai": 0,
+     "kotae": 0,
+     "shu": "atta"
+    },
+    "kurimanju": {
+     "seikai": 1,
+     "kotae": 1,
+     "shu": "atta"
+    },
+    "kusamochi": {
+     "seikai": 2,
+     "kotae": 2,
+     "shu": "atta"
+    },
+    "monaka": {
+     "seikai": 0,
+     "kotae": 0,
+     "shu": "atta"
+    },
+    "nerikiri": {
+     "seikai": 3,
+     "kotae": 3,
+     "shu": "atta"
+    }
+   },
+   "shiranai": [],
+   "kinshi": [],
+   "kazoe": {
+    "atta": 6,
+    "yomenaiKotae": 0,
+    "chigau": 0,
+    "yomenaiRanNiKazu": 0,
+    "nakatta": 0
+   },
+   "zenbuAtta": true,
+   "usage": {
+    "input": 3011,
+    "output": 350
+   },
+   "namaKotae": [
+    {
+     "id": "mamedaifuku",
+     "na": "豆大福",
+     "kazu": 0
+    },
+    {
+     "id": "dorayaki",
+     "na": "どら焼き",
+     "kazu": 0
+    },
+    {
+     "id": "kurimanju",
+     "na": "栗まんじゅう",
+     "kazu": 1
+    },
+    {
+     "id": "kusamochi",
+     "na": "草餅",
+     "kazu": 2
+    },
+    {
+     "id": "monaka",
+     "na": "最中",
+     "kazu": 0
+    },
+    {
+     "id": "nerikiri",
+     "na": "練り切り（季節）",
+     "kazu": 3
+    }
+   ]
+  },
+  {
+   "file": "p06-dim.jpg",
+   "key": "p06",
+   "kumi": "warui",
+   "ran": {
+    "mamedaifuku": {
+     "seikai": 4,
+     "kotae": 4,
+     "shu": "atta"
+    },
+    "dorayaki": {
+     "seikai": 5,
+     "kotae": 5,
+     "shu": "atta"
+    },
+    "kurimanju": {
+     "seikai": 2,
+     "kotae": 2,
+     "shu": "atta"
+    },
+    "kusamochi": {
+     "seikai": 6,
+     "kotae": 6,
+     "shu": "atta"
+    },
+    "monaka": {
+     "seikai": 1,
+     "kotae": 1,
+     "shu": "atta"
+    },
+    "nerikiri": {
+     "seikai": 1,
+     "kotae": 1,
+     "shu": "atta"
+    }
+   },
+   "shiranai": [],
+   "kinshi": [],
+   "kazoe": {
+    "atta": 6,
+    "yomenaiKotae": 0,
+    "chigau": 0,
+    "yomenaiRanNiKazu": 0,
+    "nakatta": 0
+   },
+   "zenbuAtta": true,
+   "usage": {
+    "input": 3011,
+    "output": 246
+   },
+   "namaKotae": [
+    {
+     "id": "mamedaifuku",
+     "na": "豆大福",
+     "kazu": 4
+    },
+    {
+     "id": "dorayaki",
+     "na": "どら焼き",
+     "kazu": 5
+    },
+    {
+     "id": "kurimanju",
+     "na": "栗まんじゅう",
+     "kazu": 2
+    },
+    {
+     "id": "kusamochi",
+     "na": "草餅",
+     "kazu": 6
+    },
+    {
+     "id": "monaka",
+     "na": "最中",
+     "kazu": 1
+    },
+    {
+     "id": "nerikiri",
+     "na": "練り切り",
+     "kazu": 1
+    }
+   ]
+  },
+  {
+   "file": "p06-rough.jpg",
+   "key": "p06",
+   "kumi": "warui",
+   "ran": {
+    "mamedaifuku": {
+     "seikai": 4,
+     "kotae": 4,
+     "shu": "atta"
+    },
+    "dorayaki": {
+     "seikai": 5,
+     "kotae": 5,
+     "shu": "atta"
+    },
+    "kurimanju": {
+     "seikai": 2,
+     "kotae": 2,
+     "shu": "atta"
+    },
+    "kusamochi": {
+     "seikai": 6,
+     "kotae": 6,
+     "shu": "atta"
+    },
+    "monaka": {
+     "seikai": 1,
+     "kotae": 1,
+     "shu": "atta"
+    },
+    "nerikiri": {
+     "seikai": 1,
+     "kotae": 1,
+     "shu": "atta"
+    }
+   },
+   "shiranai": [],
+   "kinshi": [],
+   "kazoe": {
+    "atta": 6,
+    "yomenaiKotae": 0,
+    "chigau": 0,
+    "yomenaiRanNiKazu": 0,
+    "nakatta": 0
+   },
+   "zenbuAtta": true,
+   "usage": {
+    "input": 3011,
+    "output": 303
+   },
+   "namaKotae": [
+    {
+     "id": "mamedaifuku",
+     "na": "豆大福",
+     "kazu": 4
+    },
+    {
+     "id": "dorayaki",
+     "na": "どら焼き",
+     "kazu": 5
+    },
+    {
+     "id": "kurimanju",
+     "na": "栗まんじゅう",
+     "kazu": 2
+    },
+    {
+     "id": "kusamochi",
+     "na": "草餅",
+     "kazu": 6
+    },
+    {
+     "id": "monaka",
+     "na": "最中",
+     "kazu": 1
+    },
+    {
+     "id": "nerikiri",
+     "na": "練り切り",
+     "kazu": 1
+    }
+   ]
+  },
+  {
+   "file": "p06-tilt.jpg",
+   "key": "p06",
+   "kumi": "warui",
+   "ran": {
+    "mamedaifuku": {
+     "seikai": 4,
+     "kotae": 4,
+     "shu": "atta"
+    },
+    "dorayaki": {
+     "seikai": 5,
+     "kotae": 5,
+     "shu": "atta"
+    },
+    "kurimanju": {
+     "seikai": 2,
+     "kotae": 2,
+     "shu": "atta"
+    },
+    "kusamochi": {
+     "seikai": 6,
+     "kotae": 6,
+     "shu": "atta"
+    },
+    "monaka": {
+     "seikai": 1,
+     "kotae": 1,
+     "shu": "atta"
+    },
+    "nerikiri": {
+     "seikai": 1,
+     "kotae": 1,
+     "shu": "atta"
+    }
+   },
+   "shiranai": [],
+   "kinshi": [],
+   "kazoe": {
+    "atta": 6,
+    "yomenaiKotae": 0,
+    "chigau": 0,
+    "yomenaiRanNiKazu": 0,
+    "nakatta": 0
+   },
+   "zenbuAtta": true,
+   "usage": {
+    "input": 3011,
+    "output": 110
+   },
+   "namaKotae": [
+    {
+     "id": "mamedaifuku",
+     "na": "豆大福",
+     "kazu": 4
+    },
+    {
+     "id": "dorayaki",
+     "na": "どら焼き",
+     "kazu": 5
+    },
+    {
+     "id": "kurimanju",
+     "na": "栗まんじゅう",
+     "kazu": 2
+    },
+    {
+     "id": "kusamochi",
+     "na": "草餅",
+     "kazu": 6
+    },
+    {
+     "id": "monaka",
+     "na": "最中",
+     "kazu": 1
+    },
+    {
+     "id": "nerikiri",
+     "na": "練り切り",
+     "kazu": 1
+    }
+   ]
+  },
+  {
+   "file": "p06.png",
+   "key": "p06",
+   "kumi": "futsuu",
+   "ran": {
+    "mamedaifuku": {
+     "seikai": 4,
+     "kotae": 4,
+     "shu": "atta"
+    },
+    "dorayaki": {
+     "seikai": 5,
+     "kotae": 5,
+     "shu": "atta"
+    },
+    "kurimanju": {
+     "seikai": 2,
+     "kotae": 2,
+     "shu": "atta"
+    },
+    "kusamochi": {
+     "seikai": 6,
+     "kotae": 6,
+     "shu": "atta"
+    },
+    "monaka": {
+     "seikai": 1,
+     "kotae": 1,
+     "shu": "atta"
+    },
+    "nerikiri": {
+     "seikai": 1,
+     "kotae": 1,
+     "shu": "atta"
+    }
+   },
+   "shiranai": [],
+   "kinshi": [],
+   "kazoe": {
+    "atta": 6,
+    "yomenaiKotae": 0,
+    "chigau": 0,
+    "yomenaiRanNiKazu": 0,
+    "nakatta": 0
+   },
+   "zenbuAtta": true,
+   "usage": {
+    "input": 3011,
+    "output": 376
+   },
+   "namaKotae": [
+    {
+     "id": "mamedaifuku",
+     "na": "豆大福",
+     "kazu": 4
+    },
+    {
+     "id": "dorayaki",
+     "na": "どら焼き",
+     "kazu": 5
+    },
+    {
+     "id": "kurimanju",
+     "na": "栗まんじゅう",
+     "kazu": 2
+    },
+    {
+     "id": "kusamochi",
+     "na": "草餅",
+     "kazu": 6
+    },
+    {
+     "id": "monaka",
+     "na": "最中",
+     "kazu": 1
+    },
+    {
+     "id": "nerikiri",
+     "na": "練り切り",
+     "kazu": 1
+    }
+   ]
+  },
+  {
+   "file": "p07-dim.jpg",
+   "key": "p07",
+   "kumi": "warui",
+   "ran": {
+    "mamedaifuku": {
+     "seikai": 7,
+     "kotae": 7,
+     "shu": "atta"
+    },
+    "dorayaki": {
+     "seikai": 3,
+     "kotae": 3,
+     "shu": "atta"
+    },
+    "kurimanju": {
+     "seikai": 4,
+     "kotae": 4,
+     "shu": "atta"
+    },
+    "kusamochi": {
+     "seikai": 2,
+     "kotae": 2,
+     "shu": "atta"
+    },
+    "monaka": {
+     "seikai": 2,
+     "kotae": 2,
+     "shu": "atta"
+    },
+    "nerikiri": {
+     "seikai": 3,
+     "kotae": 3,
+     "shu": "atta"
+    }
+   },
+   "shiranai": [],
+   "kinshi": [],
+   "kazoe": {
+    "atta": 6,
+    "yomenaiKotae": 0,
+    "chigau": 0,
+    "yomenaiRanNiKazu": 0,
+    "nakatta": 0
+   },
+   "zenbuAtta": true,
+   "usage": {
+    "input": 3011,
+    "output": 215
+   },
+   "namaKotae": [
+    {
+     "id": "mamedaifuku",
+     "na": "豆大福",
+     "kazu": 7
+    },
+    {
+     "id": "dorayaki",
+     "na": "どら焼き",
+     "kazu": 3
+    },
+    {
+     "id": "kurimanju",
+     "na": "栗まんじゅう",
+     "kazu": 4
+    },
+    {
+     "id": "kusamochi",
+     "na": "草餅",
+     "kazu": 2
+    },
+    {
+     "id": "monaka",
+     "na": "最中",
+     "kazu": 2
+    },
+    {
+     "id": "nerikiri",
+     "na": "練り切り",
+     "kazu": 3
+    }
+   ]
+  },
+  {
+   "file": "p07-rough.jpg",
+   "key": "p07",
+   "kumi": "warui",
+   "ran": {
+    "mamedaifuku": {
+     "seikai": 7,
+     "kotae": 7,
+     "shu": "atta"
+    },
+    "dorayaki": {
+     "seikai": 3,
+     "kotae": null,
+     "shu": "yomenaiKotae"
+    },
+    "kurimanju": {
+     "seikai": 4,
+     "kotae": null,
+     "shu": "yomenaiKotae"
+    },
+    "kusamochi": {
+     "seikai": 2,
+     "kotae": null,
+     "shu": "yomenaiKotae"
+    },
+    "monaka": {
+     "seikai": 2,
+     "kotae": null,
+     "shu": "yomenaiKotae"
+    },
+    "nerikiri": {
+     "seikai": 3,
+     "kotae": null,
+     "shu": "yomenaiKotae"
+    }
+   },
+   "shiranai": [],
+   "kinshi": [],
+   "kazoe": {
+    "atta": 1,
+    "yomenaiKotae": 5,
+    "chigau": 0,
+    "yomenaiRanNiKazu": 0,
+    "nakatta": 0
+   },
+   "zenbuAtta": false,
+   "usage": {
+    "input": 3011,
+    "output": 796
+   },
+   "namaKotae": [
+    {
+     "id": "mamedaifuku",
+     "na": "豆大福",
+     "kazu": 7
+    },
+    {
+     "id": "dorayaki",
+     "na": "どら焼き",
+     "kazu": null
+    },
+    {
+     "id": "kurimanju",
+     "na": "栗まんじゅう",
+     "kazu": null
+    },
+    {
+     "id": "kusamochi",
+     "na": "草餅",
+     "kazu": null
+    },
+    {
+     "id": "monaka",
+     "na": "最中",
+     "kazu": null
+    },
+    {
+     "id": "nerikiri",
+     "na": "練り切り（季節）",
+     "kazu": null
+    }
+   ]
+  },
+  {
+   "file": "p07-tilt.jpg",
+   "key": "p07",
+   "kumi": "warui",
+   "ran": {
+    "mamedaifuku": {
+     "seikai": 7,
+     "kotae": 7,
+     "shu": "atta"
+    },
+    "dorayaki": {
+     "seikai": 3,
+     "kotae": 3,
+     "shu": "atta"
+    },
+    "kurimanju": {
+     "seikai": 4,
+     "kotae": 4,
+     "shu": "atta"
+    },
+    "kusamochi": {
+     "seikai": 2,
+     "kotae": 2,
+     "shu": "atta"
+    },
+    "monaka": {
+     "seikai": 2,
+     "kotae": 2,
+     "shu": "atta"
+    },
+    "nerikiri": {
+     "seikai": 3,
+     "kotae": 3,
+     "shu": "atta"
+    }
+   },
+   "shiranai": [],
+   "kinshi": [],
+   "kazoe": {
+    "atta": 6,
+    "yomenaiKotae": 0,
+    "chigau": 0,
+    "yomenaiRanNiKazu": 0,
+    "nakatta": 0
+   },
+   "zenbuAtta": true,
+   "usage": {
+    "input": 3011,
+    "output": 196
+   },
+   "namaKotae": [
+    {
+     "id": "mamedaifuku",
+     "na": "豆大福",
+     "kazu": 7
+    },
+    {
+     "id": "dorayaki",
+     "na": "どら焼き",
+     "kazu": 3
+    },
+    {
+     "id": "kurimanju",
+     "na": "栗まんじゅう",
+     "kazu": 4
+    },
+    {
+     "id": "kusamochi",
+     "na": "草餅",
+     "kazu": 2
+    },
+    {
+     "id": "monaka",
+     "na": "最中",
+     "kazu": 2
+    },
+    {
+     "id": "nerikiri",
+     "na": "練り切り",
+     "kazu": 3
+    }
+   ]
+  },
+  {
+   "file": "p07.png",
+   "key": "p07",
+   "kumi": "futsuu",
+   "ran": {
+    "mamedaifuku": {
+     "seikai": 7,
+     "kotae": 7,
+     "shu": "atta"
+    },
+    "dorayaki": {
+     "seikai": 3,
+     "kotae": 3,
+     "shu": "atta"
+    },
+    "kurimanju": {
+     "seikai": 4,
+     "kotae": 4,
+     "shu": "atta"
+    },
+    "kusamochi": {
+     "seikai": 2,
+     "kotae": 2,
+     "shu": "atta"
+    },
+    "monaka": {
+     "seikai": 2,
+     "kotae": 2,
+     "shu": "atta"
+    },
+    "nerikiri": {
+     "seikai": 3,
+     "kotae": 3,
+     "shu": "atta"
+    }
+   },
+   "shiranai": [],
+   "kinshi": [],
+   "kazoe": {
+    "atta": 6,
+    "yomenaiKotae": 0,
+    "chigau": 0,
+    "yomenaiRanNiKazu": 0,
+    "nakatta": 0
+   },
+   "zenbuAtta": true,
+   "usage": {
+    "input": 3011,
+    "output": 222
+   },
+   "namaKotae": [
+    {
+     "id": "mamedaifuku",
+     "na": "豆大福",
+     "kazu": 7
+    },
+    {
+     "id": "dorayaki",
+     "na": "どら焼き",
+     "kazu": 3
+    },
+    {
+     "id": "kurimanju",
+     "na": "栗まんじゅう",
+     "kazu": 4
+    },
+    {
+     "id": "kusamochi",
+     "na": "草餅",
+     "kazu": 2
+    },
+    {
+     "id": "monaka",
+     "na": "最中",
+     "kazu": 2
+    },
+    {
+     "id": "nerikiri",
+     "na": "練り切り",
+     "kazu": 3
+    }
+   ]
+  },
+  {
+   "file": "p08-dim.jpg",
+   "key": "p08",
+   "kumi": "warui",
+   "ran": {
+    "mamedaifuku": {
+     "seikai": 2,
+     "kotae": 2,
+     "shu": "atta"
+    },
+    "dorayaki": {
+     "seikai": 2,
+     "kotae": 2,
+     "shu": "atta"
+    },
+    "kurimanju": {
+     "seikai": 0,
+     "kotae": 0,
+     "shu": "atta"
+    },
+    "kusamochi": {
+     "seikai": 1,
+     "kotae": 1,
+     "shu": "atta"
+    },
+    "monaka": {
+     "seikai": 0,
+     "kotae": 0,
+     "shu": "atta"
+    },
+    "nerikiri": {
+     "seikai": 2,
+     "kotae": 2,
+     "shu": "atta"
+    }
+   },
+   "shiranai": [],
+   "kinshi": [],
+   "kazoe": {
+    "atta": 6,
+    "yomenaiKotae": 0,
+    "chigau": 0,
+    "yomenaiRanNiKazu": 0,
+    "nakatta": 0
+   },
+   "zenbuAtta": true,
+   "usage": {
+    "input": 3011,
+    "output": 404
+   },
+   "namaKotae": [
+    {
+     "id": "mamedaifuku",
+     "na": "豆大福",
+     "kazu": 2
+    },
+    {
+     "id": "dorayaki",
+     "na": "どら焼き",
+     "kazu": 2
+    },
+    {
+     "id": "kurimanju",
+     "na": "栗まんじゅう",
+     "kazu": 0
+    },
+    {
+     "id": "kusamochi",
+     "na": "草餅",
+     "kazu": 1
+    },
+    {
+     "id": "monaka",
+     "na": "最中",
+     "kazu": 0
+    },
+    {
+     "id": "nerikiri",
+     "na": "練り切り",
+     "kazu": 2
+    }
+   ]
+  },
+  {
+   "file": "p08-rough.jpg",
+   "key": "p08",
+   "kumi": "warui",
+   "ran": {
+    "mamedaifuku": {
+     "seikai": 2,
+     "kotae": 2,
+     "shu": "atta"
+    },
+    "dorayaki": {
+     "seikai": 2,
+     "kotae": 2,
+     "shu": "atta"
+    },
+    "kurimanju": {
+     "seikai": 0,
+     "kotae": 0,
+     "shu": "atta"
+    },
+    "kusamochi": {
+     "seikai": 1,
+     "kotae": 1,
+     "shu": "atta"
+    },
+    "monaka": {
+     "seikai": 0,
+     "kotae": 0,
+     "shu": "atta"
+    },
+    "nerikiri": {
+     "seikai": 2,
+     "kotae": 2,
+     "shu": "atta"
+    }
+   },
+   "shiranai": [],
+   "kinshi": [],
+   "kazoe": {
+    "atta": 6,
+    "yomenaiKotae": 0,
+    "chigau": 0,
+    "yomenaiRanNiKazu": 0,
+    "nakatta": 0
+   },
+   "zenbuAtta": true,
+   "usage": {
+    "input": 3011,
+    "output": 382
+   },
+   "namaKotae": [
+    {
+     "id": "mamedaifuku",
+     "na": "豆大福",
+     "kazu": 2
+    },
+    {
+     "id": "dorayaki",
+     "na": "どら焼き",
+     "kazu": 2
+    },
+    {
+     "id": "kurimanju",
+     "na": "栗まんじゅう",
+     "kazu": 0
+    },
+    {
+     "id": "kusamochi",
+     "na": "草餅",
+     "kazu": 1
+    },
+    {
+     "id": "monaka",
+     "na": "最中",
+     "kazu": 0
+    },
+    {
+     "id": "nerikiri",
+     "na": "練り切り（季節）",
+     "kazu": 2
+    }
+   ]
+  },
+  {
+   "file": "p08-tilt.jpg",
+   "key": "p08",
+   "kumi": "warui",
+   "ran": {
+    "mamedaifuku": {
+     "seikai": 2,
+     "kotae": 2,
+     "shu": "atta"
+    },
+    "dorayaki": {
+     "seikai": 2,
+     "kotae": 2,
+     "shu": "atta"
+    },
+    "kurimanju": {
+     "seikai": 0,
+     "kotae": 0,
+     "shu": "atta"
+    },
+    "kusamochi": {
+     "seikai": 1,
+     "kotae": 1,
+     "shu": "atta"
+    },
+    "monaka": {
+     "seikai": 0,
+     "kotae": 0,
+     "shu": "atta"
+    },
+    "nerikiri": {
+     "seikai": 2,
+     "kotae": 2,
+     "shu": "atta"
+    }
+   },
+   "shiranai": [],
+   "kinshi": [],
+   "kazoe": {
+    "atta": 6,
+    "yomenaiKotae": 0,
+    "chigau": 0,
+    "yomenaiRanNiKazu": 0,
+    "nakatta": 0
+   },
+   "zenbuAtta": true,
+   "usage": {
+    "input": 3011,
+    "output": 110
+   },
+   "namaKotae": [
+    {
+     "id": "mamedaifuku",
+     "na": "豆大福",
+     "kazu": 2
+    },
+    {
+     "id": "dorayaki",
+     "na": "どら焼き",
+     "kazu": 2
+    },
+    {
+     "id": "kurimanju",
+     "na": "栗まんじゅう",
+     "kazu": 0
+    },
+    {
+     "id": "kusamochi",
+     "na": "草餅",
+     "kazu": 1
+    },
+    {
+     "id": "monaka",
+     "na": "最中",
+     "kazu": 0
+    },
+    {
+     "id": "nerikiri",
+     "na": "練り切り",
+     "kazu": 2
+    }
+   ]
+  },
+  {
+   "file": "p08.png",
+   "key": "p08",
+   "kumi": "futsuu",
+   "ran": {
+    "mamedaifuku": {
+     "seikai": 2,
+     "kotae": 2,
+     "shu": "atta"
+    },
+    "dorayaki": {
+     "seikai": 2,
+     "kotae": 2,
+     "shu": "atta"
+    },
+    "kurimanju": {
+     "seikai": 0,
+     "kotae": 0,
+     "shu": "atta"
+    },
+    "kusamochi": {
+     "seikai": 1,
+     "kotae": 1,
+     "shu": "atta"
+    },
+    "monaka": {
+     "seikai": 0,
+     "kotae": 0,
+     "shu": "atta"
+    },
+    "nerikiri": {
+     "seikai": 2,
+     "kotae": 2,
+     "shu": "atta"
+    }
+   },
+   "shiranai": [],
+   "kinshi": [],
+   "kazoe": {
+    "atta": 6,
+    "yomenaiKotae": 0,
+    "chigau": 0,
+    "yomenaiRanNiKazu": 0,
+    "nakatta": 0
+   },
+   "zenbuAtta": true,
+   "usage": {
+    "input": 3011,
+    "output": 234
+   },
+   "namaKotae": [
+    {
+     "id": "mamedaifuku",
+     "na": "豆大福",
+     "kazu": 2
+    },
+    {
+     "id": "dorayaki",
+     "na": "どら焼き",
+     "kazu": 2
+    },
+    {
+     "id": "kurimanju",
+     "na": "栗まんじゅう",
+     "kazu": 0
+    },
+    {
+     "id": "kusamochi",
+     "na": "草餅",
+     "kazu": 1
+    },
+    {
+     "id": "monaka",
+     "na": "最中",
+     "kazu": 0
+    },
+    {
+     "id": "nerikiri",
+     "na": "練り切り",
+     "kazu": 2
+    }
+   ]
+  },
+  {
+   "file": "p09-dim.jpg",
+   "key": "p09",
+   "kumi": "warui",
+   "ran": {
+    "mamedaifuku": {
+     "seikai": 3,
+     "kotae": 3,
+     "shu": "atta"
+    },
+    "dorayaki": {
+     "seikai": 6,
+     "kotae": 6,
+     "shu": "atta"
+    },
+    "kurimanju": {
+     "seikai": 1,
+     "kotae": 1,
+     "shu": "atta"
+    },
+    "kusamochi": {
+     "seikai": 0,
+     "kotae": 0,
+     "shu": "atta"
+    },
+    "monaka": {
+     "seikai": 2,
+     "kotae": 2,
+     "shu": "atta"
+    },
+    "nerikiri": {
+     "seikai": 4,
+     "kotae": 4,
+     "shu": "atta"
+    }
+   },
+   "shiranai": [],
+   "kinshi": [],
+   "kazoe": {
+    "atta": 6,
+    "yomenaiKotae": 0,
+    "chigau": 0,
+    "yomenaiRanNiKazu": 0,
+    "nakatta": 0
+   },
+   "zenbuAtta": true,
+   "usage": {
+    "input": 3011,
+    "output": 271
+   },
+   "namaKotae": [
+    {
+     "id": "dorayaki",
+     "na": "どら焼き",
+     "kazu": 6
+    },
+    {
+     "id": "mamedaifuku",
+     "na": "豆大福",
+     "kazu": 3
+    },
+    {
+     "id": "kusamochi",
+     "na": "草餅",
+     "kazu": 0
+    },
+    {
+     "id": "kurimanju",
+     "na": "栗まんじゅう",
+     "kazu": 1
+    },
+    {
+     "id": "nerikiri",
+     "na": "練り切り",
+     "kazu": 4
+    },
+    {
+     "id": "monaka",
+     "na": "最中",
+     "kazu": 2
+    }
+   ]
+  },
+  {
+   "file": "p09-rough.jpg",
+   "key": "p09",
+   "kumi": "warui",
+   "ran": {
+    "mamedaifuku": {
+     "seikai": 3,
+     "kotae": 3,
+     "shu": "atta"
+    },
+    "dorayaki": {
+     "seikai": 6,
+     "kotae": 6,
+     "shu": "atta"
+    },
+    "kurimanju": {
+     "seikai": 1,
+     "kotae": 1,
+     "shu": "atta"
+    },
+    "kusamochi": {
+     "seikai": 0,
+     "kotae": 0,
+     "shu": "atta"
+    },
+    "monaka": {
+     "seikai": 2,
+     "kotae": 2,
+     "shu": "atta"
+    },
+    "nerikiri": {
+     "seikai": 4,
+     "kotae": null,
+     "shu": "yomenaiKotae"
+    }
+   },
+   "shiranai": [],
+   "kinshi": [],
+   "kazoe": {
+    "atta": 5,
+    "yomenaiKotae": 1,
+    "chigau": 0,
+    "yomenaiRanNiKazu": 0,
+    "nakatta": 0
+   },
+   "zenbuAtta": false,
+   "usage": {
+    "input": 3011,
+    "output": 599
+   },
+   "namaKotae": [
+    {
+     "id": "dorayaki",
+     "na": "どら焼き",
+     "kazu": 6
+    },
+    {
+     "id": "mamedaifuku",
+     "na": "豆大福",
+     "kazu": 3
+    },
+    {
+     "id": "kusamochi",
+     "na": "草餅",
+     "kazu": 0
+    },
+    {
+     "id": "kurimanju",
+     "na": "栗まんじゅう",
+     "kazu": 1
+    },
+    {
+     "id": "nerikiri",
+     "na": "練り切り",
+     "kazu": null
+    },
+    {
+     "id": "monaka",
+     "na": "最中",
+     "kazu": 2
+    }
+   ]
+  },
+  {
+   "file": "p09-tilt.jpg",
+   "key": "p09",
+   "kumi": "warui",
+   "ran": {
+    "mamedaifuku": {
+     "seikai": 3,
+     "kotae": 3,
+     "shu": "atta"
+    },
+    "dorayaki": {
+     "seikai": 6,
+     "kotae": 6,
+     "shu": "atta"
+    },
+    "kurimanju": {
+     "seikai": 1,
+     "kotae": 1,
+     "shu": "atta"
+    },
+    "kusamochi": {
+     "seikai": 0,
+     "kotae": 0,
+     "shu": "atta"
+    },
+    "monaka": {
+     "seikai": 2,
+     "kotae": 2,
+     "shu": "atta"
+    },
+    "nerikiri": {
+     "seikai": 4,
+     "kotae": 4,
+     "shu": "atta"
+    }
+   },
+   "shiranai": [],
+   "kinshi": [],
+   "kazoe": {
+    "atta": 6,
+    "yomenaiKotae": 0,
+    "chigau": 0,
+    "yomenaiRanNiKazu": 0,
+    "nakatta": 0
+   },
+   "zenbuAtta": true,
+   "usage": {
+    "input": 3011,
+    "output": 879
+   },
+   "namaKotae": [
+    {
+     "id": "dorayaki",
+     "na": "どら焼き",
+     "kazu": 6
+    },
+    {
+     "id": "mamedaifuku",
+     "na": "豆大福",
+     "kazu": 3
+    },
+    {
+     "id": "kusamochi",
+     "na": "草餅",
+     "kazu": 0
+    },
+    {
+     "id": "kurimanju",
+     "na": "栗まんじゅう",
+     "kazu": 1
+    },
+    {
+     "id": "nerikiri",
+     "na": "練り切り（季節）",
+     "kazu": 4
+    },
+    {
+     "id": "monaka",
+     "na": "最中",
+     "kazu": 2
+    }
+   ]
+  },
+  {
+   "file": "p09.png",
+   "key": "p09",
+   "kumi": "futsuu",
+   "ran": {
+    "mamedaifuku": {
+     "seikai": 3,
+     "kotae": 3,
+     "shu": "atta"
+    },
+    "dorayaki": {
+     "seikai": 6,
+     "kotae": 6,
+     "shu": "atta"
+    },
+    "kurimanju": {
+     "seikai": 1,
+     "kotae": 1,
+     "shu": "atta"
+    },
+    "kusamochi": {
+     "seikai": 0,
+     "kotae": 0,
+     "shu": "atta"
+    },
+    "monaka": {
+     "seikai": 2,
+     "kotae": 2,
+     "shu": "atta"
+    },
+    "nerikiri": {
+     "seikai": 4,
+     "kotae": 4,
+     "shu": "atta"
+    }
+   },
+   "shiranai": [],
+   "kinshi": [],
+   "kazoe": {
+    "atta": 6,
+    "yomenaiKotae": 0,
+    "chigau": 0,
+    "yomenaiRanNiKazu": 0,
+    "nakatta": 0
+   },
+   "zenbuAtta": true,
+   "usage": {
+    "input": 3011,
+    "output": 110
+   },
+   "namaKotae": [
+    {
+     "id": "dorayaki",
+     "na": "どら焼き",
+     "kazu": 6
+    },
+    {
+     "id": "mamedaifuku",
+     "na": "豆大福",
+     "kazu": 3
+    },
+    {
+     "id": "kusamochi",
+     "na": "草餅",
+     "kazu": 0
+    },
+    {
+     "id": "kurimanju",
+     "na": "栗まんじゅう",
+     "kazu": 1
+    },
+    {
+     "id": "nerikiri",
+     "na": "練り切り",
+     "kazu": 4
+    },
+    {
+     "id": "monaka",
+     "na": "最中",
+     "kazu": 2
+    }
+   ]
+  },
+  {
+   "file": "p10-dim.jpg",
+   "key": "p10",
+   "kumi": "warui",
+   "ran": {
+    "mamedaifuku": {
+     "seikai": 1,
+     "kotae": 1,
+     "shu": "atta"
+    },
+    "dorayaki": {
+     "seikai": 2,
+     "kotae": 2,
+     "shu": "atta"
+    },
+    "kurimanju": {
+     "seikai": 3,
+     "kotae": 3,
+     "shu": "atta"
+    },
+    "kusamochi": {
+     "seikai": 1,
+     "kotae": 1,
+     "shu": "atta"
+    },
+    "monaka": {
+     "seikai": 1,
+     "kotae": 1,
+     "shu": "atta"
+    },
+    "nerikiri": {
+     "seikai": 0,
+     "kotae": 0,
+     "shu": "atta"
+    }
+   },
+   "shiranai": [],
+   "kinshi": [],
+   "kazoe": {
+    "atta": 6,
+    "yomenaiKotae": 0,
+    "chigau": 0,
+    "yomenaiRanNiKazu": 0,
+    "nakatta": 0
+   },
+   "zenbuAtta": true,
+   "usage": {
+    "input": 3011,
+    "output": 233
+   },
+   "namaKotae": [
+    {
+     "id": "mamedaifuku",
+     "na": "豆大福",
+     "kazu": 1
+    },
+    {
+     "id": "dorayaki",
+     "na": "どら焼き",
+     "kazu": 2
+    },
+    {
+     "id": "kurimanju",
+     "na": "栗まんじゅう",
+     "kazu": 3
+    },
+    {
+     "id": "kusamochi",
+     "na": "草餅",
+     "kazu": 1
+    },
+    {
+     "id": "monaka",
+     "na": "最中",
+     "kazu": 1
+    },
+    {
+     "id": "nerikiri",
+     "na": "練り切り",
+     "kazu": 0
+    }
+   ]
+  },
+  {
+   "file": "p10-rough.jpg",
+   "key": "p10",
+   "kumi": "warui",
+   "ran": {
+    "mamedaifuku": {
+     "seikai": 1,
+     "kotae": 1,
+     "shu": "atta"
+    },
+    "dorayaki": {
+     "seikai": 2,
+     "kotae": 2,
+     "shu": "atta"
+    },
+    "kurimanju": {
+     "seikai": 3,
+     "kotae": 3,
+     "shu": "atta"
+    },
+    "kusamochi": {
+     "seikai": 1,
+     "kotae": 1,
+     "shu": "atta"
+    },
+    "monaka": {
+     "seikai": 1,
+     "kotae": 1,
+     "shu": "atta"
+    },
+    "nerikiri": {
+     "seikai": 0,
+     "kotae": 0,
+     "shu": "atta"
+    }
+   },
+   "shiranai": [],
+   "kinshi": [],
+   "kazoe": {
+    "atta": 6,
+    "yomenaiKotae": 0,
+    "chigau": 0,
+    "yomenaiRanNiKazu": 0,
+    "nakatta": 0
+   },
+   "zenbuAtta": true,
+   "usage": {
+    "input": 3011,
+    "output": 435
+   },
+   "namaKotae": [
+    {
+     "id": "mamedaifuku",
+     "na": "豆大福",
+     "kazu": 1
+    },
+    {
+     "id": "dorayaki",
+     "na": "どら焼き",
+     "kazu": 2
+    },
+    {
+     "id": "kurimanju",
+     "na": "栗まんじゅう",
+     "kazu": 3
+    },
+    {
+     "id": "kusamochi",
+     "na": "草餅",
+     "kazu": 1
+    },
+    {
+     "id": "monaka",
+     "na": "最中",
+     "kazu": 1
+    },
+    {
+     "id": "nerikiri",
+     "na": "練り切り",
+     "kazu": 0
+    }
+   ]
+  },
+  {
+   "file": "p10-tilt.jpg",
+   "key": "p10",
+   "kumi": "warui",
+   "ran": {
+    "mamedaifuku": {
+     "seikai": 1,
+     "kotae": 1,
+     "shu": "atta"
+    },
+    "dorayaki": {
+     "seikai": 2,
+     "kotae": 2,
+     "shu": "atta"
+    },
+    "kurimanju": {
+     "seikai": 3,
+     "kotae": 3,
+     "shu": "atta"
+    },
+    "kusamochi": {
+     "seikai": 1,
+     "kotae": 1,
+     "shu": "atta"
+    },
+    "monaka": {
+     "seikai": 1,
+     "kotae": 1,
+     "shu": "atta"
+    },
+    "nerikiri": {
+     "seikai": 0,
+     "kotae": 0,
+     "shu": "atta"
+    }
+   },
+   "shiranai": [],
+   "kinshi": [],
+   "kazoe": {
+    "atta": 6,
+    "yomenaiKotae": 0,
+    "chigau": 0,
+    "yomenaiRanNiKazu": 0,
+    "nakatta": 0
+   },
+   "zenbuAtta": true,
+   "usage": {
+    "input": 3011,
+    "output": 114
+   },
+   "namaKotae": [
+    {
+     "id": "mamedaifuku",
+     "na": "豆大福",
+     "kazu": 1
+    },
+    {
+     "id": "dorayaki",
+     "na": "どら焼き",
+     "kazu": 2
+    },
+    {
+     "id": "kurimanju",
+     "na": "栗まんじゅう",
+     "kazu": 3
+    },
+    {
+     "id": "kusamochi",
+     "na": "草餅",
+     "kazu": 1
+    },
+    {
+     "id": "monaka",
+     "na": "最中",
+     "kazu": 1
+    },
+    {
+     "id": "nerikiri",
+     "na": "練り切り（季節）",
+     "kazu": 0
+    }
+   ]
+  },
+  {
+   "file": "p10.png",
+   "key": "p10",
+   "kumi": "futsuu",
+   "ran": {
+    "mamedaifuku": {
+     "seikai": 1,
+     "kotae": 1,
+     "shu": "atta"
+    },
+    "dorayaki": {
+     "seikai": 2,
+     "kotae": 2,
+     "shu": "atta"
+    },
+    "kurimanju": {
+     "seikai": 3,
+     "kotae": 3,
+     "shu": "atta"
+    },
+    "kusamochi": {
+     "seikai": 1,
+     "kotae": 1,
+     "shu": "atta"
+    },
+    "monaka": {
+     "seikai": 1,
+     "kotae": 1,
+     "shu": "atta"
+    },
+    "nerikiri": {
+     "seikai": 0,
+     "kotae": 0,
+     "shu": "atta"
+    }
+   },
+   "shiranai": [],
+   "kinshi": [],
+   "kazoe": {
+    "atta": 6,
+    "yomenaiKotae": 0,
+    "chigau": 0,
+    "yomenaiRanNiKazu": 0,
+    "nakatta": 0
+   },
+   "zenbuAtta": true,
+   "usage": {
+    "input": 3011,
+    "output": 235
+   },
+   "namaKotae": [
+    {
+     "id": "mamedaifuku",
+     "na": "豆大福",
+     "kazu": 1
+    },
+    {
+     "id": "dorayaki",
+     "na": "どら焼き",
+     "kazu": 2
+    },
+    {
+     "id": "kurimanju",
+     "na": "栗まんじゅう",
+     "kazu": 3
+    },
+    {
+     "id": "kusamochi",
+     "na": "草餅",
+     "kazu": 1
+    },
+    {
+     "id": "monaka",
+     "na": "最中",
+     "kazu": 1
+    },
+    {
+     "id": "nerikiri",
+     "na": "練り切り",
+     "kazu": 0
+    }
+   ]
+  },
+  {
+   "file": "p11-dim.jpg",
+   "key": "p11",
+   "kumi": "warui",
+   "ran": {
+    "mamedaifuku": {
+     "seikai": 5,
+     "kotae": 5,
+     "shu": "atta"
+    },
+    "dorayaki": {
+     "seikai": 4,
+     "kotae": 4,
+     "shu": "atta"
+    },
+    "kurimanju": {
+     "seikai": 0,
+     "kotae": 0,
+     "shu": "atta"
+    },
+    "kusamochi": {
+     "seikai": 3,
+     "kotae": 3,
+     "shu": "atta"
+    },
+    "monaka": {
+     "seikai": 2,
+     "kotae": 2,
+     "shu": "atta"
+    },
+    "nerikiri": {
+     "seikai": 1,
+     "kotae": 1,
+     "shu": "atta"
+    }
+   },
+   "shiranai": [],
+   "kinshi": [],
+   "kazoe": {
+    "atta": 6,
+    "yomenaiKotae": 0,
+    "chigau": 0,
+    "yomenaiRanNiKazu": 0,
+    "nakatta": 0
+   },
+   "zenbuAtta": true,
+   "usage": {
+    "input": 3011,
+    "output": 236
+   },
+   "namaKotae": [
+    {
+     "id": "mamedaifuku",
+     "na": "豆大福",
+     "kazu": 5
+    },
+    {
+     "id": "dorayaki",
+     "na": "どら焼き",
+     "kazu": 4
+    },
+    {
+     "id": "kurimanju",
+     "na": "栗まんじゅう",
+     "kazu": 0
+    },
+    {
+     "id": "kusamochi",
+     "na": "草餅",
+     "kazu": 3
+    },
+    {
+     "id": "monaka",
+     "na": "最中",
+     "kazu": 2
+    },
+    {
+     "id": "nerikiri",
+     "na": "練り切り（季節）",
+     "kazu": 1
+    }
+   ]
+  },
+  {
+   "file": "p11-rough.jpg",
+   "key": "p11",
+   "kumi": "warui",
+   "ran": {
+    "mamedaifuku": {
+     "seikai": 5,
+     "kotae": 5,
+     "shu": "atta"
+    },
+    "dorayaki": {
+     "seikai": 4,
+     "kotae": 4,
+     "shu": "atta"
+    },
+    "kurimanju": {
+     "seikai": 0,
+     "kotae": 0,
+     "shu": "atta"
+    },
+    "kusamochi": {
+     "seikai": 3,
+     "kotae": 3,
+     "shu": "atta"
+    },
+    "monaka": {
+     "seikai": 2,
+     "kotae": 2,
+     "shu": "atta"
+    },
+    "nerikiri": {
+     "seikai": 1,
+     "kotae": 1,
+     "shu": "atta"
+    }
+   },
+   "shiranai": [],
+   "kinshi": [],
+   "kazoe": {
+    "atta": 6,
+    "yomenaiKotae": 0,
+    "chigau": 0,
+    "yomenaiRanNiKazu": 0,
+    "nakatta": 0
+   },
+   "zenbuAtta": true,
+   "usage": {
+    "input": 3011,
+    "output": 397
+   },
+   "namaKotae": [
+    {
+     "id": "mamedaifuku",
+     "na": "豆大福",
+     "kazu": 5
+    },
+    {
+     "id": "dorayaki",
+     "na": "どら焼き",
+     "kazu": 4
+    },
+    {
+     "id": "kurimanju",
+     "na": "栗まんじゅう",
+     "kazu": 0
+    },
+    {
+     "id": "kusamochi",
+     "na": "草餅",
+     "kazu": 3
+    },
+    {
+     "id": "monaka",
+     "na": "最中",
+     "kazu": 2
+    },
+    {
+     "id": "nerikiri",
+     "na": "練り切り（季節）",
+     "kazu": 1
+    }
+   ]
+  },
+  {
+   "file": "p11-tilt.jpg",
+   "key": "p11",
+   "kumi": "warui",
+   "ran": {
+    "mamedaifuku": {
+     "seikai": 5,
+     "kotae": 5,
+     "shu": "atta"
+    },
+    "dorayaki": {
+     "seikai": 4,
+     "kotae": 4,
+     "shu": "atta"
+    },
+    "kurimanju": {
+     "seikai": 0,
+     "kotae": 0,
+     "shu": "atta"
+    },
+    "kusamochi": {
+     "seikai": 3,
+     "kotae": 3,
+     "shu": "atta"
+    },
+    "monaka": {
+     "seikai": 2,
+     "kotae": 2,
+     "shu": "atta"
+    },
+    "nerikiri": {
+     "seikai": 1,
+     "kotae": 1,
+     "shu": "atta"
+    }
+   },
+   "shiranai": [],
+   "kinshi": [],
+   "kazoe": {
+    "atta": 6,
+    "yomenaiKotae": 0,
+    "chigau": 0,
+    "yomenaiRanNiKazu": 0,
+    "nakatta": 0
+   },
+   "zenbuAtta": true,
+   "usage": {
+    "input": 3011,
+    "output": 114
+   },
+   "namaKotae": [
+    {
+     "id": "mamedaifuku",
+     "na": "豆大福",
+     "kazu": 5
+    },
+    {
+     "id": "dorayaki",
+     "na": "どら焼き",
+     "kazu": 4
+    },
+    {
+     "id": "kurimanju",
+     "na": "栗まんじゅう",
+     "kazu": 0
+    },
+    {
+     "id": "kusamochi",
+     "na": "草餅",
+     "kazu": 3
+    },
+    {
+     "id": "monaka",
+     "na": "最中",
+     "kazu": 2
+    },
+    {
+     "id": "nerikiri",
+     "na": "練り切り（季節）",
+     "kazu": 1
+    }
+   ]
+  },
+  {
+   "file": "p11.png",
+   "key": "p11",
+   "kumi": "futsuu",
+   "ran": {
+    "mamedaifuku": {
+     "seikai": 5,
+     "kotae": 5,
+     "shu": "atta"
+    },
+    "dorayaki": {
+     "seikai": 4,
+     "kotae": 4,
+     "shu": "atta"
+    },
+    "kurimanju": {
+     "seikai": 0,
+     "kotae": 0,
+     "shu": "atta"
+    },
+    "kusamochi": {
+     "seikai": 3,
+     "kotae": 3,
+     "shu": "atta"
+    },
+    "monaka": {
+     "seikai": 2,
+     "kotae": 2,
+     "shu": "atta"
+    },
+    "nerikiri": {
+     "seikai": 1,
+     "kotae": 1,
+     "shu": "atta"
+    }
+   },
+   "shiranai": [],
+   "kinshi": [],
+   "kazoe": {
+    "atta": 6,
+    "yomenaiKotae": 0,
+    "chigau": 0,
+    "yomenaiRanNiKazu": 0,
+    "nakatta": 0
+   },
+   "zenbuAtta": true,
+   "usage": {
+    "input": 3011,
+    "output": 274
+   },
+   "namaKotae": [
+    {
+     "id": "mamedaifuku",
+     "na": "豆大福",
+     "kazu": 5
+    },
+    {
+     "id": "dorayaki",
+     "na": "どら焼き",
+     "kazu": 4
+    },
+    {
+     "id": "kurimanju",
+     "na": "栗まんじゅう",
+     "kazu": 0
+    },
+    {
+     "id": "kusamochi",
+     "na": "草餅",
+     "kazu": 3
+    },
+    {
+     "id": "monaka",
+     "na": "最中",
+     "kazu": 2
+    },
+    {
+     "id": "nerikiri",
+     "na": "練り切り（季節）",
+     "kazu": 1
+    }
+   ]
+  },
+  {
+   "file": "p12-dim.jpg",
+   "key": "p12",
+   "kumi": "warui",
+   "ran": {
+    "mamedaifuku": {
+     "seikai": 3,
+     "kotae": 3,
+     "shu": "atta"
+    },
+    "dorayaki": {
+     "seikai": 3,
+     "kotae": 3,
+     "shu": "atta"
+    },
+    "kurimanju": {
+     "seikai": 3,
+     "kotae": 3,
+     "shu": "atta"
+    },
+    "kusamochi": {
+     "seikai": 2,
+     "kotae": 2,
+     "shu": "atta"
+    },
+    "monaka": {
+     "seikai": 1,
+     "kotae": 1,
+     "shu": "atta"
+    },
+    "nerikiri": {
+     "seikai": 6,
+     "kotae": 6,
+     "shu": "atta"
+    }
+   },
+   "shiranai": [],
+   "kinshi": [],
+   "kazoe": {
+    "atta": 6,
+    "yomenaiKotae": 0,
+    "chigau": 0,
+    "yomenaiRanNiKazu": 0,
+    "nakatta": 0
+   },
+   "zenbuAtta": true,
+   "usage": {
+    "input": 3011,
+    "output": 378
+   },
+   "namaKotae": [
+    {
+     "id": "mamedaifuku",
+     "na": "豆大福",
+     "kazu": 3
+    },
+    {
+     "id": "dorayaki",
+     "na": "どら焼き",
+     "kazu": 3
+    },
+    {
+     "id": "kurimanju",
+     "na": "栗まんじゅう",
+     "kazu": 3
+    },
+    {
+     "id": "kusamochi",
+     "na": "草餅",
+     "kazu": 2
+    },
+    {
+     "id": "monaka",
+     "na": "最中",
+     "kazu": 1
+    },
+    {
+     "id": "nerikiri",
+     "na": "練り切り",
+     "kazu": 6
+    }
+   ]
+  },
+  {
+   "file": "p12-rough.jpg",
+   "key": "p12",
+   "kumi": "warui",
+   "ran": {
+    "mamedaifuku": {
+     "seikai": 3,
+     "kotae": 3,
+     "shu": "atta"
+    },
+    "dorayaki": {
+     "seikai": 3,
+     "kotae": 3,
+     "shu": "atta"
+    },
+    "kurimanju": {
+     "seikai": 3,
+     "kotae": null,
+     "shu": "yomenaiKotae"
+    },
+    "kusamochi": {
+     "seikai": 2,
+     "kotae": 2,
+     "shu": "atta"
+    },
+    "monaka": {
+     "seikai": 1,
+     "kotae": 1,
+     "shu": "atta"
+    },
+    "nerikiri": {
+     "seikai": 6,
+     "kotae": 6,
+     "shu": "atta"
+    }
+   },
+   "shiranai": [],
+   "kinshi": [],
+   "kazoe": {
+    "atta": 5,
+    "yomenaiKotae": 1,
+    "chigau": 0,
+    "yomenaiRanNiKazu": 0,
+    "nakatta": 0
+   },
+   "zenbuAtta": false,
+   "usage": {
+    "input": 3011,
+    "output": 404
+   },
+   "namaKotae": [
+    {
+     "id": "mamedaifuku",
+     "na": "豆大福",
+     "kazu": 3
+    },
+    {
+     "id": "dorayaki",
+     "na": "どら焼き",
+     "kazu": 3
+    },
+    {
+     "id": "kurimanju",
+     "na": "栗まんじゅう",
+     "kazu": null
+    },
+    {
+     "id": "kusamochi",
+     "na": "草餅",
+     "kazu": 2
+    },
+    {
+     "id": "monaka",
+     "na": "最中",
+     "kazu": 1
+    },
+    {
+     "id": "nerikiri",
+     "na": "練り切り",
+     "kazu": 6
+    }
+   ]
+  },
+  {
+   "file": "p12-tilt.jpg",
+   "key": "p12",
+   "kumi": "warui",
+   "ran": {
+    "mamedaifuku": {
+     "seikai": 3,
+     "kotae": 3,
+     "shu": "atta"
+    },
+    "dorayaki": {
+     "seikai": 3,
+     "kotae": 3,
+     "shu": "atta"
+    },
+    "kurimanju": {
+     "seikai": 3,
+     "kotae": 3,
+     "shu": "atta"
+    },
+    "kusamochi": {
+     "seikai": 2,
+     "kotae": 2,
+     "shu": "atta"
+    },
+    "monaka": {
+     "seikai": 1,
+     "kotae": 1,
+     "shu": "atta"
+    },
+    "nerikiri": {
+     "seikai": 6,
+     "kotae": 6,
+     "shu": "atta"
+    }
+   },
+   "shiranai": [],
+   "kinshi": [],
+   "kazoe": {
+    "atta": 6,
+    "yomenaiKotae": 0,
+    "chigau": 0,
+    "yomenaiRanNiKazu": 0,
+    "nakatta": 0
+   },
+   "zenbuAtta": true,
+   "usage": {
+    "input": 3011,
+    "output": 314
+   },
+   "namaKotae": [
+    {
+     "id": "mamedaifuku",
+     "na": "豆大福",
+     "kazu": 3
+    },
+    {
+     "id": "dorayaki",
+     "na": "どら焼き",
+     "kazu": 3
+    },
+    {
+     "id": "kurimanju",
+     "na": "栗まんじゅう",
+     "kazu": 3
+    },
+    {
+     "id": "kusamochi",
+     "na": "草餅",
+     "kazu": 2
+    },
+    {
+     "id": "monaka",
+     "na": "最中",
+     "kazu": 1
+    },
+    {
+     "id": "nerikiri",
+     "na": "練り切り",
+     "kazu": 6
+    }
+   ]
+  },
+  {
+   "file": "p12.png",
+   "key": "p12",
+   "kumi": "futsuu",
+   "ran": {
+    "mamedaifuku": {
+     "seikai": 3,
+     "kotae": 3,
+     "shu": "atta"
+    },
+    "dorayaki": {
+     "seikai": 3,
+     "kotae": 3,
+     "shu": "atta"
+    },
+    "kurimanju": {
+     "seikai": 3,
+     "kotae": 3,
+     "shu": "atta"
+    },
+    "kusamochi": {
+     "seikai": 2,
+     "kotae": 2,
+     "shu": "atta"
+    },
+    "monaka": {
+     "seikai": 1,
+     "kotae": 1,
+     "shu": "atta"
+    },
+    "nerikiri": {
+     "seikai": 6,
+     "kotae": 6,
+     "shu": "atta"
+    }
+   },
+   "shiranai": [],
+   "kinshi": [],
+   "kazoe": {
+    "atta": 6,
+    "yomenaiKotae": 0,
+    "chigau": 0,
+    "yomenaiRanNiKazu": 0,
+    "nakatta": 0
+   },
+   "zenbuAtta": true,
+   "usage": {
+    "input": 3011,
+    "output": 417
+   },
+   "namaKotae": [
+    {
+     "id": "mamedaifuku",
+     "na": "豆大福",
+     "kazu": 3
+    },
+    {
+     "id": "dorayaki",
+     "na": "どら焼き",
+     "kazu": 3
+    },
+    {
+     "id": "kurimanju",
+     "na": "栗まんじゅう",
+     "kazu": 3
+    },
+    {
+     "id": "kusamochi",
+     "na": "草餅",
+     "kazu": 2
+    },
+    {
+     "id": "monaka",
+     "na": "最中",
+     "kazu": 1
+    },
+    {
+     "id": "nerikiri",
+     "na": "練り切り（季節）",
+     "kazu": 6
+    }
+   ]
+  },
+  {
+   "file": "u01.png",
+   "key": "u01",
+   "kumi": "kakure",
+   "ran": {
+    "mamedaifuku": {
+     "seikai": 3,
+     "kotae": 3,
+     "shu": "atta"
+    },
+    "dorayaki": {
+     "seikai": null,
+     "kotae": null,
+     "shu": "atta"
+    },
+    "kurimanju": {
+     "seikai": 1,
+     "kotae": 1,
+     "shu": "atta"
+    },
+    "kusamochi": {
+     "seikai": 2,
+     "kotae": 2,
+     "shu": "atta"
+    },
+    "monaka": {
+     "seikai": 0,
+     "kotae": 0,
+     "shu": "atta"
+    },
+    "nerikiri": {
+     "seikai": 2,
+     "kotae": 2,
+     "shu": "atta"
+    }
+   },
+   "shiranai": [],
+   "kinshi": [],
+   "kazoe": {
+    "atta": 6,
+    "yomenaiKotae": 0,
+    "chigau": 0,
+    "yomenaiRanNiKazu": 0,
+    "nakatta": 0
+   },
+   "zenbuAtta": true,
+   "usage": {
+    "input": 3011,
+    "output": 369
+   },
+   "namaKotae": [
+    {
+     "id": "mamedaifuku",
+     "na": "豆大福",
+     "kazu": 3
+    },
+    {
+     "id": "dorayaki",
+     "na": "どら焼き",
+     "kazu": null
+    },
+    {
+     "id": "kurimanju",
+     "na": "栗まんじゅう",
+     "kazu": 1
+    },
+    {
+     "id": "kusamochi",
+     "na": "草餅",
+     "kazu": 2
+    },
+    {
+     "id": "monaka",
+     "na": "最中",
+     "kazu": 0
+    },
+    {
+     "id": "nerikiri",
+     "na": "練り切り",
+     "kazu": 2
+    }
+   ]
+  },
+  {
+   "file": "u02.png",
+   "key": "u02",
+   "kumi": "kakure",
+   "ran": {
+    "mamedaifuku": {
+     "seikai": 4,
+     "kotae": 4,
+     "shu": "atta"
+    },
+    "dorayaki": {
+     "seikai": 1,
+     "kotae": 1,
+     "shu": "atta"
+    },
+    "kurimanju": {
+     "seikai": 0,
+     "kotae": 0,
+     "shu": "atta"
+    },
+    "kusamochi": {
+     "seikai": null,
+     "kotae": null,
+     "shu": "atta"
+    },
+    "monaka": {
+     "seikai": 2,
+     "kotae": 2,
+     "shu": "atta"
+    },
+    "nerikiri": {
+     "seikai": 3,
+     "kotae": 3,
+     "shu": "atta"
+    }
+   },
+   "shiranai": [],
+   "kinshi": [],
+   "kazoe": {
+    "atta": 6,
+    "yomenaiKotae": 0,
+    "chigau": 0,
+    "yomenaiRanNiKazu": 0,
+    "nakatta": 0
+   },
+   "zenbuAtta": true,
+   "usage": {
+    "input": 3011,
+    "output": 266
+   },
+   "namaKotae": [
+    {
+     "id": "mamedaifuku",
+     "na": "豆大福",
+     "kazu": 4
+    },
+    {
+     "id": "dorayaki",
+     "na": "どら焼き",
+     "kazu": 1
+    },
+    {
+     "id": "kurimanju",
+     "na": "栗まんじゅう",
+     "kazu": 0
+    },
+    {
+     "id": "kusamochi",
+     "na": "草餅",
+     "kazu": null
+    },
+    {
+     "id": "monaka",
+     "na": "最中",
+     "kazu": 2
+    },
+    {
+     "id": "nerikiri",
+     "na": "練り切り",
+     "kazu": 3
+    }
+   ]
+  },
+  {
+   "file": "u03.png",
+   "key": "u03",
+   "kumi": "kakure",
+   "ran": {
+    "mamedaifuku": {
+     "seikai": 2,
+     "kotae": 2,
+     "shu": "atta"
+    },
+    "dorayaki": {
+     "seikai": 3,
+     "kotae": 3,
+     "shu": "atta"
+    },
+    "kurimanju": {
+     "seikai": 1,
+     "kotae": 1,
+     "shu": "atta"
+    },
+    "kusamochi": {
+     "seikai": 1,
+     "kotae": 1,
+     "shu": "atta"
+    },
+    "monaka": {
+     "seikai": null,
+     "kotae": null,
+     "shu": "atta"
+    },
+    "nerikiri": {
+     "seikai": null,
+     "kotae": null,
+     "shu": "atta"
+    }
+   },
+   "shiranai": [],
+   "kinshi": [],
+   "kazoe": {
+    "atta": 6,
+    "yomenaiKotae": 0,
+    "chigau": 0,
+    "yomenaiRanNiKazu": 0,
+    "nakatta": 0
+   },
+   "zenbuAtta": true,
+   "usage": {
+    "input": 3011,
+    "output": 311
+   },
+   "namaKotae": [
+    {
+     "id": "mamedaifuku",
+     "na": "豆大福",
+     "kazu": 2
+    },
+    {
+     "id": "dorayaki",
+     "na": "どら焼き",
+     "kazu": 3
+    },
+    {
+     "id": "kurimanju",
+     "na": "栗まんじゅう",
+     "kazu": 1
+    },
+    {
+     "id": "kusamochi",
+     "na": "草餅",
+     "kazu": 1
+    },
+    {
+     "id": "monaka",
+     "na": "最中",
+     "kazu": null
+    },
+    {
+     "id": "nerikiri",
+     "na": "練り切り（季節）",
+     "kazu": null
+    }
+   ]
+  },
+  {
+   "file": "u04.png",
+   "key": "u04",
+   "kumi": "kakure",
+   "ran": {
+    "mamedaifuku": {
+     "seikai": 1,
+     "kotae": 1,
+     "shu": "atta"
+    },
+    "dorayaki": {
+     "seikai": 2,
+     "kotae": 2,
+     "shu": "atta"
+    },
+    "kurimanju": {
+     "seikai": 7,
+     "kotae": 7,
+     "shu": "atta"
+    },
+    "kusamochi": {
+     "seikai": 0,
+     "kotae": 0,
+     "shu": "atta"
+    },
+    "monaka": {
+     "seikai": 3,
+     "kotae": 3,
+     "shu": "atta"
+    },
+    "nerikiri": {
+     "seikai": 1,
+     "kotae": 1,
+     "shu": "atta"
+    }
+   },
+   "shiranai": [],
+   "kinshi": [],
+   "kazoe": {
+    "atta": 6,
+    "yomenaiKotae": 0,
+    "chigau": 0,
+    "yomenaiRanNiKazu": 0,
+    "nakatta": 0
+   },
+   "zenbuAtta": true,
+   "usage": {
+    "input": 3011,
+    "output": 114
+   },
+   "namaKotae": [
+    {
+     "id": "mamedaifuku",
+     "na": "豆大福",
+     "kazu": 1
+    },
+    {
+     "id": "dorayaki",
+     "na": "どら焼き",
+     "kazu": 2
+    },
+    {
+     "id": "kurimanju",
+     "na": "栗まんじゅう",
+     "kazu": 7
+    },
+    {
+     "id": "kusamochi",
+     "na": "草餅",
+     "kazu": 0
+    },
+    {
+     "id": "monaka",
+     "na": "最中",
+     "kazu": 3
+    },
+    {
+     "id": "nerikiri",
+     "na": "練り切り（季節）",
+     "kazu": 1
+    }
+   ]
+  }
+ ]
+}

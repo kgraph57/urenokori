@@ -18,6 +18,12 @@ node_modules/
 # 動かしたときに残る記録（ログ）
 *.log
 
+# 読み取りを試すための写真（52 枚・約 44 MB）。大きいので記録に入れない。正解と結果の表は入れる
+tameshi/shashin/
+# 測るたびに上書きされる「いちばん新しい結果」。残したい回は kekka-○kaime.md のように名前を付けて写し、そちらを記録に入れる
+tameshi/kekka.md
+tameshi/kekka.json
+
 # 編集中にできる一時ファイル
 *.tmp
 *~

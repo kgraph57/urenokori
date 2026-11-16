@@ -95,8 +95,8 @@ async function yomuAtsukai(req, res) {
   try {
     const kekka = await yomu(gazou, katachi, kagiErabu());
     // 料金の見積もりを実測で確かめるために、使ったトークンの数を書き出す（写真や数は書かない）
-    console.log(`[yomu] ${MODEL} 入力 ${kekka.usage.input} / 出力 ${kekka.usage.output} トークン、読めた ${kekka.urenokori.filter(k => k.kazu !== null).length} 品`);
-    return okuruJSON(res, 200, { urenokori: kekka.urenokori, usage: kekka.usage });
+    console.log(`[yomu] ${MODEL} 入力 ${kekka.usage.input} / 出力 ${kekka.usage.output} トークン、読めた ${kekka.urenokori.filter(k => k.kazu !== null).length} 品、読めない ${kekka.urenokori.filter(k => k.kazu === null).length} 品、一覧にない名前 ${kekka.shiranai.length} つ`);
+    return okuruJSON(res, 200, { urenokori: kekka.urenokori, shiranai: kekka.shiranai, usage: kekka.usage });
   } catch (e) {
     // 失敗の種類ごとの日本語は yomu.js の shippaiHenji で決める（上限・鍵違い・混雑・通信・その他）
     const henji = shippaiHenji(e, kagiErabu().namae);

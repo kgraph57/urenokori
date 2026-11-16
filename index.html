@@ -159,6 +159,25 @@
   }
   .gyo button, .meyasu-gyo .chichi button { width: 56px; height: 56px; font-size: 30px; line-height: 1; padding: 0; }
   .gyo button:disabled, .meyasu-gyo .chichi button:disabled { opacity: .35; cursor: default; box-shadow: none; }
+  /* 写真で読めなかったお菓子。数を空けて、目立つ色（弁柄色）で知らせる */
+  .gyo .kazu.kara { min-height: 40px; border-bottom: 2px solid var(--mezasu); }
+  .yomenai-shirase { color: var(--mezasu); font-size: 18px; margin: 0; }
+  .yomenai-shirase span { display: inline-block; }
+  .gyo .yomenai-shirase { flex-basis: 100%; text-align: right; }
+  /* 写真から入れた数を、人が見て確かめる箱 */
+  .kakunin {
+    margin-top: 14px; padding: 12px 14px;
+    border: 2px solid var(--mezasu); border-radius: 14px; background: #fbf3ee;
+  }
+  .kakunin p { margin: 0 0 10px; font-size: 18px; }
+  .kakunin p span { display: inline-block; }
+  .kakunin button { width: 100%; min-height: 56px; font-size: 22px; letter-spacing: .08em; padding: 6px 16px; }
+  .kakunin button:disabled, .ookii:disabled { opacity: .35; cursor: default; box-shadow: none; }
+  /* 「父に送る」の前に出す、確かめの案内 */
+  .okuru-mae { text-align: center; margin: 0 0 8px; }
+  .okuru-mae:empty { margin: 0; }
+  /* 写真の欄の知らせのうち、気をつけてほしい文 */
+  .shashin .shirase .bun.me { color: var(--mezasu); }
 
   /* 目安の枠 */
   .ame-btn {
@@ -350,6 +369,7 @@
     </button>
     <div id="meyasu-list" aria-live="polite"></div>
     <p class="kotowari"><span>これは目安です。</span><span>決めるのはお父さんです</span></p>
+    <p class="yomenai-shirase okuru-mae" id="okuru-mae" aria-live="polite"></p>
     <button class="ookii" id="okuru-btn" type="button">父に送る</button>
     <p class="nokoshita" id="nokoshita" aria-live="polite"></p>
   </section>
@@ -492,8 +512,10 @@ function hiKey(d) {
 
 // ───────────────────────────────────────────
 const KEY = "urenokori-v1";
-// chichi = 父が直した、あすに作る数。直したお菓子だけ入る（直していなければ道具の目安と同じ）
-const state = { hi: "", tsukutta: {}, nokori: {}, ame: false, chichi: {} };
+// chichi    = 父が直した、あすに作る数。直したお菓子だけ入る（直していなければ道具の目安と同じ）
+// yomenai   = 写真で「読めない」だったお菓子。数を空けて、人が入れるまで印が残る
+// mikakunin = 写真から入れた数を、まだ人が確かめていない。「確かめました」を押すまで「父に送る」は押せない
+const state = { hi: "", tsukutta: {}, nokori: {}, ame: false, chichi: {}, yomenai: {}, mikakunin: false };
 
 // 0 以上の整数ならそのまま、そうでなければ代わりの数
 function seisuu(v, kawari) {
@@ -511,6 +533,8 @@ function yomu(ima = new Date()) {
   state.nokori = {};
   state.ame = false;
   state.chichi = {};
+  state.yomenai = {};
+  state.mikakunin = false;
 
   // 作った数は、日付が変わっても前回入れた数を引き継ぐ（父と相談して決めた）
   const t = (s && s.tsukutta && typeof s.tsukutta === "object") ? s.tsukutta : {};
@@ -529,6 +553,10 @@ function yomu(ima = new Date()) {
       const v = seisuu(c[o.id], null);
       if (v !== null) state.chichi[o.id] = v;
     }
+    // 写真の「読めない」の印と、「まだ確かめていない」も、同じ日なら引き継ぐ
+    const y = (s.yomenai && typeof s.yomenai === "object") ? s.yomenai : {};
+    for (const o of OKASHI) if (y[o.id] === true) state.yomenai[o.id] = true;
+    state.mikakunin = !!s.mikakunin;
   } else {
     // 日付が変わった → 売れ残り 0、雨の印なし、父の数は直す前（道具の目安と同じ）
     for (const o of OKASHI) state.nokori[o.id] = 0;
@@ -639,11 +667,15 @@ function kakuKimari() {
   }
 }
 
+// 写真で読めなかったお菓子が 1 つでもあるか
+function yomenaiAri() { return OKASHI.some(o => state.yomenai[o.id]); }
+
 function kakuUrenokori() {
   const el = document.getElementById("urenokori-list");
   el.innerHTML = "";
   for (const o of OKASHI) {
     const n = state.nokori[o.id];
+    const yomenai = !!state.yomenai[o.id];   // 読めなかったお菓子は、数を空けて出す。− は 0、＋ は 1 を入れる
     const gyo = document.createElement("div");
     gyo.className = "gyo";
     gyo.innerHTML = `
@@ -654,11 +686,23 @@ function kakuUrenokori() {
                  value="${state.tsukutta[o.id]}" aria-label="${o.na}のきょう作った数"></label>
       </div>
       <div class="migi">
-        <button type="button" data-id="${o.id}" data-d="-1" aria-label="${o.na}を1つ減らす" ${n <= 0 ? "disabled" : ""}>−</button>
-        <div class="kazu" aria-label="${o.na}の売れ残り">${n}</div>
+        <button type="button" data-id="${o.id}" data-d="-1" aria-label="${o.na}を1つ減らす" ${(n <= 0 && !yomenai) ? "disabled" : ""}>−</button>
+        <div class="kazu${yomenai ? " kara" : ""}" aria-label="${o.na}の売れ残り${yomenai ? "（読めませんでした）" : ""}">${yomenai ? "" : n}</div>
         <button type="button" data-id="${o.id}" data-d="1" aria-label="${o.na}を1つ増やす">＋</button>
-      </div>`;
+      </div>
+      ${yomenai ? '<p class="yomenai-shirase"><span>読めませんでした。</span><span>手で入れてください</span></p>' : ""}`;
     el.appendChild(gyo);
+  }
+  // 写真から入れた数は、人が見て確かめてから先に進む
+  if (state.mikakunin) {
+    const hako = document.createElement("div");
+    hako.className = "kakunin";
+    hako.innerHTML = `
+      <p><span>写真から入れた数です。</span> <span>ノートと見比べて、</span> <span>合っていれば</span> <span>「確かめました」を</span> <span>押してください。</span>
+         <span>違っていたら</span> <span>−・＋ で直してから</span> <span>押してください。</span></p>
+      ${yomenaiAri() ? '<p class="yomenai-shirase"><span>読めなかったお菓子の数を、</span> <span>先に入れてください。</span></p>' : ""}
+      <button type="button" id="kakunin-btn" ${yomenaiAri() ? "disabled" : ""}>確かめました</button>`;
+    el.appendChild(hako);
   }
 }
 
@@ -667,9 +711,18 @@ function kakuMeyasu() {
   el.innerHTML = "";
   for (const o of OKASHI) {
     const n = state.nokori[o.id], t = state.tsukutta[o.id];
-    const m = okashiMeyasu(o), c = chichiKazu(o), sa = c - m;
     const gyo = document.createElement("div");
     gyo.className = "meyasu-gyo";
+    // 売れ残りが読めなかったお菓子は、数が入るまで目安を出さない
+    if (state.yomenai[o.id]) {
+      gyo.innerHTML = `
+      <div class="na">${naHTML(o)}<span class="wake">きょう ${t}・残り ？</span></div>
+      <div class="kazu" aria-label="${o.na}の目安はまだ出ません">—</div>
+      <div class="chichi"><p class="yomenai-shirase"><span>売れ残りの数を入れると、</span> <span>目安が出ます</span></p></div>`;
+      el.appendChild(gyo);
+      continue;
+    }
+    const m = okashiMeyasu(o), c = chichiKazu(o), sa = c - m;
     gyo.innerHTML = `
       <div class="na">${naHTML(o)}<span class="wake">きょう ${t}・残り ${n}</span></div>
       <div class="kazu">${m}<small>個</small></div>
@@ -687,6 +740,12 @@ function kakuMeyasu() {
   const btn = document.getElementById("ame-btn");
   btn.setAttribute("aria-pressed", state.ame ? "true" : "false");
   btn.querySelector(".shirushi").textContent = state.ame ? "☑" : "☐";
+  // 写真から入れた数を確かめるまで、「父に送る」は押せない
+  const mae = state.mikakunin || yomenaiAri();
+  document.getElementById("okuru-btn").disabled = mae;
+  document.getElementById("okuru-mae").innerHTML = !mae ? ""
+    : (yomenaiAri() ? '<span>先に、</span> <span>読めなかったお菓子の数を</span> <span>入れてください。</span>'
+                    : '<span>先に、</span> <span>写真から入れた数を</span> <span>確かめてください。</span>');
 }
 
 function kakuOogaki() {
@@ -771,10 +830,23 @@ function zenbu() { kakuUrenokori(); kakuMeyasu(); kaku(); }
 
 // ── 動き ──
 document.getElementById("urenokori-list").addEventListener("click", (e) => {
+  // 「確かめました」：写真から入れた数を人が見た印
+  if (e.target.closest("#kakunin-btn")) {
+    if (yomenaiAri()) return;
+    state.mikakunin = false;
+    zenbu();
+    return;
+  }
   const b = e.target.closest("button[data-id]");
   if (!b) return;
   const id = b.dataset.id, d = Number(b.dataset.d);
-  state.nokori[id] = Math.max(0, state.nokori[id] + d);
+  if (state.yomenai[id]) {
+    // 空いていた欄に、人が数を入れた。− なら 0、＋ なら 1 から始める
+    state.nokori[id] = d > 0 ? 1 : 0;
+    delete state.yomenai[id];
+  } else {
+    state.nokori[id] = Math.max(0, state.nokori[id] + d);
+  }
   zenbu();
 });
 
@@ -847,10 +919,11 @@ const shashinInput = document.getElementById("shashin-input");
 const shashinShirase = document.getElementById("shashin-shirase");
 
 // 知らせを出す。1 つの引数が 1 つの文（1 行）。文は「。、：」のあと、または配列の切れ目でだけ折り返す
+// { me: true, kakera: [...] } の形で渡した文は、目立つ色で出す
 function shirase(...bun) {
-  shashinShirase.innerHTML = bun.filter(b => b && b.length).map(b => {
-    const kakera = Array.isArray(b) ? b : b.split(/(?<=[。、：])/);
-    return `<span class="bun">${kakera.map(k => `<span>${esc(k)}</span>`).join(" ")}</span>`;
+  shashinShirase.innerHTML = bun.filter(b => b && (b.length || b.kakera)).map(b => {
+    const kakera = Array.isArray(b) ? b : b.kakera ? b.kakera : b.split(/(?<=[。、：])/);
+    return `<span class="bun${b.me ? " me" : ""}">${kakera.map(k => `<span>${esc(k)}</span>`).join(" ")}</span>`;
   }).join("");
 }
 
@@ -867,7 +940,7 @@ shashinInput.addEventListener("change", async () => {
   try {
     const gazou = await chijimeru(file);
     const kekka = await toritsugiNiOkuru(gazou);
-    ireru(kekka.urenokori);
+    ireru(kekka);
   } catch (e) {
     shirase(e.kakera || e.message || "読み取りに失敗しました。", ["売れ残りの数は", "変えていません。"]);
   } finally {
@@ -931,28 +1004,39 @@ async function toritsugiNiOkuru(gazou) {
   return j;
 }
 
-// 読んだ数を「きょうの売れ残り」に入れ、何を入れたかを知らせる
-function ireru(yonda) {
+// 読んだ答えを確かめてから「きょうの売れ残り」に入れ、何を入れたかを知らせる。
+//   数が読めたお菓子       → 数を入れる
+//   「読めない」のお菓子   → 数を空け、「読めませんでした。手で入れてください」の印を付ける
+//   一覧にない名前         → 入れない。写真の欄に目立つ色で知らせる
+//   入れたあとは「確かめました」を押すまで「父に送る」は押せない
+function ireru(kekka) {
+  const yonda = Array.isArray(kekka.urenokori) ? kekka.urenokori : [];
+  const shiranai = Array.isArray(kekka.shiranai) ? kekka.shiranai.filter(s => typeof s === "string" && s) : [];
   const ireta = [], yomenai = [];
   for (const y of yonda) {
     const o = OKASHI.find(x => x.id === y.id);
     if (!o) continue;
     if (Number.isInteger(y.kazu) && y.kazu >= 0) {
       state.nokori[o.id] = y.kazu;
+      delete state.yomenai[o.id];
       ireta.push(`${o.na} ${y.kazu}`);
     } else {
+      state.nokori[o.id] = 0;
+      state.yomenai[o.id] = true;
       yomenai.push(o.na);
     }
   }
   const nakatta = OKASHI.filter(o => !yonda.some(y => y.id === o.id)).map(o => o.na);
-  if (ireta.length) zenbu();
+  if (ireta.length || yomenai.length) state.mikakunin = true;
+  zenbu();
   // お菓子の名前の途中で折れないように、お菓子ごとに切って渡す
   const narabi = (mae, list) => [...mae, ...list.map((s, i) => s + (i < list.length - 1 ? "、" : "。"))];
   shirase(
     ireta.length ? narabi(["写真から", "入れました："], ireta) : ["写真から、", "数は", "入れませんでした。"],
-    yomenai.length ? narabi(["読めなかった："], yomenai) : "",
+    yomenai.length ? { me: true, kakera: narabi(["読めなかった："], yomenai) } : "",
+    shiranai.length ? { me: true, kakera: narabi(["お菓子の一覧にない", "名前を", "読み取りました："], shiranai) } : "",
     nakatta.length ? narabi(["写真に無かった："], nakatta) : "",
-    ireta.length ? ["違っていたら", "−・＋ で", "直してください。"] : "",
+    (ireta.length || yomenai.length) ? ["下の表を見て、", "合っていれば", "「確かめました」を", "押してください。"] : "",
   );
 }
 

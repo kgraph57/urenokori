@@ -6,6 +6,9 @@
 // 鍵（API キー）は入口から受け取る。ここには書かない。
 // ───────────────────────────────────────────
 import Anthropic from "@anthropic-ai/sdk";
+import fs from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 
 export const MODEL = "claude-haiku-5-5";
 
@@ -20,7 +23,7 @@ export const OKASHI_NA = {
 };
 
 // Claude への頼み方（システムプロンプト）。この文はそのまま使う決まりなので、ここを直すときは相談する。
-export const SYSTEM = `あなたは、和菓子の店のノートの写真から、売れ残りの数を読み取る係です。
+export const SYSTEM_MOTO = `あなたは、和菓子の店のノートの写真から、売れ残りの数を読み取る係です。
 
 ・読むのは、お菓子の名前と、その横に書かれた売れ残りの数だけです。
 ・お菓子の名前は、次の6つのどれかです：豆大福、どら焼き、栗まんじゅう、草餅、最中、練り切り（季節）。
@@ -28,9 +31,16 @@ export const SYSTEM = `あなたは、和菓子の店のノートの写真から
 ・写真に、お菓子の売れ残り以外のこと（人の名前、電話番号、お金の額など）が写っていても、書き写さないでください。
 ・答えは、お菓子の名前と数の組だけを返してください。説明の文は要りません。`;
 
+// 父のノートの書き方の決まり。noto-no-kakikata.txt に書いてあり、上の文の後ろにそのまま足す。
+// ファイルを直せば、次に取り次ぎ役を起動したときから頼み方が変わる。無ければ足さない。
+const KAKIKATA_FILE = path.join(path.dirname(fileURLToPath(import.meta.url)), "noto-no-kakikata.txt");
+export const KAKIKATA = fs.existsSync(KAKIKATA_FILE) ? fs.readFileSync(KAKIKATA_FILE, "utf8").trim() : "";
+export const SYSTEM = KAKIKATA ? `${SYSTEM_MOTO}\n\n${KAKIKATA}` : SYSTEM_MOTO;
+
 // 答えの決まった形。この形に合う JSON だけが返ってくる。
-//   na   = 6 つの名前のどれか
+//   na   = お菓子の名前（書かれているとおり）。6 つの名前かどうかは、こちらで確かめる
 //   kazu = 売れ残りの数（0 以上の整数）。「読めない」は null
+// 名前を 6 つに縛らないのは、縛ると「一覧にない名前」が無理に 6 つのどれかに寄せられてしまうから。
 const KATACHI = {
   type: "json_schema",
   schema: {
@@ -46,7 +56,7 @@ const KATACHI = {
           additionalProperties: false,
           required: ["na", "kazu"],
           properties: {
-            na: { type: "string", enum: Object.keys(OKASHI_NA) },
+            na: { type: "string", description: "お菓子の名前。6 つの名前のどれか" },
             kazu: { type: ["integer", "null"], description: "売れ残りの数。「読めない」ときは null" },
           },
         },
@@ -54,6 +64,34 @@ const KATACHI = {
     },
   },
 };
+
+// 返ってきた名前を、6 つの名前のどれかに当てる。当たらなければ null
+//   空白と「（季節）」の印は取り除く。「練り切り」は「練り切り（季節）」と同じ扱い
+export function naAwase(na) {
+  if (typeof na !== "string") return null;
+  const s = na.replace(/[\s　]/g, "").replace(/[（(]季節[)）]/g, "");
+  if (s === "練り切り") return OKASHI_NA["練り切り（季節）"];
+  return OKASHI_NA[s] ?? null;
+}
+
+// Claude の答え（JSON）を確かめて、使える形に直す。
+//   urenokori = 6 つの名前に当たったもの（1 つの名前につき 1 つ。同じ名前が 2 回あれば先のもの）
+//   shiranai  = 6 つの名前に当たらなかった名前（数は返さない。表にも入れない）
+export function kotaeTashikame(kotae) {
+  if (!kotae || !Array.isArray(kotae.urenokori)) return null;
+  const mita = new Set();
+  const urenokori = [], shiranai = [];
+  for (const k of kotae.urenokori) {
+    if (!k || typeof k !== "object") continue;
+    const id = naAwase(k.na);
+    if (!id) { if (typeof k.na === "string" && k.na.trim()) shiranai.push(k.na.trim()); continue; }
+    if (mita.has(id)) continue;
+    mita.add(id);
+    const kazu = (Number.isInteger(k.kazu) && k.kazu >= 0) ? k.kazu : null;
+    urenokori.push({ id, na: k.na, kazu });
+  }
+  return { urenokori, shiranai: [...new Set(shiranai)] };
+}
 
 // 読み取りがうまくいかなかったときの印。shu（種類）で入口が返事を分ける
 export class YomuError extends Error {
@@ -101,7 +139,10 @@ export async function yomu(gazou, katachi, { apiKey, authToken } = {}) {
   const client = new Anthropic({ ...(apiKey ? { apiKey } : { authToken }), maxRetries: 0 });
   const res = await client.messages.create({
     model: MODEL,
-    max_tokens: 1024,                      // 答えは数十トークン。考える分の余裕を見てこの数
+    // 答えの JSON は 110 トークンほどだが、Haiku 5.5 は答える前に「考える」分もこの枠で使う。
+    // 1,024 では考える量が多い写真（傾いた写真など）で枠を使い切り、答えが途中で切れた（2026-11-16、52 枚中 1 枚）。
+    // 枠は上限で、広げても使う量（料金）は増えない。
+    max_tokens: 8192,
     system: SYSTEM,
     output_config: { effort: "medium", format: KATACHI },
     messages: [{
@@ -115,25 +156,17 @@ export async function yomu(gazou, katachi, { apiKey, authToken } = {}) {
 
   const usage = { input: res.usage.input_tokens, output: res.usage.output_tokens };
 
-  // 読む前に、途中で止まっていないかを見る
-  if (res.stop_reason === "refusal") throw new YomuError("kotowari", "Claude がこの写真の読み取りを断りました。別の写真で試してください。");
-  if (res.stop_reason === "max_tokens") throw new YomuError("tochuu", "答えが途中で切れました。もう一度試してください。");
+  // 読む前に、途中で止まっていないかを見る（失敗でもトークンは使っているので、usage を付けて投げる）
+  const shippai = (shu, bun) => Object.assign(new YomuError(shu, bun), { usage });
+  if (res.stop_reason === "refusal") throw shippai("kotowari", "Claude がこの写真の読み取りを断りました。別の写真で試してください。");
+  if (res.stop_reason === "max_tokens") throw shippai("tochuu", "答えが途中で切れました。もう一度試してください。");
 
   // 答えの文は type が "text" のブロック（先に考えのブロックが来ることがある）
   const text = res.content.find(b => b.type === "text")?.text;
   let kotae;
   try { kotae = JSON.parse(text); } catch (e) { kotae = null; }
-  if (!kotae || !Array.isArray(kotae.urenokori)) throw new YomuError("katachi", "答えの形が読めませんでした。もう一度試してください。");
+  const tashikameta = kotaeTashikame(kotae);
+  if (!tashikameta) throw shippai("katachi", "答えの形が読めませんでした。もう一度試してください。");
 
-  // 6 つの名前に合うものだけ、1 つの名前につき 1 つ（同じ名前が 2 回あれば先のもの）
-  const mita = new Set();
-  const urenokori = [];
-  for (const k of kotae.urenokori) {
-    const id = OKASHI_NA[k?.na];
-    if (!id || mita.has(id)) continue;
-    mita.add(id);
-    const kazu = (Number.isInteger(k.kazu) && k.kazu >= 0) ? k.kazu : null;
-    urenokori.push({ id, na: k.na, kazu });
-  }
-  return { urenokori, usage };
+  return { ...tashikameta, usage };
 }
