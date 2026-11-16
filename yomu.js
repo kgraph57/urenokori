@@ -60,6 +60,32 @@ export class YomuError extends Error {
   constructor(shu, message) { super(message); this.shu = shu; }
 }
 
+// 利用額の上限に届いたときの返事か（Anthropic の公式資料の 2 種類）
+//   ・自分で Console に決めた上限 → 400。文が「You have reached your specified … API usage limits」で始まる
+//   ・使用段階ごとの月の上限     → 429。印 error_code が enforced_spend_limit_reached
+export function jougenKa(e) {
+  const bun = e?.apiMessage || "";
+  if (e instanceof Anthropic.BadRequestError && /^You have reached your specified (workspace )?API usage limits/.test(bun)) return true;
+  if (e instanceof Anthropic.RateLimitError && (e.errorCode === "enforced_spend_limit_reached" || /^You have reached your API usage limits/.test(bun))) return true;
+  return false;
+}
+
+// 読み取りの失敗を、画面に出す日本語と、取り次ぎ役が返す番号に直す。
+//   kagiNamae = 使っている鍵の環境変数の名前（鍵違いの文に出す）
+// 返り値: { code, error, shu, kakera }
+//   kakera = 画面で折り返してよい切れ目ごとに分けた文（写真の枠が狭いとき、言葉の途中で折れないように）
+export function shippaiHenji(e, kagiNamae = "") {
+  const henji = (code, shu, ...kakera) => ({ code, shu, kakera, error: kakera.join("") });
+  if (e instanceof YomuError) return henji(e.shu === "kagi" ? 500 : 502, e.shu, e.message);
+  if (jougenKa(e)) return henji(503, "jougen", "今月の", "読み取りの上限に", "届きました。", "数は", "手で", "入れてください。");
+  if (e instanceof Anthropic.AuthenticationError) return henji(500, "kagi", `鍵（${kagiNamae}）が`, "正しくありません。");
+  if (e instanceof Anthropic.RateLimitError || e instanceof Anthropic.InternalServerError) {
+    return henji(502, "konzatsu", "Claude が", "混んでいます。", "少し待ってから、", "もう一度", "押してください。");
+  }
+  if (e instanceof Anthropic.APIConnectionError) return henji(502, "tsuushin", "Claude に", "つながりません。", "インターネットを", "確かめてください。");
+  return henji(502, "hoka", "読み取りに", "失敗しました。", "もう一度", "試してください。");
+}
+
 // 写真 1 枚を Claude に 1 回だけ送る。
 //   gazou     = 写真の base64（JPEG など）
 //   katachi   = "image/jpeg" のような種類
@@ -70,7 +96,9 @@ export class YomuError extends Error {
 export async function yomu(gazou, katachi, { apiKey, authToken } = {}) {
   if (!apiKey && !authToken) throw new YomuError("kagi", "鍵（ANTHROPIC_API_KEY か ANTHROPIC_AUTH_TOKEN）が入っていません。");
 
-  const client = new Anthropic(apiKey ? { apiKey } : { authToken });
+  // maxRetries: 0 = 失敗しても部品が勝手に呼び直さない（既定は 2 回まで呼び直す）。
+  // 1 回押したら Claude を呼ぶのは 1 回だけにして、押し直すかどうかは人が決める。
+  const client = new Anthropic({ ...(apiKey ? { apiKey } : { authToken }), maxRetries: 0 });
   const res = await client.messages.create({
     model: MODEL,
     max_tokens: 1024,                      // 答えは数十トークン。考える分の余裕を見てこの数

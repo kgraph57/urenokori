@@ -18,8 +18,7 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import Anthropic from "@anthropic-ai/sdk";
-import { yomu, YomuError, MODEL } from "./yomu.js";
+import { yomu, shippaiHenji, MODEL } from "./yomu.js";
 
 const KOKO = path.dirname(fileURLToPath(import.meta.url));
 const PORT = Number(process.env.PORT) || 8787;
@@ -81,7 +80,7 @@ async function yomuAtsukai(req, res) {
     return okuruJSON(res, 401, { error: "あいことばが違います。", shu: "aikotoba" });
   }
   if (!kaisuuOk()) {
-    return okuruJSON(res, 429, { error: "少し待ってから、もう一度押してください。", shu: "kaisuu" });
+    return okuruJSON(res, 429, { error: "少し待ってから、もう一度押してください。", shu: "kaisuu", kakera: ["少し待ってから、", "もう一度", "押してください。"] });
   }
   const honbun = await honbunYomu(req);
   if (honbun === null) return okuruJSON(res, 413, { error: "写真が大きすぎます。", shu: "ookisa" });
@@ -99,13 +98,11 @@ async function yomuAtsukai(req, res) {
     console.log(`[yomu] ${MODEL} 入力 ${kekka.usage.input} / 出力 ${kekka.usage.output} トークン、読めた ${kekka.urenokori.filter(k => k.kazu !== null).length} 品`);
     return okuruJSON(res, 200, { urenokori: kekka.urenokori, usage: kekka.usage });
   } catch (e) {
-    if (e instanceof YomuError) return okuruJSON(res, e.shu === "kagi" ? 500 : 502, { error: e.message, shu: e.shu });
-    // Anthropic の部品が出す失敗。種類ごとに、画面に出す日本語を決める
-    if (e instanceof Anthropic.AuthenticationError) return okuruJSON(res, 500, { error: `鍵（${kagiErabu().namae}）が正しくありません。`, shu: "kagi" });
-    if (e instanceof Anthropic.RateLimitError) return okuruJSON(res, 502, { error: "Claude が混んでいます。少し待ってから、もう一度押してください。", shu: "konzatsu" });
-    if (e instanceof Anthropic.APIConnectionError) return okuruJSON(res, 502, { error: "Claude につながりませんでした。インターネットを確かめてください。", shu: "tsuushin" });
-    console.error("[yomu] 失敗:", e?.status, e?.message);
-    return okuruJSON(res, 502, { error: "読み取りに失敗しました。もう一度試してください。", shu: "hoka" });
+    // 失敗の種類ごとの日本語は yomu.js の shippaiHenji で決める（上限・鍵違い・混雑・通信・その他）
+    const henji = shippaiHenji(e, kagiErabu().namae);
+    if (henji.shu === "hoka") console.error("[yomu] 失敗:", e?.status, e?.message);
+    else console.log(`[yomu] ${henji.shu}: ${henji.error}`);
+    return okuruJSON(res, henji.code, { error: henji.error, shu: henji.shu, kakera: henji.kakera });
   }
 }
 

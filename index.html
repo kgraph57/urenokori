@@ -925,7 +925,8 @@ async function toritsugiNiOkuru(gazou) {
     if (a) { localStorage.setItem(AIKOTOBA_KEY, a); return toritsugiNiOkuru(gazou); }
     throw new Error("あいことばが要ります。");
   }
-  if (!res.ok) throw new Error((j && j.error) || "読み取りに失敗しました。");
+  // 取り次ぎ役が切れ目ごとに分けた文（kakera）をくれたら、それを使って折り返す
+  if (!res.ok) throw shippai(...((j && Array.isArray(j.kakera) && j.kakera.length) ? j.kakera : [(j && j.error) || "読み取りに失敗しました。"]));
   if (!j || !Array.isArray(j.urenokori)) throw new Error("答えの形が読めませんでした。");
   return j;
 }
