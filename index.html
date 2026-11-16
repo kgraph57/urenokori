@@ -1,0 +1,506 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>売れ残りの記録</title>
+<style>
+  :root {
+    --kami: #efe6d3;        /* 包み紙（生成り） */
+    --waku: #f9f4e8;        /* 枠の中 */
+    --sumi: #2b2522;        /* 墨 */
+    --usuzumi: #6f6358;     /* 薄墨 */
+    --sen: #c9b997;         /* 罫線 */
+    --sen-koi: #9c8a65;
+    --osu: #fffdf7;         /* ボタン */
+    --osu-kage: #d9ccb0;
+    --ame: #4a6a86;         /* 雨の印 */
+    --ame-usu: #dfe8ef;
+    --mezasu: #7a2e1f;      /* 目安の数（弁柄色） */
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --kami: #2a2521; --waku: #36302a; --sumi: #f0e7d5; --usuzumi: #bfb3a0;
+      --sen: #5a4f41; --sen-koi: #8a7b63; --osu: #433b33; --osu-kage: #231f1b;
+      --ame: #9fc0dc; --ame-usu: #2f3d4a; --mezasu: #f0a58a;
+    }
+  }
+  :root[data-theme="dark"] {
+    --kami: #2a2521; --waku: #36302a; --sumi: #f0e7d5; --usuzumi: #bfb3a0;
+    --sen: #5a4f41; --sen-koi: #8a7b63; --osu: #433b33; --osu-kage: #231f1b;
+    --ame: #9fc0dc; --ame-usu: #2f3d4a; --mezasu: #f0a58a;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body {
+    background: var(--kami);
+    background-image:
+      radial-gradient(rgba(0,0,0,.025) 1px, transparent 1px);
+    background-size: 7px 7px;
+    color: var(--sumi);
+    font-family: "Hiragino Mincho ProN", "Hiragino Mincho Pro", "Yu Mincho", "YuMincho",
+                 "Noto Serif JP", "BIZ UDPMincho", serif;
+    font-size: 22px;
+    line-height: 1.5;
+    padding: 20px 16px 40px;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  header {
+    max-width: 1200px; margin: 0 auto 20px;
+    display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 20px;
+    border-bottom: 1px solid var(--sen-koi);
+    padding-bottom: 10px;
+  }
+  header h1 { font-size: 28px; font-weight: 600; margin: 0; letter-spacing: .08em; }
+  header .hi { color: var(--usuzumi); font-size: 20px; }
+  /* 見出しの日付は途中で折らない（「（月）」だけが次の行に落ちないように） */
+  #asu-hi, #oogaki-hi { display: inline-block; white-space: nowrap; }
+
+  main {
+    max-width: 1200px; margin: 0 auto;
+    display: grid;
+    /* 写真の枠は「写真を撮る」のボタンが 1 行で入る幅（210px）より狭くしない */
+    grid-template-columns: minmax(210px, .6fr) minmax(0, 1.6fr) minmax(0, 1.2fr);
+    gap: 20px;
+    align-items: start;
+  }
+  @media (max-width: 960px) {
+    main { grid-template-columns: minmax(0, 1fr); }
+  }
+
+  .waku {
+    background: var(--waku);
+    border: 1.5px solid var(--sen-koi);
+    border-radius: 22px;
+    padding: 20px 18px;
+    box-shadow: 0 1px 0 var(--sen) inset, 0 2px 6px rgba(0,0,0,.06);
+    min-width: 0;
+  }
+  .waku h2 {
+    font-size: 22px; font-weight: 600; margin: 0 0 14px;
+    letter-spacing: .1em; color: var(--usuzumi);
+    border-bottom: 1px dashed var(--sen);
+    padding-bottom: 6px;
+  }
+
+  /* 共通ボタン */
+  button {
+    font: inherit; color: var(--sumi);
+    background: var(--osu);
+    border: 1.5px solid var(--sen-koi);
+    border-radius: 999px;
+    box-shadow: 0 2px 0 var(--osu-kage);
+    cursor: pointer;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+  button:active { transform: translateY(2px); box-shadow: none; }
+  button:focus-visible { outline: 3px solid var(--ame); outline-offset: 2px; }
+  .ookii {
+    width: 100%; min-height: 64px; font-size: 24px; letter-spacing: .1em;
+    padding: 10px 16px;
+  }
+
+  /* 写真の枠 */
+  .shashin { display: flex; flex-direction: column; justify-content: center; min-height: 160px; }
+  .shashin .ookii { white-space: nowrap; padding-left: 10px; padding-right: 10px; }
+  .shashin .shirase {
+    margin: 12px 0 0; font-size: 18px; color: var(--usuzumi); text-align: center;
+    min-height: 1.5em;
+  }
+
+  /* 売れ残りの枠 */
+  /* 1 行 = 「品名＋作った欄」のかたまり と 「−・数・＋」のかたまり。
+     幅が足りないときは、かたまりごとに次の段へ折り返す（品名は折らない）。 */
+  .gyo {
+    display: flex; flex-wrap: wrap;
+    align-items: center; gap: 4px 8px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--sen);
+  }
+  .gyo:last-of-type { border-bottom: none; }
+  .gyo .hidari {
+    flex: 1 1 auto; min-width: 0;
+    display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+    gap: 4px 12px;
+  }
+  .gyo .migi { flex: 0 0 auto; margin-left: auto; display: flex; align-items: center; gap: 8px; }
+  .gyo .na { font-size: 24px; white-space: nowrap; word-break: keep-all; }
+  /* きょう作った数の欄 */
+  .gyo .tsukutta {
+    display: flex; align-items: center; gap: 6px; margin-left: auto;
+    font-size: 16px; color: var(--usuzumi); white-space: nowrap;
+  }
+  .gyo .tsukutta input {
+    font: inherit; font-size: 24px; color: var(--sumi);
+    width: 68px; height: 48px; padding: 0 4px;
+    text-align: center; font-variant-numeric: tabular-nums;
+    background: var(--osu); border: 1.5px solid var(--sen-koi); border-radius: 10px;
+    -moz-appearance: textfield; appearance: textfield;
+  }
+  .gyo .tsukutta input::-webkit-outer-spin-button,
+  .gyo .tsukutta input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+  .gyo .tsukutta input:focus-visible { outline: 3px solid var(--ame); outline-offset: 2px; }
+  .na small {
+    display: inline-block; font-size: 15px; color: var(--usuzumi);
+    border: 1px solid var(--sen); border-radius: 6px; padding: 0 5px; margin-left: 6px;
+    vertical-align: middle; line-height: 1.5;
+  }
+  .gyo .kazu {
+    width: 64px; font-size: 40px; text-align: center; font-variant-numeric: tabular-nums;
+    line-height: 1;
+  }
+  .gyo button { width: 56px; height: 56px; font-size: 30px; line-height: 1; padding: 0; }
+  .gyo button:disabled { opacity: .35; cursor: default; box-shadow: none; }
+
+  /* 目安の枠 */
+  .ame-btn {
+    width: 100%; min-height: 56px; font-size: 22px; letter-spacing: .08em;
+    margin-bottom: 14px;
+  }
+  .ame-btn[aria-pressed="true"] {
+    background: var(--ame-usu); color: var(--ame); border-color: var(--ame);
+  }
+  .ame-btn .shirushi { display: inline-block; width: 1.2em; }
+  .meyasu-gyo {
+    display: grid; grid-template-columns: minmax(0, 1fr) auto;
+    align-items: baseline; gap: 10px;
+    padding: 8px 0; border-bottom: 1px solid var(--sen);
+  }
+  .meyasu-gyo:last-of-type { border-bottom: none; }
+  .meyasu-gyo .na { font-size: 24px; min-width: 0; word-break: keep-all; }
+  .meyasu-gyo .wake { display: block; font-size: 15px; color: var(--usuzumi); }
+  .meyasu-gyo .kazu {
+    font-size: 44px; color: var(--mezasu); font-variant-numeric: tabular-nums;
+    line-height: 1; white-space: nowrap;
+  }
+  .meyasu-gyo .kazu small { font-size: 20px; color: var(--usuzumi); margin-left: 2px; }
+  .kotowari {
+    margin: 16px 0; padding: 10px 12px;
+    border: 1px solid var(--sen-koi); border-radius: 10px;
+    font-size: 20px; text-align: center; letter-spacing: .04em;
+  }
+  .kotowari span { display: inline-block; }  /* 文の途中で折れないように */
+
+  /* 父に見せる画面 */
+  dialog#oogaki {
+    border: none; border-radius: 0; padding: 0; margin: 0;
+    width: 100vw; height: 100vh; max-width: none; max-height: none;
+    background: var(--kami); color: var(--sumi);
+  }
+  dialog#oogaki::backdrop { background: rgba(0,0,0,.4); }
+  .oogaki-naka {
+    min-height: 100%; padding: 24px 20px 40px;
+    display: flex; flex-direction: column; gap: 10px;
+    max-width: 700px; margin: 0 auto;
+  }
+  .oogaki-naka h2 {
+    font-size: 30px; font-weight: 600; margin: 0 0 6px; letter-spacing: .1em;
+    text-align: center;
+  }
+  .oogaki-naka .ame-moji {
+    text-align: center; font-size: 24px; color: var(--ame); min-height: 1.5em;
+  }
+  .oogaki-naka .gyo2 {
+    display: flex; justify-content: space-between; align-items: baseline;
+    border-bottom: 1px solid var(--sen-koi); padding: 6px 0; gap: 12px;
+  }
+  .oogaki-naka .gyo2 .na { font-size: 34px; min-width: 0; word-break: keep-all; }
+  .oogaki-naka .ame-moji span { display: inline-block; }
+  .oogaki-naka .gyo2 .kazu {
+    font-size: 64px; color: var(--mezasu); line-height: 1; white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+  }
+  .oogaki-naka .gyo2 .kazu small { font-size: 26px; color: var(--usuzumi); }
+  .oogaki-naka .kotowari { font-size: 24px; margin-top: 20px; }
+  .oogaki-naka .te { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 10px; }
+  .oogaki-naka .te button { flex: 1 1 160px; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>売れ残りの記録</h1>
+  <div class="hi" id="kyou-hi"></div>
+</header>
+
+<main>
+  <section class="waku shashin" aria-labelledby="h-shashin">
+    <h2 id="h-shashin">写真</h2>
+    <button class="ookii" id="shashin-btn" type="button">写真を撮る</button>
+    <p class="shirase" id="shashin-shirase" aria-live="polite"></p>
+  </section>
+
+  <section class="waku" aria-labelledby="h-urenokori">
+    <h2 id="h-urenokori">きょうの売れ残り</h2>
+    <div id="urenokori-list"></div>
+  </section>
+
+  <section class="waku" aria-labelledby="h-meyasu">
+    <h2 id="h-meyasu">あすの目安 <span id="asu-hi" style="font-weight:400"></span></h2>
+    <button class="ame-btn" id="ame-btn" type="button" aria-pressed="false">
+      <span class="shirushi" aria-hidden="true">☐</span>あすは雨
+    </button>
+    <div id="meyasu-list" aria-live="polite"></div>
+    <p class="kotowari"><span>これは目安です。</span><span>決めるのはお父さんです</span></p>
+    <button class="ookii" id="okuru-btn" type="button">父に送る</button>
+  </section>
+</main>
+
+<dialog id="oogaki" aria-labelledby="h-oogaki">
+  <div class="oogaki-naka">
+    <h2 id="h-oogaki" tabindex="-1">あすの目安 <span id="oogaki-hi" style="font-weight:400"></span></h2>
+    <div class="ame-moji" id="oogaki-ame"></div>
+    <div id="oogaki-list"></div>
+    <p class="kotowari"><span>これは目安です。</span><span>決めるのはお父さんです</span></p>
+    <div class="te">
+      <button class="ookii" id="kyouyuu-btn" type="button" hidden>文章で送る</button>
+      <button class="ookii" id="tojiru-btn" type="button">閉じる</button>
+    </div>
+  </div>
+</dialog>
+
+<script>
+// ───────────────────────────────────────────
+// ここを直せば、お菓子の種類が変わります。
+// tsukutta = いちばん最初に入れておく「きょう作った数」の例の数
+//            （毎日の数は画面の欄で直す。前回入れた数が翌日に引き継がれる）
+// rei      = 画面に最初に入れておく売れ残りの例の数
+// ───────────────────────────────────────────
+const OKASHI = [
+  { id: "mamedaifuku", na: "豆大福",       tsukutta: 30, rei: 5 },
+  { id: "dorayaki",    na: "どら焼き",     tsukutta: 24, rei: 3 },
+  { id: "kurimanju",   na: "栗まんじゅう", tsukutta: 20, rei: 0 },
+  { id: "kusamochi",   na: "草餅",         tsukutta: 18, rei: 2 },
+  { id: "monaka",      na: "最中",         tsukutta: 15, rei: 1 },
+  { id: "nerikiri",    na: "練り切り", kisetsu: true, tsukutta: 12, rei: 4 },
+];
+
+// 父に聞いた決まり
+//   売れ残りが 3 以上 → きょう作った数から 2 減らす
+//   売れ残りが 0     → 2 増やす
+//   1 か 2           → 変えない
+//   あすが雨         → そこからさらに 1 割減らす（四捨五入）
+function meyasu(tsukutta, nokori, ame) {
+  let n = tsukutta;
+  if (nokori >= 3) n -= 2;
+  else if (nokori === 0) n += 2;
+  if (ame) n = Math.round(n * 0.9);
+  return Math.max(0, n);
+}
+
+// ───────────────────────────────────────────
+// 日付の区切り（父と相談して決めた）
+//   朝、仕込みの前に前の晩の目安を見るので、昼の 12 時までは前の日の続き。
+//   12 時を過ぎて開いたら、売れ残りは 0、雨の印はなし、から始める。
+// ───────────────────────────────────────────
+const KUGIRI_JI = 12;
+
+// いまの時刻から「どの日の分か」を出す。12 時前なら前の日になる。
+function eigyoubi(ima) {
+  const d = new Date(ima);
+  d.setHours(d.getHours() - KUGIRI_JI);
+  d.setHours(0, 0, 0, 0);
+  return d;
+}
+// 保存に書く日付の形。例: 2026-11-16
+function hiKey(d) {
+  const z = (n) => String(n).padStart(2, "0");
+  return `${d.getFullYear()}-${z(d.getMonth() + 1)}-${z(d.getDate())}`;
+}
+
+// ───────────────────────────────────────────
+const KEY = "urenokori-v1";
+const state = { hi: "", tsukutta: {}, nokori: {}, ame: false };
+
+// 0 以上の整数ならそのまま、そうでなければ代わりの数
+function seisuu(v, kawari) {
+  return (Number.isInteger(v) && v >= 0) ? v : kawari;
+}
+
+function yomu(ima = new Date()) {
+  const kyouKey = hiKey(eigyoubi(ima));
+  let s = null;
+  try { s = JSON.parse(localStorage.getItem(KEY) || "null"); } catch (e) { s = null; }
+  if (!s || typeof s !== "object") s = null;
+
+  state.hi = kyouKey;
+  state.tsukutta = {};
+  state.nokori = {};
+  state.ame = false;
+
+  // 作った数は、日付が変わっても前回入れた数を引き継ぐ（父と相談して決めた）
+  const t = (s && s.tsukutta && typeof s.tsukutta === "object") ? s.tsukutta : {};
+  for (const o of OKASHI) state.tsukutta[o.id] = seisuu(t[o.id], o.tsukutta);
+
+  if (!s) {
+    // 初めて開いた → 例の数で始める
+    for (const o of OKASHI) state.nokori[o.id] = o.rei;
+  } else if (s.hi === kyouKey) {
+    // 同じ日の続き → 保存をそのまま使う
+    const n = (s.nokori && typeof s.nokori === "object") ? s.nokori : {};
+    for (const o of OKASHI) state.nokori[o.id] = seisuu(n[o.id], 0);
+    state.ame = !!s.ame;
+  } else {
+    // 日付が変わった → 売れ残り 0、雨の印なし
+    for (const o of OKASHI) state.nokori[o.id] = 0;
+  }
+  kaku();
+}
+function kaku() {
+  try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) { /* 保存できなくても動く */ }
+}
+
+const YOUBI = ["日", "月", "火", "水", "木", "金", "土"];
+function hiMoji(d) {
+  return `${d.getMonth() + 1}月${d.getDate()}日（${YOUBI[d.getDay()]}）`;
+}
+// 開いたときの「きょう」（12 時の区切りで決めた日）。文章や見出しの日付はここから出す。
+let kyouNoHi = eigyoubi(new Date());
+function asuNoHi() { const d = new Date(kyouNoHi); d.setDate(d.getDate() + 1); return d; }
+
+function naHTML(o) {
+  return o.na + (o.kisetsu ? '<small>季節</small>' : "");
+}
+
+function kakuUrenokori() {
+  const el = document.getElementById("urenokori-list");
+  el.innerHTML = "";
+  for (const o of OKASHI) {
+    const n = state.nokori[o.id];
+    const gyo = document.createElement("div");
+    gyo.className = "gyo";
+    gyo.innerHTML = `
+      <div class="hidari">
+        <div class="na">${naHTML(o)}</div>
+        <label class="tsukutta">作った
+          <input type="number" inputmode="numeric" min="0" step="1" data-tsukutta="${o.id}"
+                 value="${state.tsukutta[o.id]}" aria-label="${o.na}のきょう作った数"></label>
+      </div>
+      <div class="migi">
+        <button type="button" data-id="${o.id}" data-d="-1" aria-label="${o.na}を1つ減らす" ${n <= 0 ? "disabled" : ""}>−</button>
+        <div class="kazu" aria-label="${o.na}の売れ残り">${n}</div>
+        <button type="button" data-id="${o.id}" data-d="1" aria-label="${o.na}を1つ増やす">＋</button>
+      </div>`;
+    el.appendChild(gyo);
+  }
+}
+
+function kakuMeyasu() {
+  const el = document.getElementById("meyasu-list");
+  el.innerHTML = "";
+  for (const o of OKASHI) {
+    const n = state.nokori[o.id], t = state.tsukutta[o.id];
+    const m = meyasu(t, n, state.ame);
+    const gyo = document.createElement("div");
+    gyo.className = "meyasu-gyo";
+    gyo.innerHTML = `
+      <div class="na">${naHTML(o)}<span class="wake">きょう ${t}・残り ${n}</span></div>
+      <div class="kazu">${m}<small>個</small></div>`;
+    el.appendChild(gyo);
+  }
+  const btn = document.getElementById("ame-btn");
+  btn.setAttribute("aria-pressed", state.ame ? "true" : "false");
+  btn.querySelector(".shirushi").textContent = state.ame ? "☑" : "☐";
+}
+
+function kakuOogaki() {
+  const el = document.getElementById("oogaki-list");
+  el.innerHTML = "";
+  for (const o of OKASHI) {
+    const m = meyasu(state.tsukutta[o.id], state.nokori[o.id], state.ame);
+    const gyo = document.createElement("div");
+    gyo.className = "gyo2";
+    gyo.innerHTML = `<div class="na">${o.na}</div><div class="kazu">${m}<small>個</small></div>`;
+    el.appendChild(gyo);
+  }
+  document.getElementById("oogaki-ame").innerHTML = state.ame ? "<span>☂ あすは雨</span> <span>（1割減らしています）</span>" : "";
+}
+
+function bunshou() {
+  const asu = asuNoHi();
+  const gyo = OKASHI.map(o => `${o.na} ${meyasu(state.tsukutta[o.id], state.nokori[o.id], state.ame)}個`);
+  return [`あす ${hiMoji(asu)} の目安${state.ame ? "（雨）" : ""}`, ...gyo,
+          "これは目安です。決めるのはお父さんです"].join("\n");
+}
+
+function zenbu() { kakuUrenokori(); kakuMeyasu(); kaku(); }
+
+// ── 動き ──
+document.getElementById("urenokori-list").addEventListener("click", (e) => {
+  const b = e.target.closest("button[data-id]");
+  if (!b) return;
+  const id = b.dataset.id, d = Number(b.dataset.d);
+  state.nokori[id] = Math.max(0, state.nokori[id] + d);
+  zenbu();
+});
+
+// 作った数の欄。打っている途中は目安だけ直す（行を作り直すと欄から離れてしまうので）
+const urenokoriList = document.getElementById("urenokori-list");
+urenokoriList.addEventListener("input", (e) => {
+  const inp = e.target.closest("input[data-tsukutta]");
+  if (!inp) return;
+  const v = tsukuttaKazu(inp.value);
+  if (v === null) return;            // 空や変な値のあいだは、前の数のまま
+  state.tsukutta[inp.dataset.tsukutta] = v;
+  kakuMeyasu(); kaku();
+});
+// 欄から出たら、空や変な値は直前の数に戻して、表示を整える
+urenokoriList.addEventListener("change", (e) => {
+  const inp = e.target.closest("input[data-tsukutta]");
+  if (!inp) return;
+  const id = inp.dataset.tsukutta;
+  state.tsukutta[id] = tsukuttaKazu(inp.value) ?? state.tsukutta[id];
+  zenbu();
+});
+// 欄の文字を数にする。0 以上の整数でなければ null
+function tsukuttaKazu(moji) {
+  const s = String(moji).trim();
+  if (!/^\d+$/.test(s)) return null;
+  return Number(s);
+}
+
+document.getElementById("ame-btn").addEventListener("click", () => {
+  state.ame = !state.ame;
+  zenbu();
+});
+
+document.getElementById("shashin-btn").addEventListener("click", () => {
+  document.getElementById("shashin-shirase").textContent = "写真から読み取る仕組みは、いま準備中です。";
+});
+
+const oogaki = document.getElementById("oogaki");
+document.getElementById("okuru-btn").addEventListener("click", () => {
+  kakuOogaki();
+  oogaki.showModal();
+  // 開くと「閉じる」ボタンに移動して下までずれるので、いちばん上の見出しに戻す
+  document.getElementById("h-oogaki").focus({ preventScroll: true });
+  oogaki.scrollTop = 0;
+});
+document.getElementById("tojiru-btn").addEventListener("click", () => oogaki.close());
+
+const kyouyuu = document.getElementById("kyouyuu-btn");
+if (navigator.share) {
+  kyouyuu.hidden = false;
+  kyouyuu.addEventListener("click", async () => {
+    try { await navigator.share({ text: bunshou() }); } catch (e) { /* 取りやめ */ }
+  });
+}
+
+// ── 始まり ──
+(function hajime() {
+  const ima = new Date();
+  kyouNoHi = eigyoubi(ima);
+  const asu = asuNoHi();
+  document.getElementById("kyou-hi").textContent = "きょう " + hiMoji(kyouNoHi);
+  document.getElementById("asu-hi").textContent = hiMoji(asu);
+  document.getElementById("oogaki-hi").textContent = hiMoji(asu);
+  yomu(ima);
+  kakuUrenokori();
+  kakuMeyasu();
+})();
+</script>
+</body>
+</html>
