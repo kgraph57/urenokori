@@ -1,0 +1,12 @@
+{
+  "name": "urenokori",
+  "private": true,
+  "type": "module",
+  "description": "売れ残り帳の取り次ぎ役（ノートの写真を Claude に読んでもらう）",
+  "scripts": {
+    "start": "node --env-file-if-exists=.env server.js"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^1.8.0"
+  }
+}

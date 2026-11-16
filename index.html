@@ -108,6 +108,9 @@
     margin: 12px 0 0; font-size: 18px; color: var(--usuzumi); text-align: center;
     min-height: 1.5em;
   }
+  /* 読んだ結果の知らせは、文ごとに行を変え、文の中は言葉の切れ目（お菓子ごと）でだけ折り返す */
+  .shashin .shirase .bun { display: block; }
+  .shashin .shirase .bun span { display: inline-block; }
 
   /* 売れ残りの枠 */
   /* 1 行 = 「品名＋作った欄」のかたまり と 「−・数・＋」のかたまり。
@@ -330,6 +333,8 @@
   <section class="waku shashin" aria-labelledby="h-shashin">
     <h2 id="h-shashin">写真</h2>
     <button class="ookii" id="shashin-btn" type="button">写真を撮る</button>
+    <!-- ボタンを押すと、この隠した欄を開く（スマホならカメラ、パソコンならファイル選び） -->
+    <input type="file" id="shashin-input" accept="image/*" capture="environment" hidden aria-hidden="true" tabindex="-1">
     <p class="shirase" id="shashin-shirase" aria-live="polite"></p>
   </section>
 
@@ -415,6 +420,15 @@ const OKASHI = [
   { id: "monaka",      na: "最中",         tsukutta: 15, rei: 1 },
   { id: "nerikiri",    na: "練り切り", kisetsu: true, tsukutta: 12, rei: 4 },
 ];
+
+// ───────────────────────────────────────────
+// 写真を読む取り次ぎ役（server.js）の場所。
+//   ""  = この画面を配っているのと同じ場所（node server.js で開いたときは、これでよい）
+//   index.html をファイルとして直接開いたときは、この Mac で動かしている取り次ぎ役を使う
+// ───────────────────────────────────────────
+const TORITSUGI = location.protocol === "file:" ? "http://localhost:8787" : "";
+const SHASHIN_NAGASA = 1568;   // 送る写真の長い辺（px）。手書きの数字ならこれで十分で、料金と通信量を抑えられる
+const AIKOTOBA_KEY = "urenokori-aikotoba-v1";   // 取り次ぎ役のあいことば（要るときだけ、1 度聞いて覚える）
 
 // ───────────────────────────────────────────
 // 父の決まりの、はじめの数。画面の「父の決まり」の欄で直せて、直した数は保存される。
@@ -825,9 +839,121 @@ document.getElementById("ame-btn").addEventListener("click", () => {
   zenbu();
 });
 
-document.getElementById("shashin-btn").addEventListener("click", () => {
-  document.getElementById("shashin-shirase").textContent = "写真から読み取る仕組みは、いま準備中です。";
+// ── 写真を撮って、売れ残りの数を読む ──
+// 撮った写真を縮めて取り次ぎ役に送り、返ってきた数を「きょうの売れ残り」に入れる。
+// 入れるだけで、どこにも自動では送らない。読めなかったお菓子の数は変えない。
+const shashinBtn = document.getElementById("shashin-btn");
+const shashinInput = document.getElementById("shashin-input");
+const shashinShirase = document.getElementById("shashin-shirase");
+
+// 知らせを出す。1 つの引数が 1 つの文（1 行）。文は「。、：」のあと、または配列の切れ目でだけ折り返す
+function shirase(...bun) {
+  shashinShirase.innerHTML = bun.filter(b => b && b.length).map(b => {
+    const kakera = Array.isArray(b) ? b : b.split(/(?<=[。、：])/);
+    return `<span class="bun">${kakera.map(k => `<span>${esc(k)}</span>`).join(" ")}</span>`;
+  }).join("");
+}
+
+shashinBtn.addEventListener("click", () => {
+  shashinInput.value = "";       // 同じ写真をもう一度選んでも change が起きるように
+  shashinInput.click();
 });
+
+shashinInput.addEventListener("change", async () => {
+  const file = shashinInput.files && shashinInput.files[0];
+  if (!file) return;
+  shashinBtn.disabled = true;    // 読んでいる間は二度押しできない
+  shirase("写真を読んでいます…");
+  try {
+    const gazou = await chijimeru(file);
+    const kekka = await toritsugiNiOkuru(gazou);
+    ireru(kekka.urenokori);
+  } catch (e) {
+    shirase(e.kakera || e.message || "読み取りに失敗しました。", ["売れ残りの数は", "変えていません。"]);
+  } finally {
+    shashinBtn.disabled = false;
+  }
+});
+
+// 写真を長い辺 SHASHIN_NAGASA px に縮めて、JPEG の base64 にする
+function chijimeru(file) {
+  return new Promise((resolve, reject) => {
+    const url = URL.createObjectURL(file);
+    const img = new Image();
+    img.onload = () => {
+      URL.revokeObjectURL(url);
+      const w = img.naturalWidth, h = img.naturalHeight;
+      if (!w || !h) return reject(new Error("写真を開けませんでした。"));
+      const r = Math.min(1, SHASHIN_NAGASA / Math.max(w, h));
+      const c = document.createElement("canvas");
+      c.width = Math.round(w * r);
+      c.height = Math.round(h * r);
+      c.getContext("2d").drawImage(img, 0, 0, c.width, c.height);
+      const dataUrl = c.toDataURL("image/jpeg", 0.85);
+      resolve(dataUrl.slice(dataUrl.indexOf(",") + 1));
+    };
+    img.onerror = () => { URL.revokeObjectURL(url); reject(new Error("写真を開けませんでした。")); };
+    img.src = url;
+  });
+}
+
+// 失敗の印。kakera は、画面で折り返してよい切れ目ごとに分けた文
+function shippai(...kakera) {
+  const e = new Error(kakera.join(""));
+  e.kakera = kakera;
+  return e;
+}
+
+// 取り次ぎ役に写真を送り、{ urenokori: [{ id, na, kazu }] } を受け取る
+async function toritsugiNiOkuru(gazou) {
+  const headers = { "Content-Type": "application/json" };
+  const aikotoba = localStorage.getItem(AIKOTOBA_KEY);
+  if (aikotoba) headers["X-Aikotoba"] = aikotoba;
+  let res;
+  try {
+    res = await fetch(TORITSUGI + "/yomu", {
+      method: "POST", headers, body: JSON.stringify({ gazou, katachi: "image/jpeg" }),
+    });
+  } catch (e) {
+    throw shippai("取り次ぎ役に", "つながりません。", "server.js が", "動いているか", "確かめてください。");
+  }
+  let j = null;
+  try { j = await res.json(); } catch (e) { j = null; }
+  if (res.status === 401) {
+    // あいことばが要る取り次ぎ役。1 度聞いて覚え、もう一度送る
+    const a = window.prompt("取り次ぎ役の、あいことばを入れてください");
+    if (a) { localStorage.setItem(AIKOTOBA_KEY, a); return toritsugiNiOkuru(gazou); }
+    throw new Error("あいことばが要ります。");
+  }
+  if (!res.ok) throw new Error((j && j.error) || "読み取りに失敗しました。");
+  if (!j || !Array.isArray(j.urenokori)) throw new Error("答えの形が読めませんでした。");
+  return j;
+}
+
+// 読んだ数を「きょうの売れ残り」に入れ、何を入れたかを知らせる
+function ireru(yonda) {
+  const ireta = [], yomenai = [];
+  for (const y of yonda) {
+    const o = OKASHI.find(x => x.id === y.id);
+    if (!o) continue;
+    if (Number.isInteger(y.kazu) && y.kazu >= 0) {
+      state.nokori[o.id] = y.kazu;
+      ireta.push(`${o.na} ${y.kazu}`);
+    } else {
+      yomenai.push(o.na);
+    }
+  }
+  const nakatta = OKASHI.filter(o => !yonda.some(y => y.id === o.id)).map(o => o.na);
+  if (ireta.length) zenbu();
+  // お菓子の名前の途中で折れないように、お菓子ごとに切って渡す
+  const narabi = (mae, list) => [...mae, ...list.map((s, i) => s + (i < list.length - 1 ? "、" : "。"))];
+  shirase(
+    ireta.length ? narabi(["写真から", "入れました："], ireta) : ["写真から、", "数は", "入れませんでした。"],
+    yomenai.length ? narabi(["読めなかった："], yomenai) : "",
+    nakatta.length ? narabi(["写真に無かった："], nakatta) : "",
+    ireta.length ? ["違っていたら", "−・＋ で", "直してください。"] : "",
+  );
+}
 
 const oogaki = document.getElementById("oogaki");
 document.getElementById("okuru-btn").addEventListener("click", () => {
