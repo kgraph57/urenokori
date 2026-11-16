@@ -494,8 +494,7 @@ if (navigator.share) {
   const ima = new Date();
   kyouNoHi = eigyoubi(ima);
   const asu = asuNoHi();
-  // 朝に開くと前の日の日付になるので、「きょう」とは言わず「いつの記録か」を出す
-  document.getElementById("kyou-hi").textContent = hiMoji(kyouNoHi) + "の記録";
+  document.getElementById("kyou-hi").textContent = "きょう " + hiMoji(kyouNoHi);
   document.getElementById("asu-hi").textContent = hiMoji(asu);
   document.getElementById("oogaki-hi").textContent = hiMoji(asu);
   yomu(ima);
