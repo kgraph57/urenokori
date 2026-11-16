@@ -47,6 +47,12 @@
   }
   header h1 { font-size: 28px; font-weight: 600; margin: 0; letter-spacing: .08em; }
   header .hi { color: var(--usuzumi); font-size: 20px; }
+  /* 題名の下の説明。知らない人にも、何の画面かが分かるように */
+  header .annai {
+    flex-basis: 100%; max-width: 46em;
+    margin: 4px 0 0; font-size: 18px; line-height: 1.7;
+    word-break: keep-all;
+  }
   /* 見出しの日付は途中で折らない（「（月）」だけが次の行に落ちないように） */
   #asu-hi, #oogaki-hi { display: inline-block; white-space: nowrap; }
 
@@ -316,6 +322,8 @@
 <header>
   <h1>売れ残り帳</h1>
   <div class="hi" id="kyou-hi"></div>
+  <!-- 文は言葉の途中で折らず、<wbr> のところ（言葉の切れ目）でだけ折る -->
+  <p class="annai">和菓子店で、<wbr>閉店後に<wbr>お菓子ごとの<wbr>売れ残りの数を<wbr>入れると、<wbr>父の決め方どおりに、<wbr>あすに作る数の<wbr>目安を出す<wbr>スマホの画面です。<wbr>作る数を<wbr>決めるのは父で、<wbr>父が決めた数も<wbr>目安と並べて<wbr>残るので、<wbr>目安が<wbr>父の判断と<wbr>どれだけ<wbr>合っていたかを、<wbr>あとで<wbr>数えられます。</p>
 </header>
 
 <main>
